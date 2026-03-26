@@ -1,0 +1,18 @@
+{
+  "etf": "KoAct",
+  "code": "0015B0",
+  "date": "2026-03-25",
+  "nav": null,
+  "aum_billion": null,
+  "holdings": [
+    {"ticker": "SNDK", "name": "Sandisk Corp/DE", "shares": null, "value_krw": null, "weight": 7.38, "sector": "스토리지"},
+    {"ticker": "LITE", "name": "Lumentum Holdings Inc", "shares": null, "value_krw": null, "weight": 7.23, "sector": "광통신"},
+    {"ticker": "CIEN", "name": "Ciena Corp", "shares": null, "value_krw": null, "weight": 5.20, "sector": "광통신"},
+    {"ticker": "COIN", "name": "Coinbase Global Inc", "shares": null, "value_krw": null, "weight": 4.31, "sector": "크립토"},
+    {"ticker": "CRCL", "name": "Circle Internet Group Inc", "shares": null, "value_krw": null, "weight": 3.96, "sector": "크립토"},
+    {"ticker": "MU", "name": "Micron Technology Inc", "shares": null, "value_krw": null, "weight": 3.92, "sector": "반도체"},
+    {"ticker": "BE", "name": "Bloom Energy Corp", "shares": null, "value_krw": null, "weight": 3.84, "sector": "에너지"},
+    {"ticker": "AKAI", "name": "Akamai Technologies Inc", "shares": null, "value_krw": null, "weight": 3.46, "sector": "소프트웨어"},
+    {"ticker": "NVDA", "name": "NVIDIA Corp", "shares": null, "value_krw": null, "weight": 3.35, "sector": "반도체"}
+  ]
+}

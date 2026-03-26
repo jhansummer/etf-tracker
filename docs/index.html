@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ETF Portfolio Tracker</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#242833;--border:#2e3341;
+  --ink:#e4e6ed;--muted:#8b8fa3;--accent:#6366f1;--accent2:#818cf8;
+  --up:#22c55e;--down:#ef4444;--buy:#22c55e;--sell:#ef4444;
+  --new:#a78bfa;--removed:#64748b;--price:#3b82f6;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --radius:10px;
+}
+html{font-family:var(--font);font-size:14px;background:var(--bg);color:var(--ink)}
+body{min-height:100vh}
+a{color:var(--accent2);text-decoration:none}
+
+/* Header */
+.header{padding:20px 24px 0;max-width:1200px;margin:0 auto}
+.header h1{font-size:20px;font-weight:800;color:var(--ink)}
+.header h1 span{color:var(--accent2);font-weight:400;font-size:14px;margin-left:8px}
+.header-sub{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* Tabs */
+.tabs{display:flex;gap:0;padding:0 24px;max-width:1200px;margin:16px auto 0;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 20px;border:none;background:none;color:var(--muted);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+
+/* Week selector */
+.week-bar{display:flex;align-items:center;gap:12px;padding:12px 24px;max-width:1200px;margin:0 auto}
+.week-bar label{font-size:12px;color:var(--muted);font-weight:600}
+.week-bar select{background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:var(--font)}
+
+/* Sub tabs */
+.sub-tabs{display:flex;gap:6px;padding:0 24px;max-width:1200px;margin:8px auto}
+.sub-tab{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.sub-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Content */
+.content{max-width:1200px;margin:0 auto;padding:16px 24px}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:8px 10px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--border);font-size:11px;position:sticky;top:0;background:var(--bg);z-index:1}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tbody tr:hover{background:var(--surface)}
+.tbl .r{text-align:right}
+.tbl .ticker{font-weight:700;color:var(--accent2)}
+
+/* Signal badges */
+.sig{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px}
+.sig-buy{background:rgba(34,197,94,0.15);color:var(--buy)}
+.sig-sell{background:rgba(239,68,68,0.15);color:var(--sell)}
+.sig-new{background:rgba(167,139,250,0.15);color:var(--new)}
+.sig-removed{background:rgba(100,116,139,0.15);color:var(--removed)}
+.sig-price_effect{background:rgba(59,130,246,0.12);color:var(--price)}
+.sig-hold{background:rgba(139,143,163,0.1);color:var(--muted)}
+
+/* Sector chart area */
+.sector-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.chart-card h3{font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600}
+
+/* Compare bars */
+.cmp-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px}
+.cmp-ticker{width:50px;font-weight:700;color:var(--accent2);text-align:right;flex-shrink:0}
+.cmp-name{width:140px;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+.cmp-bars{flex:1;display:flex;gap:2px;align-items:center;height:20px}
+.cmp-bar{height:100%;border-radius:3px;min-width:1px;transition:width .3s}
+.cmp-bar.time{background:var(--accent)}
+.cmp-bar.koact{background:var(--new)}
+.cmp-val{font-size:10px;color:var(--muted);width:40px;text-align:right;flex-shrink:0}
+.cmp-legend{display:flex;gap:16px;margin-bottom:12px;font-size:11px;color:var(--muted)}
+.cmp-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.cmp-legend .l-time::before{background:var(--accent)}
+.cmp-legend .l-koact::before{background:var(--new)}
+
+/* Overlap badge */
+.overlap-badge{font-size:9px;padding:1px 6px;border-radius:4px;background:rgba(99,102,241,0.2);color:var(--accent2);margin-left:4px;font-weight:600}
+
+/* History chart */
+.history-wrap{margin-top:16px}
+.history-select{background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:var(--font);min-width:200px}
+
+/* Signals summary */
+.sig-summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sig-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;min-width:120px}
+.sig-card .label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.sig-card .count{font-size:24px;font-weight:800}
+.sig-card.buy .count{color:var(--buy)}
+.sig-card.sell .count{color:var(--sell)}
+.sig-card.new .count{color:var(--new)}
+.sig-card.removed .count{color:var(--removed)}
+
+/* Empty */
+.empty{text-align:center;color:var(--muted);padding:40px;font-size:13px}
+
+/* Responsive */
+@media(max-width:768px){
+  .sector-grid{grid-template-columns:1fr}
+  .cmp-name{width:80px}
+  .header{padding:16px}
+  .content{padding:12px 16px}
+  .tabs{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>ETF Portfolio Tracker<span>Active ETF Weekly Monitor</span></h1>
+  <div class="header-sub">TIME 미국나스닥100액티브 &middot; KoAct 미국나스닥성장기업액티브</div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="time">TIME</button>
+  <button class="tab" data-tab="koact">KoAct</button>
+  <button class="tab" data-tab="compare">비교</button>
+  <button class="tab" data-tab="signals">시그널</button>
+  <button class="tab" data-tab="history">히스토리</button>
+</nav>
+
+<div class="week-bar" id="week-bar">
+  <label>주차</label>
+  <select id="week-select"></select>
+</div>
+
+<div class="sub-tabs" id="sub-tabs">
+  <button class="sub-tab active" data-view="all">전체 종목</button>
+  <button class="sub-tab" data-view="top10">TOP 10</button>
+  <button class="sub-tab" data-view="sector">섹터 분석</button>
+</div>
+
+<div class="content" id="content"></div>
+
+<script>
+/* ── Data & State ── */
+var DATA = null;
+var activeTab = "time";
+var activeView = "all";
+var activeWeekIdx = -1; // -1 = latest
+
+var SIGNAL_LABELS = {
+  buy: {emoji: "\uD83D\uDFE2", label: "매수", cls: "sig-buy"},
+  sell: {emoji: "\uD83D\uDD34", label: "매도", cls: "sig-sell"},
+  new: {emoji: "\uD83D\uDFE3", label: "신규편입", cls: "sig-new"},
+  removed: {emoji: "\u26AB", label: "제외", cls: "sig-removed"},
+  price_effect: {emoji: "\uD83D\uDCCA", label: "주가효과", cls: "sig-price_effect"},
+  hold: {emoji: "", label: "보유", cls: "sig-hold"},
+};
+
+/* ── Init ── */
+fetch("data/combined.json?t=" + Date.now())
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    DATA = d;
+    initWeekSelect();
+    render();
+  })
+  .catch(function(e){
+    document.getElementById("content").innerHTML = '<div class="empty">데이터를 불러오지 못했습니다.</div>';
+  });
+
+/* ── Tab events ── */
+document.getElementById("tabs").addEventListener("click", function(e){
+  var btn = e.target.closest(".tab");
+  if (!btn) return;
+  activeTab = btn.dataset.tab;
+  document.querySelectorAll(".tab").forEach(function(b){ b.classList.toggle("active", b.dataset.tab === activeTab); });
+  updateUIVisibility();
+  render();
+});
+
+document.getElementById("sub-tabs").addEventListener("click", function(e){
+  var btn = e.target.closest(".sub-tab");
+  if (!btn) return;
+  activeView = btn.dataset.view;
+  document.querySelectorAll(".sub-tab").forEach(function(b){ b.classList.toggle("active", b.dataset.view === activeView); });
+  render();
+});
+
+document.getElementById("week-select").addEventListener("change", function(){
+  activeWeekIdx = parseInt(this.value);
+  render();
+});
+
+function updateUIVisibility(){
+  var wb = document.getElementById("week-bar");
+  var st = document.getElementById("sub-tabs");
+  if (activeTab === "compare" || activeTab === "history") {
+    wb.style.display = "none";
+    st.style.display = activeTab === "compare" ? "flex" : "none";
+  } else if (activeTab === "signals") {
+    wb.style.display = "flex";
+    st.style.display = "none";
+  } else {
+    wb.style.display = "flex";
+    st.style.display = "flex";
+  }
+}
+
+function initWeekSelect(){
+  var sel = document.getElementById("week-select");
+  var weeks = (DATA.time.weeks.length > 0) ? DATA.time.weeks : DATA.koact.weeks;
+  sel.innerHTML = "";
+  weeks.forEach(function(w, i){
+    var opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = w.date;
+    if (i === weeks.length - 1) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  activeWeekIdx = weeks.length - 1;
+}
+
+/* ── Render dispatcher ── */
+function render(){
+  var el = document.getElementById("content");
+  if (!DATA) return;
+  if (activeTab === "time" || activeTab === "koact") renderETF(el, activeTab);
+  else if (activeTab === "compare") renderCompare(el);
+  else if (activeTab === "signals") renderSignals(el);
+  else if (activeTab === "history") renderHistory(el);
+}
+
+/* ── ETF Tab ── */
+function renderETF(el, key){
+  var weeks = DATA[key].weeks;
+  if (!weeks.length){ el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
+  var idx = Math.min(activeWeekIdx, weeks.length - 1);
+  var week = weeks[idx];
+
+  if (activeView === "sector"){
+    renderSectorView(el, week, key);
+    return;
+  }
+
+  var holdings = week.holdings.filter(function(h){ return h.signal !== "removed"; });
+  if (activeView === "top10") holdings = holdings.slice(0, 10);
+
+  var html = '<table class="tbl"><thead><tr>'
+    + '<th>#</th><th>티커</th><th>종목명</th><th>섹터</th>'
+    + '<th class="r">비중%</th><th class="r">수량</th>'
+    + '<th class="r">비중변화</th><th>매매구분</th>'
+    + '</tr></thead><tbody>';
+
+  holdings.forEach(function(h, i){
+    var sig = SIGNAL_LABELS[h.signal] || SIGNAL_LABELS.hold;
+    var wchg = h.weight_chg != null ? (h.weight_chg > 0 ? "+" : "") + h.weight_chg.toFixed(2) : "-";
+    var wchgColor = h.weight_chg > 0 ? "var(--up)" : h.weight_chg < 0 ? "var(--down)" : "var(--muted)";
+    html += '<tr>'
+      + '<td style="color:var(--muted)">' + (i+1) + '</td>'
+      + '<td class="ticker">' + h.ticker + '</td>'
+      + '<td>' + h.name + '</td>'
+      + '<td style="color:var(--muted)">' + (h.sector || "") + '</td>'
+      + '<td class="r" style="font-weight:700">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
+      + '<td class="r">' + (h.shares != null ? h.shares.toLocaleString() : "-") + '</td>'
+      + '<td class="r" style="color:' + wchgColor + '">' + wchg + '</td>'
+      + '<td><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
+      + '</tr>';
+  });
+
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+/* ── Sector View ── */
+function renderSectorView(el, week, key){
+  var sectors = week.sectors || [];
+  var maxW = sectors.length ? sectors[0].weight : 1;
+
+  var html = '<div class="sector-grid"><div class="chart-card"><h3>섹터별 비중</h3>';
+  html += '<canvas id="sector-chart" height="300"></canvas></div>';
+  html += '<div class="chart-card"><h3>섹터 상세</h3>';
+  html += '<table class="tbl"><thead><tr><th>섹터</th><th class="r">비중%</th><th class="r">종목수</th></tr></thead><tbody>';
+
+  // 종목수 계산
+  var sectorCounts = {};
+  week.holdings.forEach(function(h){
+    if (h.signal === "removed") return;
+    var s = h.sector || "미분류";
+    sectorCounts[s] = (sectorCounts[s] || 0) + 1;
+  });
+
+  sectors.forEach(function(s){
+    html += '<tr><td style="font-weight:600">' + s.sector + '</td>'
+      + '<td class="r" style="font-weight:700">' + s.weight.toFixed(2) + '</td>'
+      + '<td class="r">' + (sectorCounts[s.sector] || 0) + '</td></tr>';
+  });
+  html += '</tbody></table></div></div>';
+  el.innerHTML = html;
+
+  // Draw chart
+  var ctx = document.getElementById("sector-chart");
+  if (ctx) {
+    var colors = ["#6366f1","#a78bfa","#22c55e","#3b82f6","#f59e0b","#ef4444","#ec4899","#14b8a6","#8b5cf6","#64748b","#f97316","#06b6d4"];
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: sectors.map(function(s){ return s.sector; }),
+        datasets: [{
+          data: sectors.map(function(s){ return s.weight; }),
+          backgroundColor: colors.slice(0, sectors.length),
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom", labels: { color: "#8b8fa3", font: {size: 11}, padding: 12 } }
+        }
+      }
+    });
+  }
+}
+
+/* ── Compare Tab ── */
+function renderCompare(el){
+  if (activeView === "sector") {
+    renderCompareSectors(el);
+    return;
+  }
+
+  var overlap = DATA.overlap || [];
+  if (activeView === "top10") overlap = overlap.slice(0, 10);
+  var maxW = 0;
+  overlap.forEach(function(o){ maxW = Math.max(maxW, o.time_weight || 0, o.koact_weight || 0); });
+  if (maxW === 0) maxW = 1;
+
+  var html = '<div class="cmp-legend"><span class="l-time">TIME</span><span class="l-koact">KoAct</span></div>';
+
+  overlap.forEach(function(o){
+    var tw = o.time_weight || 0;
+    var kw = o.koact_weight || 0;
+    var bothBadge = o.both ? '<span class="overlap-badge">공통</span>' : '';
+    html += '<div class="cmp-row">'
+      + '<div class="cmp-ticker">' + o.ticker + '</div>'
+      + '<div class="cmp-name">' + o.name + bothBadge + '</div>'
+      + '<div class="cmp-bars">'
+      + '<div class="cmp-bar time" style="width:' + (tw/maxW*100) + '%"></div>'
+      + '<div class="cmp-bar koact" style="width:' + (kw/maxW*100) + '%"></div>'
+      + '</div>'
+      + '<div class="cmp-val">' + tw.toFixed(1) + ' / ' + kw.toFixed(1) + '</div>'
+      + '</div>';
+  });
+
+  el.innerHTML = html;
+}
+
+function renderCompareSectors(el){
+  var tw = DATA.time.weeks;
+  var kw = DATA.koact.weeks;
+  if (!tw.length && !kw.length){ el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
+
+  var timeSectors = tw.length ? tw[tw.length-1].sectors : [];
+  var koactSectors = kw.length ? kw[kw.length-1].sectors : [];
+
+  var sectorMap = {};
+  timeSectors.forEach(function(s){ sectorMap[s.sector] = {time: s.weight, koact: 0}; });
+  koactSectors.forEach(function(s){
+    if (!sectorMap[s.sector]) sectorMap[s.sector] = {time: 0, koact: 0};
+    sectorMap[s.sector].koact = s.weight;
+  });
+
+  var labels = Object.keys(sectorMap).sort(function(a,b){ return (sectorMap[b].time + sectorMap[b].koact) - (sectorMap[a].time + sectorMap[a].koact); });
+
+  var html = '<div class="chart-card"><h3>섹터 비중 비교</h3><canvas id="sector-compare-chart" height="350"></canvas></div>';
+  el.innerHTML = html;
+
+  var ctx = document.getElementById("sector-compare-chart");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {label: "TIME", data: labels.map(function(l){ return sectorMap[l].time; }), backgroundColor: "#6366f1"},
+        {label: "KoAct", data: labels.map(function(l){ return sectorMap[l].koact; }), backgroundColor: "#a78bfa"},
+      ]
+    },
+    options: {
+      responsive: true,
+      indexAxis: "y",
+      scales: {
+        x: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}},
+        y: {grid:{display:false}, ticks:{color:"#e4e6ed", font:{size:11}}}
+      },
+      plugins: {legend:{labels:{color:"#8b8fa3"}}}
+    }
+  });
+}
+
+/* ── Signals Tab ── */
+function renderSignals(el){
+  // Combine both ETFs
+  var signals = [];
+  ["time","koact"].forEach(function(key){
+    var weeks = DATA[key].weeks;
+    if (!weeks.length) return;
+    var idx = Math.min(activeWeekIdx, weeks.length - 1);
+    var week = weeks[idx];
+    week.holdings.forEach(function(h){
+      if (h.signal && h.signal !== "hold" && h.signal !== "price_effect"){
+        signals.push(Object.assign({}, h, {etf: week.etf}));
+      }
+    });
+  });
+
+  // Summary cards
+  var counts = {buy:0, sell:0, new:0, removed:0};
+  signals.forEach(function(s){ if (counts[s.signal] !== undefined) counts[s.signal]++; });
+
+  var html = '<div class="sig-summary">';
+  [{k:"new",l:"신규편입",e:"\uD83D\uDFE3"},{k:"buy",l:"매수",e:"\uD83D\uDFE2"},{k:"sell",l:"매도",e:"\uD83D\uDD34"},{k:"removed",l:"제외",e:"\u26AB"}].forEach(function(item){
+    html += '<div class="sig-card ' + item.k + '"><div class="label">' + item.e + ' ' + item.l + '</div><div class="count">' + counts[item.k] + '</div></div>';
+  });
+  html += '</div>';
+
+  if (signals.length === 0){
+    html += '<div class="empty">이번 주 매매 시그널이 없습니다.</div>';
+    el.innerHTML = html;
+    return;
+  }
+
+  html += '<table class="tbl"><thead><tr>'
+    + '<th>ETF</th><th>티커</th><th>종목명</th><th>섹터</th>'
+    + '<th class="r">비중%</th><th class="r">변화</th><th>구분</th>'
+    + '</tr></thead><tbody>';
+
+  signals.forEach(function(h){
+    var sig = SIGNAL_LABELS[h.signal] || SIGNAL_LABELS.hold;
+    var wchg = h.weight_chg != null ? (h.weight_chg > 0 ? "+" : "") + h.weight_chg.toFixed(2) : "-";
+    html += '<tr>'
+      + '<td style="font-weight:600">' + h.etf + '</td>'
+      + '<td class="ticker">' + h.ticker + '</td>'
+      + '<td>' + h.name + '</td>'
+      + '<td style="color:var(--muted)">' + (h.sector || "") + '</td>'
+      + '<td class="r" style="font-weight:700">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
+      + '<td class="r">' + wchg + '</td>'
+      + '<td><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
+      + '</tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+/* ── History Tab ── */
+function renderHistory(el){
+  // Build ticker options from both ETFs
+  var allTickers = {};
+  ["time","koact"].forEach(function(key){
+    var hist = DATA[key].history || {};
+    Object.keys(hist).forEach(function(t){
+      if (!allTickers[t]) allTickers[t] = {time: false, koact: false};
+      allTickers[t][key] = true;
+    });
+  });
+
+  var tickers = Object.keys(allTickers).sort();
+
+  var html = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">'
+    + '<label style="font-size:12px;color:var(--muted);font-weight:600">종목 선택</label>'
+    + '<select class="history-select" id="history-ticker">';
+  tickers.forEach(function(t){
+    var tags = [];
+    if (allTickers[t].time) tags.push("TIME");
+    if (allTickers[t].koact) tags.push("KoAct");
+    html += '<option value="' + t + '">' + t + ' (' + tags.join("+") + ')</option>';
+  });
+  html += '</select></div>';
+  html += '<div class="chart-card"><canvas id="history-chart" height="300"></canvas></div>';
+
+  el.innerHTML = html;
+
+  var sel = document.getElementById("history-ticker");
+  drawHistoryChart(sel.value);
+  sel.addEventListener("change", function(){ drawHistoryChart(sel.value); });
+}
+
+var historyChartInstance = null;
+function drawHistoryChart(ticker){
+  var ctx = document.getElementById("history-chart");
+  if (!ctx) return;
+  if (historyChartInstance) historyChartInstance.destroy();
+
+  var datasets = [];
+  var allDates = new Set();
+
+  ["time","koact"].forEach(function(key){
+    var hist = (DATA[key].history || {})[ticker];
+    if (!hist) return;
+    hist.forEach(function(p){ allDates.add(p.date); });
+  });
+
+  var dates = Array.from(allDates).sort();
+
+  ["time","koact"].forEach(function(key){
+    var hist = (DATA[key].history || {})[ticker];
+    if (!hist) return;
+    var map = {};
+    hist.forEach(function(p){ map[p.date] = p.weight; });
+    datasets.push({
+      label: key === "time" ? "TIME" : "KoAct",
+      data: dates.map(function(d){ return map[d] != null ? map[d] : null; }),
+      borderColor: key === "time" ? "#6366f1" : "#a78bfa",
+      backgroundColor: key === "time" ? "rgba(99,102,241,0.1)" : "rgba(167,139,250,0.1)",
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      spanGaps: true,
+    });
+  });
+
+  historyChartInstance = new Chart(ctx, {
+    type: "line",
+    data: {labels: dates, datasets: datasets},
+    options: {
+      responsive: true,
+      scales: {
+        x: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:10}}},
+        y: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}, title:{display:true, text:"비중(%)", color:"#8b8fa3"}}
+      },
+      plugins: {
+        legend:{labels:{color:"#8b8fa3"}},
+        tooltip:{mode:"index", intersect:false}
+      }
+    }
+  });
+}
+
+/* ── Initial UI state ── */
+updateUIVisibility();
+</script>
+</body>
+</html>

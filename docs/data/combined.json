@@ -1,0 +1,1505 @@
+{
+  "generated": "2026-03-25",
+  "time": {
+    "weeks": [
+      {
+        "date": "2026-03-25",
+        "etf": "TIME",
+        "code": "426030",
+        "nav": 39346.27,
+        "aum_billion": 10623,
+        "holdings": [
+          {
+            "ticker": "SNDK",
+            "name": "Sandisk Corp/DE",
+            "shares": 65,
+            "value_krw": 68478101,
+            "weight": 8.7,
+            "sector": "스토리지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "LITE",
+            "name": "Lumentum Holdings Inc",
+            "shares": 39,
+            "value_krw": 46907031,
+            "weight": 5.96,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "NVDA",
+            "name": "NVIDIA Corp",
+            "shares": 176,
+            "value_krw": 46243549,
+            "weight": 5.88,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "CIEN",
+            "name": "Ciena Corp",
+            "shares": 71,
+            "value_krw": 45719824,
+            "weight": 5.81,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "GOOGL",
+            "name": "Alphabet Inc",
+            "shares": 86,
+            "value_krw": 37459266,
+            "weight": 4.76,
+            "sector": "빅테크",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "COIN",
+            "name": "Coinbase Global Inc",
+            "shares": 129,
+            "value_krw": 35024233,
+            "weight": 4.45,
+            "sector": "크립토",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "BE",
+            "name": "Bloom Energy Corp",
+            "shares": 126,
+            "value_krw": 27565805,
+            "weight": 3.5,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "ASML",
+            "name": "ASML Holding NV",
+            "shares": 12,
+            "value_krw": 25184522,
+            "weight": 3.2,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "CRCL",
+            "name": "Circle Internet Group Inc",
+            "shares": 154,
+            "value_krw": 23365595,
+            "weight": 2.97,
+            "sector": "크립토",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "MU",
+            "name": "Micron Technology Inc",
+            "shares": 39,
+            "value_krw": 23133877,
+            "weight": 2.94,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AXTI",
+            "name": "AXT Inc",
+            "shares": 217,
+            "value_krw": 22272764,
+            "weight": 2.83,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "TSM",
+            "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+            "shares": 43,
+            "value_krw": 22135197,
+            "weight": 2.81,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "LRCX",
+            "name": "Lam Research Corp",
+            "shares": 61,
+            "value_krw": 21849489,
+            "weight": 2.78,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "NQM6",
+            "name": "NASDAQ 100 E-MINI INDEX JUN 2026",
+            "shares": 0,
+            "value_krw": 21788016,
+            "weight": 2.77,
+            "sector": "선물",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "SIMO",
+            "name": "Silicon Motion Technology Corp",
+            "shares": 122,
+            "value_krw": 21706777,
+            "weight": 2.76,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "TSEM",
+            "name": "Tower Semiconductor Ltd",
+            "shares": 78,
+            "value_krw": 21151708,
+            "weight": 2.69,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "VRT",
+            "name": "Vertiv Holdings Co",
+            "shares": 47,
+            "value_krw": 19093925,
+            "weight": 2.43,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "CASH",
+            "name": "현금",
+            "shares": 0,
+            "value_krw": 18338826,
+            "weight": 2.33,
+            "sector": "현금",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "GEV",
+            "name": "GE Vernova Inc",
+            "shares": 13,
+            "value_krw": 17729948,
+            "weight": 2.25,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "GLW",
+            "name": "Corning Inc",
+            "shares": 79,
+            "value_krw": 16824819,
+            "weight": 2.14,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "WDC",
+            "name": "Western Digital Corp",
+            "shares": 37,
+            "value_krw": 16704933,
+            "weight": 2.12,
+            "sector": "스토리지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "STX",
+            "name": "Seagate Technology Holdings PLC",
+            "shares": 23,
+            "value_krw": 14658187,
+            "weight": 1.86,
+            "sector": "스토리지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "ASTS",
+            "name": "AST SpaceMobile Inc",
+            "shares": 99,
+            "value_krw": 12913946,
+            "weight": 1.64,
+            "sector": "우주/방산",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "MSTR",
+            "name": "Strategy Inc",
+            "shares": 60,
+            "value_krw": 12260047,
+            "weight": 1.56,
+            "sector": "크립토",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "FTAI",
+            "name": "FTAI Aviation Ltd",
+            "shares": 33,
+            "value_krw": 12227519,
+            "weight": 1.55,
+            "sector": "우주/방산",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "COHR",
+            "name": "Coherent Corp",
+            "shares": 28,
+            "value_krw": 11435572,
+            "weight": 1.45,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "TMUS",
+            "name": "T-Mobile US Inc",
+            "shares": 32,
+            "value_krw": 10138451,
+            "weight": 1.29,
+            "sector": "통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "TSLA",
+            "name": "Tesla Inc",
+            "shares": 17,
+            "value_krw": 9765311,
+            "weight": 1.24,
+            "sector": "빅테크",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "RKLB",
+            "name": "Rocket Lab Corp",
+            "shares": 95,
+            "value_krw": 9413092,
+            "weight": 1.2,
+            "sector": "우주/방산",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AAOI",
+            "name": "Applied Optoelectronics Inc",
+            "shares": 52,
+            "value_krw": 8882423,
+            "weight": 1.13,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "META",
+            "name": "Meta Platforms Inc",
+            "shares": 9,
+            "value_krw": 8002819,
+            "weight": 1.02,
+            "sector": "빅테크",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "INTC",
+            "name": "Intel Corp",
+            "shares": 120,
+            "value_krw": 7929213,
+            "weight": 1.01,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "IPGP",
+            "name": "IPG Photonics Corp",
+            "shares": 39,
+            "value_krw": 7351979,
+            "weight": 0.93,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AVGO",
+            "name": "Broadcom Inc",
+            "shares": 15,
+            "value_krw": 7160092,
+            "weight": 0.91,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "UUUU",
+            "name": "Energy Fuels Inc/Canada",
+            "shares": 263,
+            "value_krw": 7123245,
+            "weight": 0.91,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "BKR",
+            "name": "Baker Hughes Co",
+            "shares": 72,
+            "value_krw": 6855548,
+            "weight": 0.87,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AMZN",
+            "name": "Amazon.com Inc",
+            "shares": 22,
+            "value_krw": 6837552,
+            "weight": 0.87,
+            "sector": "빅테크",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "LLY",
+            "name": "Eli Lilly & Co",
+            "shares": 5,
+            "value_krw": 6771295,
+            "weight": 0.86,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "FANG",
+            "name": "Diamondback Energy Inc",
+            "shares": 22,
+            "value_krw": 6501679,
+            "weight": 0.83,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "CRWD",
+            "name": "Crowdstrike Holdings Inc",
+            "shares": 11,
+            "value_krw": 6483038,
+            "weight": 0.82,
+            "sector": "소프트웨어",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AMAT",
+            "name": "Applied Materials Inc",
+            "shares": 11,
+            "value_krw": 6169600,
+            "weight": 0.78,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AAPL",
+            "name": "Apple Inc",
+            "shares": 16,
+            "value_krw": 6038152,
+            "weight": 0.77,
+            "sector": "빅테크",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "MSFT",
+            "name": "Microsoft Corp",
+            "shares": 6,
+            "value_krw": 3353989,
+            "weight": 0.43,
+            "sector": "빅테크",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          }
+        ],
+        "sectors": [
+          {
+            "sector": "반도체",
+            "weight": 28.59
+          },
+          {
+            "sector": "광통신",
+            "weight": 17.42
+          },
+          {
+            "sector": "스토리지",
+            "weight": 12.68
+          },
+          {
+            "sector": "에너지",
+            "weight": 10.79
+          },
+          {
+            "sector": "빅테크",
+            "weight": 9.09
+          },
+          {
+            "sector": "크립토",
+            "weight": 8.98
+          },
+          {
+            "sector": "우주/방산",
+            "weight": 4.39
+          },
+          {
+            "sector": "선물",
+            "weight": 2.77
+          },
+          {
+            "sector": "현금",
+            "weight": 2.33
+          },
+          {
+            "sector": "통신",
+            "weight": 1.29
+          },
+          {
+            "sector": "바이오",
+            "weight": 0.86
+          },
+          {
+            "sector": "소프트웨어",
+            "weight": 0.82
+          }
+        ],
+        "total_holdings": 43
+      }
+    ],
+    "history": {
+      "SNDK": [
+        {
+          "date": "2026-03-25",
+          "weight": 8.7,
+          "shares": 65
+        }
+      ],
+      "LITE": [
+        {
+          "date": "2026-03-25",
+          "weight": 5.96,
+          "shares": 39
+        }
+      ],
+      "NVDA": [
+        {
+          "date": "2026-03-25",
+          "weight": 5.88,
+          "shares": 176
+        }
+      ],
+      "CIEN": [
+        {
+          "date": "2026-03-25",
+          "weight": 5.81,
+          "shares": 71
+        }
+      ],
+      "GOOGL": [
+        {
+          "date": "2026-03-25",
+          "weight": 4.76,
+          "shares": 86
+        }
+      ],
+      "COIN": [
+        {
+          "date": "2026-03-25",
+          "weight": 4.45,
+          "shares": 129
+        }
+      ],
+      "BE": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.5,
+          "shares": 126
+        }
+      ],
+      "ASML": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.2,
+          "shares": 12
+        }
+      ],
+      "CRCL": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.97,
+          "shares": 154
+        }
+      ],
+      "MU": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.94,
+          "shares": 39
+        }
+      ],
+      "AXTI": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.83,
+          "shares": 217
+        }
+      ],
+      "TSM": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.81,
+          "shares": 43
+        }
+      ],
+      "LRCX": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.78,
+          "shares": 61
+        }
+      ],
+      "NQM6": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.77,
+          "shares": 0
+        }
+      ],
+      "SIMO": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.76,
+          "shares": 122
+        }
+      ],
+      "TSEM": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.69,
+          "shares": 78
+        }
+      ],
+      "VRT": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.43,
+          "shares": 47
+        }
+      ],
+      "CASH": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.33,
+          "shares": 0
+        }
+      ],
+      "GEV": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.25,
+          "shares": 13
+        }
+      ],
+      "GLW": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.14,
+          "shares": 79
+        }
+      ],
+      "WDC": [
+        {
+          "date": "2026-03-25",
+          "weight": 2.12,
+          "shares": 37
+        }
+      ],
+      "STX": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.86,
+          "shares": 23
+        }
+      ],
+      "ASTS": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.64,
+          "shares": 99
+        }
+      ],
+      "MSTR": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.56,
+          "shares": 60
+        }
+      ],
+      "FTAI": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.55,
+          "shares": 33
+        }
+      ],
+      "COHR": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.45,
+          "shares": 28
+        }
+      ],
+      "TMUS": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.29,
+          "shares": 32
+        }
+      ],
+      "TSLA": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.24,
+          "shares": 17
+        }
+      ],
+      "RKLB": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.2,
+          "shares": 95
+        }
+      ],
+      "AAOI": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.13,
+          "shares": 52
+        }
+      ],
+      "META": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.02,
+          "shares": 9
+        }
+      ],
+      "INTC": [
+        {
+          "date": "2026-03-25",
+          "weight": 1.01,
+          "shares": 120
+        }
+      ],
+      "IPGP": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.93,
+          "shares": 39
+        }
+      ],
+      "AVGO": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.91,
+          "shares": 15
+        }
+      ],
+      "UUUU": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.91,
+          "shares": 263
+        }
+      ],
+      "BKR": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.87,
+          "shares": 72
+        }
+      ],
+      "AMZN": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.87,
+          "shares": 22
+        }
+      ],
+      "LLY": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.86,
+          "shares": 5
+        }
+      ],
+      "FANG": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.83,
+          "shares": 22
+        }
+      ],
+      "CRWD": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.82,
+          "shares": 11
+        }
+      ],
+      "AMAT": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.78,
+          "shares": 11
+        }
+      ],
+      "AAPL": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.77,
+          "shares": 16
+        }
+      ],
+      "MSFT": [
+        {
+          "date": "2026-03-25",
+          "weight": 0.43,
+          "shares": 6
+        }
+      ]
+    }
+  },
+  "koact": {
+    "weeks": [
+      {
+        "date": "2026-03-25",
+        "etf": "KoAct",
+        "code": "0015B0",
+        "nav": null,
+        "aum_billion": null,
+        "holdings": [
+          {
+            "ticker": "SNDK",
+            "name": "Sandisk Corp/DE",
+            "shares": null,
+            "value_krw": null,
+            "weight": 7.38,
+            "sector": "스토리지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "LITE",
+            "name": "Lumentum Holdings Inc",
+            "shares": null,
+            "value_krw": null,
+            "weight": 7.23,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "CIEN",
+            "name": "Ciena Corp",
+            "shares": null,
+            "value_krw": null,
+            "weight": 5.2,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "COIN",
+            "name": "Coinbase Global Inc",
+            "shares": null,
+            "value_krw": null,
+            "weight": 4.31,
+            "sector": "크립토",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "CRCL",
+            "name": "Circle Internet Group Inc",
+            "shares": null,
+            "value_krw": null,
+            "weight": 3.96,
+            "sector": "크립토",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "MU",
+            "name": "Micron Technology Inc",
+            "shares": null,
+            "value_krw": null,
+            "weight": 3.92,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "BE",
+            "name": "Bloom Energy Corp",
+            "shares": null,
+            "value_krw": null,
+            "weight": 3.84,
+            "sector": "에너지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "AKAI",
+            "name": "Akamai Technologies Inc",
+            "shares": null,
+            "value_krw": null,
+            "weight": 3.46,
+            "sector": "소프트웨어",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "NVDA",
+            "name": "NVIDIA Corp",
+            "shares": null,
+            "value_krw": null,
+            "weight": 3.35,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          }
+        ],
+        "sectors": [
+          {
+            "sector": "광통신",
+            "weight": 12.43
+          },
+          {
+            "sector": "크립토",
+            "weight": 8.27
+          },
+          {
+            "sector": "스토리지",
+            "weight": 7.38
+          },
+          {
+            "sector": "반도체",
+            "weight": 7.27
+          },
+          {
+            "sector": "에너지",
+            "weight": 3.84
+          },
+          {
+            "sector": "소프트웨어",
+            "weight": 3.46
+          }
+        ],
+        "total_holdings": 9
+      }
+    ],
+    "history": {
+      "SNDK": [
+        {
+          "date": "2026-03-25",
+          "weight": 7.38,
+          "shares": null
+        }
+      ],
+      "LITE": [
+        {
+          "date": "2026-03-25",
+          "weight": 7.23,
+          "shares": null
+        }
+      ],
+      "CIEN": [
+        {
+          "date": "2026-03-25",
+          "weight": 5.2,
+          "shares": null
+        }
+      ],
+      "COIN": [
+        {
+          "date": "2026-03-25",
+          "weight": 4.31,
+          "shares": null
+        }
+      ],
+      "CRCL": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.96,
+          "shares": null
+        }
+      ],
+      "MU": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.92,
+          "shares": null
+        }
+      ],
+      "BE": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.84,
+          "shares": null
+        }
+      ],
+      "AKAI": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.46,
+          "shares": null
+        }
+      ],
+      "NVDA": [
+        {
+          "date": "2026-03-25",
+          "weight": 3.35,
+          "shares": null
+        }
+      ]
+    }
+  },
+  "overlap": [
+    {
+      "ticker": "SNDK",
+      "name": "Sandisk Corp/DE",
+      "sector": "스토리지",
+      "time_weight": 8.7,
+      "koact_weight": 7.38,
+      "both": true
+    },
+    {
+      "ticker": "LITE",
+      "name": "Lumentum Holdings Inc",
+      "sector": "광통신",
+      "time_weight": 5.96,
+      "koact_weight": 7.23,
+      "both": true
+    },
+    {
+      "ticker": "CIEN",
+      "name": "Ciena Corp",
+      "sector": "광통신",
+      "time_weight": 5.81,
+      "koact_weight": 5.2,
+      "both": true
+    },
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA Corp",
+      "sector": "반도체",
+      "time_weight": 5.88,
+      "koact_weight": 3.35,
+      "both": true
+    },
+    {
+      "ticker": "COIN",
+      "name": "Coinbase Global Inc",
+      "sector": "크립토",
+      "time_weight": 4.45,
+      "koact_weight": 4.31,
+      "both": true
+    },
+    {
+      "ticker": "BE",
+      "name": "Bloom Energy Corp",
+      "sector": "에너지",
+      "time_weight": 3.5,
+      "koact_weight": 3.84,
+      "both": true
+    },
+    {
+      "ticker": "CRCL",
+      "name": "Circle Internet Group Inc",
+      "sector": "크립토",
+      "time_weight": 2.97,
+      "koact_weight": 3.96,
+      "both": true
+    },
+    {
+      "ticker": "MU",
+      "name": "Micron Technology Inc",
+      "sector": "반도체",
+      "time_weight": 2.94,
+      "koact_weight": 3.92,
+      "both": true
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "Alphabet Inc",
+      "sector": "빅테크",
+      "time_weight": 4.76,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AKAI",
+      "name": "Akamai Technologies Inc",
+      "sector": "소프트웨어",
+      "time_weight": null,
+      "koact_weight": 3.46,
+      "both": false
+    },
+    {
+      "ticker": "ASML",
+      "name": "ASML Holding NV",
+      "sector": "반도체",
+      "time_weight": 3.2,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AXTI",
+      "name": "AXT Inc",
+      "sector": "반도체",
+      "time_weight": 2.83,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "TSM",
+      "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+      "sector": "반도체",
+      "time_weight": 2.81,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "LRCX",
+      "name": "Lam Research Corp",
+      "sector": "반도체",
+      "time_weight": 2.78,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "NQM6",
+      "name": "NASDAQ 100 E-MINI INDEX JUN 2026",
+      "sector": "선물",
+      "time_weight": 2.77,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "SIMO",
+      "name": "Silicon Motion Technology Corp",
+      "sector": "반도체",
+      "time_weight": 2.76,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "TSEM",
+      "name": "Tower Semiconductor Ltd",
+      "sector": "반도체",
+      "time_weight": 2.69,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "VRT",
+      "name": "Vertiv Holdings Co",
+      "sector": "에너지",
+      "time_weight": 2.43,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "CASH",
+      "name": "현금",
+      "sector": "현금",
+      "time_weight": 2.33,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "GEV",
+      "name": "GE Vernova Inc",
+      "sector": "에너지",
+      "time_weight": 2.25,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "GLW",
+      "name": "Corning Inc",
+      "sector": "광통신",
+      "time_weight": 2.14,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "WDC",
+      "name": "Western Digital Corp",
+      "sector": "스토리지",
+      "time_weight": 2.12,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "STX",
+      "name": "Seagate Technology Holdings PLC",
+      "sector": "스토리지",
+      "time_weight": 1.86,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "ASTS",
+      "name": "AST SpaceMobile Inc",
+      "sector": "우주/방산",
+      "time_weight": 1.64,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "MSTR",
+      "name": "Strategy Inc",
+      "sector": "크립토",
+      "time_weight": 1.56,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "FTAI",
+      "name": "FTAI Aviation Ltd",
+      "sector": "우주/방산",
+      "time_weight": 1.55,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "COHR",
+      "name": "Coherent Corp",
+      "sector": "광통신",
+      "time_weight": 1.45,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "TMUS",
+      "name": "T-Mobile US Inc",
+      "sector": "통신",
+      "time_weight": 1.29,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "TSLA",
+      "name": "Tesla Inc",
+      "sector": "빅테크",
+      "time_weight": 1.24,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "RKLB",
+      "name": "Rocket Lab Corp",
+      "sector": "우주/방산",
+      "time_weight": 1.2,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AAOI",
+      "name": "Applied Optoelectronics Inc",
+      "sector": "광통신",
+      "time_weight": 1.13,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "META",
+      "name": "Meta Platforms Inc",
+      "sector": "빅테크",
+      "time_weight": 1.02,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "INTC",
+      "name": "Intel Corp",
+      "sector": "반도체",
+      "time_weight": 1.01,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "IPGP",
+      "name": "IPG Photonics Corp",
+      "sector": "광통신",
+      "time_weight": 0.93,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AVGO",
+      "name": "Broadcom Inc",
+      "sector": "반도체",
+      "time_weight": 0.91,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "UUUU",
+      "name": "Energy Fuels Inc/Canada",
+      "sector": "에너지",
+      "time_weight": 0.91,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AMZN",
+      "name": "Amazon.com Inc",
+      "sector": "빅테크",
+      "time_weight": 0.87,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "BKR",
+      "name": "Baker Hughes Co",
+      "sector": "에너지",
+      "time_weight": 0.87,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "LLY",
+      "name": "Eli Lilly & Co",
+      "sector": "바이오",
+      "time_weight": 0.86,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "FANG",
+      "name": "Diamondback Energy Inc",
+      "sector": "에너지",
+      "time_weight": 0.83,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "CRWD",
+      "name": "Crowdstrike Holdings Inc",
+      "sector": "소프트웨어",
+      "time_weight": 0.82,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AMAT",
+      "name": "Applied Materials Inc",
+      "sector": "반도체",
+      "time_weight": 0.78,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple Inc",
+      "sector": "빅테크",
+      "time_weight": 0.77,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft Corp",
+      "sector": "빅테크",
+      "time_weight": 0.43,
+      "koact_weight": null,
+      "both": false
+    }
+  ]
+}
