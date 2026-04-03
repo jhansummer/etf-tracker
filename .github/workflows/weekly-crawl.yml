@@ -19,8 +19,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Crawl TIME ETF
-        run: python scripts/crawl.py $(date +%F) time
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install chromium --with-deps
+
+      - name: Crawl TIME + KoAct
+        run: python scripts/crawl.py $(date +%F)
 
       - name: Commit & Push
         run: |
@@ -30,6 +35,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "weekly update $(date +%F): TIME auto-crawl"
+            git commit -m "weekly update $(date +%F): auto-crawl"
             git push
           fi

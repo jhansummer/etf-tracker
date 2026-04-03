@@ -170,206 +170,118 @@ def crawl_time(date_str):
 
 
 # ══════════════════════════════════════════════
-#  KoAct ETF — KRX API 크롤링
+#  KoAct ETF — Playwright (samsungactive.co.kr)
 # ══════════════════════════════════════════════
 
-KRX_OTP_URL = "http://data.krx.co.kr/comm/fileDn/GenerateOTP/generate.cmd"
-KRX_DOWNLOAD_URL = "http://data.krx.co.kr/comm/fileDn/download_csv/download.cmd"
-KOACT_ISIN = "KR7458360004"  # KoAct 미국나스닥성장기업액티브
-KOACT_SHORT_CODE = "458360"
+KOACT_URL = "https://www.samsungactive.co.kr/etf/view.do?id=2ETFQ1"
 
 
-def crawl_koact_krx(date_str):
-    """KRX PDF(포트폴리오 구성종목) 데이터 가져오기"""
-    print("[KoAct] KRX API 크롤링 중...")
-
-    trd_dd = date_str.replace("-", "")
-
-    # OTP 발급
-    otp_params = {
-        "locale": "ko_KR",
-        "isuCd": KOACT_ISIN,
-        "isuCd2": KOACT_ISIN,
-        "strtDd": trd_dd,
-        "endDd": trd_dd,
-        "share": "1",
-        "money": "1",
-        "csvxls_isNo": "false",
-        "name": "fileDown",
-        "url": "dbms/MDC/STAT/standard/MDCSTAT05901",
-    }
+def crawl_koact(date_str):
+    """Playwright로 samsungactive.co.kr 구성종목(PDF) 테이블 크롤링"""
+    print("[KoAct] samsungactive.co.kr Playwright 크롤링 중...")
 
     try:
-        otp = fetch_url(KRX_OTP_URL, data=otp_params, extra_headers={
-            "Referer": "http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd?menuId=MDC0201030105",
-        }).decode("utf-8")
-    except Exception as e:
-        print(f"[KoAct] KRX OTP 발급 실패: {e}")
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        print("[KoAct] playwright 미설치: pip install playwright && playwright install chromium")
         return None
-
-    # CSV 다운로드
-    _time.sleep(1)
-    try:
-        csv_data = fetch_url(KRX_DOWNLOAD_URL, data={"code": otp}, extra_headers={
-            "Referer": "http://data.krx.co.kr/",
-        }).decode("utf-8-sig")
-    except Exception as e:
-        print(f"[KoAct] KRX 데이터 다운로드 실패: {e}")
-        return None
-
-    if not csv_data or "구성종목" not in csv_data and len(csv_data) < 100:
-        print(f"[KoAct] KRX 응답이 비정상적입니다 (길이: {len(csv_data)})")
-        print(f"  응답 시작: {csv_data[:200]}")
-        return None
-
-    return parse_koact_csv(csv_data, date_str)
-
-
-def crawl_koact_samsungactive(date_str):
-    """samsungactive.co.kr에서 크롤링 시도 (fallback)"""
-    print("[KoAct] samsungactive.co.kr 크롤링 시도...")
-    url = "https://www.samsungactive.co.kr/etf/view.do?id=2ETFQ1"
 
     try:
-        html = fetch_url(url).decode("utf-8", errors="replace")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(KOACT_URL, timeout=30000)
+            page.wait_for_load_state("networkidle", timeout=15000)
+
+            # '구성종목(PDF)' 탭 클릭
+            page.get_by_role("link", name="구성종목(PDF)").click()
+            page.wait_for_timeout(2000)
+            page.wait_for_load_state("networkidle", timeout=10000)
+
+            # '더보기' 버튼 반복 클릭해서 전체 종목 로드
+            for _ in range(10):
+                btns = page.locator('button:has-text("더보기")')
+                clicked = False
+                for j in range(btns.count()):
+                    btn = btns.nth(j)
+                    if btn.is_visible() and "/" in (btn.text_content() or ""):
+                        btn.click()
+                        page.wait_for_timeout(1000)
+                        clicked = True
+                        break
+                if not clicked:
+                    break
+
+            html = page.content()
+            browser.close()
     except Exception as e:
-        print(f"[KoAct] samsungactive 접속 실패: {e}")
+        print(f"[KoAct] Playwright 크롤링 실패: {e}")
         return None
 
-    # JSON 데이터가 페이지에 임베딩되어 있는지 확인
-    # 일반적으로 SPA는 __NEXT_DATA__ 또는 유사한 스크립트 태그에 데이터를 넣음
-    json_match = re.search(r'<script[^>]*id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
-    if json_match:
-        try:
-            next_data = json.loads(json_match.group(1))
-            print("[KoAct] __NEXT_DATA__ 발견, 파싱 시도...")
-            return parse_samsungactive_nextdata(next_data, date_str)
-        except json.JSONDecodeError:
-            pass
+    # 가장 큰 테이블 (종목명+종목코드+비중 포함) 파싱
+    # 컬럼: 종목명, 종목코드, 수량, 비중(%), 평가금액(원), 현재가, 등락(원)
+    tables = re.findall(r"<table[^>]*>(.*?)</table>", html, re.DOTALL)
+    holdings_table = None
+    max_rows = 0
+    for t in tables:
+        if "종목코드" in t and "비중" in t:
+            row_count = len(re.findall(r"<tr", t))
+            if row_count > max_rows:
+                max_rows = row_count
+                holdings_table = t
 
-    # API 엔드포인트 패턴 탐색
-    api_matches = re.findall(r'["\'](/api/[^"\']+)["\']', html)
-    if api_matches:
-        print(f"[KoAct] API 엔드포인트 발견: {api_matches}")
-
-    print("[KoAct] samsungactive.co.kr에서 구성종목 데이터를 찾지 못했습니다.")
-    return None
-
-
-def parse_samsungactive_nextdata(data, date_str):
-    """Next.js __NEXT_DATA__에서 종목 데이터 추출"""
-    # 구조를 탐색하여 holdings 데이터를 찾음
-    def find_holdings(obj, depth=0):
-        if depth > 10:
-            return None
-        if isinstance(obj, list):
-            # 리스트의 아이템이 종목 데이터인지 확인
-            if len(obj) > 0 and isinstance(obj[0], dict):
-                keys = set(obj[0].keys())
-                # 비중/weight 관련 키가 있으면 holdings일 가능성
-                if keys & {"weight", "비중", "ratio", "percent", "wght"}:
-                    return obj
-            for item in obj:
-                result = find_holdings(item, depth + 1)
-                if result:
-                    return result
-        elif isinstance(obj, dict):
-            for v in obj.values():
-                result = find_holdings(v, depth + 1)
-                if result:
-                    return result
+    if not holdings_table:
+        print("[KoAct] 구성종목 테이블을 찾지 못했습니다.")
         return None
 
-    holdings_raw = find_holdings(data)
-    if not holdings_raw:
-        return None
-
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", holdings_table, re.DOTALL)
     sector_map = load_sector_map()
     holdings = []
-    for item in holdings_raw:
-        ticker = item.get("ticker") or item.get("종목코드") or item.get("code") or ""
-        name = item.get("name") or item.get("종목명") or ""
-        weight = item.get("weight") or item.get("비중") or item.get("ratio") or 0
-        if isinstance(weight, str):
-            weight = parse_float_str(weight)
+
+    for row_html in rows:
+        cells = re.findall(r"<td[^>]*>(.*?)</td>", row_html, re.DOTALL)
+        cells = [strip_html(c) for c in cells]
+        if len(cells) < 4:
+            continue
+
+        # 컬럼: 종목명, 종목코드, 수량, 비중(%), 평가금액(원), ...
+        name = cells[0]
+        raw_code = cells[1]   # "ARM US Equity" 또는 "CASH00000001"
+        shares = parse_number_str(cells[2])
+        weight = parse_float_str(cells[3])
+        value_krw = parse_number_str(cells[4]) if len(cells) > 4 else None
+
+        if not name or not raw_code:
+            continue
+
+        # 현금/원화 건너뛰기
+        if "CASH" in raw_code or "KRD" in raw_code or "설정현금" in name or "원화현금" in name:
+            continue
+        # 비중 없는 행 건너뛰기
+        if weight is None or weight == 0:
+            continue
+
+        # "ARM US Equity" → "ARM"
+        ticker = raw_code.split()[0] if " " in raw_code else raw_code
+
         sector = sector_map.get(ticker, "미분류")
         holdings.append({
-            "ticker": ticker, "name": name,
-            "shares": None, "value_krw": None,
-            "weight": round(float(weight), 2) if weight else None,
+            "ticker": ticker,
+            "name": name,
+            "shares": shares,
+            "value_krw": value_krw,
+            "weight": weight,
             "sector": sector,
         })
-        if ticker and ticker not in sector_map:
+        if ticker not in sector_map:
             sector_map[ticker] = "미분류"
 
-    if holdings:
-        save_sector_map(sector_map)
-    return build_koact_snapshot(holdings, date_str)
-
-
-def parse_koact_csv(csv_data, date_str):
-    """KRX CSV 데이터에서 KoAct 종목 파싱"""
-    import csv, io
-
-    reader = csv.reader(io.StringIO(csv_data))
-    header = next(reader, None)
-    if not header:
-        print("[KoAct] CSV 헤더가 없습니다.")
-        return None
-
-    # 컬럼 인덱스 찾기
-    col_map = {}
-    for i, h in enumerate(header):
-        h = h.strip()
-        if "종목코드" in h or "종목" in h and "코드" in h:
-            col_map["ticker"] = i
-        elif "종목명" in h:
-            col_map["name"] = i
-        elif "비중" in h:
-            col_map["weight"] = i
-        elif "수량" in h:
-            col_map["shares"] = i
-        elif "평가금액" in h or "금액" in h:
-            col_map["value"] = i
-
-    print(f"[KoAct] CSV 헤더: {header}")
-    print(f"[KoAct] 컬럼 매핑: {col_map}")
-
-    sector_map = load_sector_map()
-    holdings = []
-
-    for row in reader:
-        if not row or len(row) < 3:
-            continue
-        ticker = row[col_map.get("ticker", 0)].strip() if "ticker" in col_map else ""
-        name = row[col_map.get("name", 1)].strip() if "name" in col_map else ""
-        weight = parse_float_str(row[col_map.get("weight", -1)]) if "weight" in col_map else None
-        shares = parse_number_str(row[col_map.get("shares", -1)]) if "shares" in col_map else None
-        value_krw = parse_number_str(row[col_map.get("value", -1)]) if "value" in col_map else None
-
-        if not name:
-            continue
-
-        # KRX에서 가져온 데이터는 종목명이 한글일 수 있음 → 티커 매핑 필요
-        # 미국 종목은 종목코드가 ISIN 형태일 수 있음
-        sector = sector_map.get(ticker, "미분류")
-        holdings.append({
-            "ticker": ticker, "name": name,
-            "shares": shares, "value_krw": value_krw,
-            "weight": weight, "sector": sector,
-        })
-        if ticker and ticker not in sector_map:
-            sector_map[ticker] = "미분류"
-
-    if holdings:
-        save_sector_map(sector_map)
-
-    return build_koact_snapshot(holdings, date_str)
-
-
-def build_koact_snapshot(holdings, date_str):
     if not holdings:
+        print("[KoAct] 종목 데이터를 파싱하지 못했습니다.")
         return None
+
+    save_sector_map(sector_map)
+
     snapshot = {
         "etf": "KoAct",
         "code": "0015B0",
@@ -378,27 +290,16 @@ def build_koact_snapshot(holdings, date_str):
         "aum_billion": None,
         "holdings": holdings,
     }
+
     out_path = DATA / f"koact_{date_str}.json"
     out_path.write_text(
         json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(f"[KoAct] 저장: {out_path} ({len(holdings)}종목)")
-    unmapped = [h["ticker"] for h in holdings if h.get("sector") == "미분류"]
+    unmapped = [h["ticker"] for h in holdings if h["sector"] == "미분류"]
     if unmapped:
-        print(f"[KoAct] 미분류 섹터: {', '.join(unmapped[:10])}")
+        print(f"[KoAct] 미분류 섹터: {', '.join(unmapped)}")
     return snapshot
-
-
-def crawl_koact(date_str):
-    """KoAct 크롤링 (KRX 우선, samsungactive fallback)"""
-    result = crawl_koact_krx(date_str)
-    if result:
-        return result
-    result = crawl_koact_samsungactive(date_str)
-    if result:
-        return result
-    print("[KoAct] 모든 크롤링 방법 실패. 수동 입력이 필요합니다.")
-    return None
 
 
 # ══════════════════════════════════════════════
