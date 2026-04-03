@@ -1,10 +1,10 @@
-name: Weekly ETF Crawl
+name: Daily ETF Crawl
 
 on:
   schedule:
-    # 매주 금요일 오후 6시 (KST) = 금요일 09:00 UTC
-    - cron: '0 9 * * 5'
-  workflow_dispatch: # 수동 실행도 가능
+    # 매일 오후 6시 (KST) = 09:00 UTC, 주말 제외는 불가하므로 스크립트에서 처리
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   crawl:
@@ -35,6 +35,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "weekly update $(date +%F): auto-crawl"
+            git commit -m "daily update $(date +%F): auto-crawl"
             git push
           fi

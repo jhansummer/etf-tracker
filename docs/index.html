@@ -409,55 +409,83 @@ function renderCompareSectors(el){
 
 /* ── Signals Tab ── */
 function renderSignals(el){
-  // Combine both ETFs
-  var signals = [];
+  var idx = activeWeekIdx;
+
+  // 각 ETF에서 선택된 날짜의 시그널 수집
+  var etfSignals = {};
+  var selectedDate = "";
   ["time","koact"].forEach(function(key){
     var weeks = DATA[key].weeks;
     if (!weeks.length) return;
-    var idx = Math.min(activeWeekIdx, weeks.length - 1);
-    var week = weeks[idx];
+    var wi = Math.min(idx, weeks.length - 1);
+    var week = weeks[wi];
+    if (!selectedDate) selectedDate = week.date;
+    var sigs = [];
     week.holdings.forEach(function(h){
       if (h.signal && h.signal !== "hold" && h.signal !== "price_effect"){
-        signals.push(Object.assign({}, h, {etf: week.etf}));
+        sigs.push(h);
       }
     });
+    etfSignals[week.etf] = sigs;
   });
 
-  // Summary cards
+  // 전체 카운트
   var counts = {buy:0, sell:0, new:0, removed:0};
-  signals.forEach(function(s){ if (counts[s.signal] !== undefined) counts[s.signal]++; });
+  Object.keys(etfSignals).forEach(function(etf){
+    etfSignals[etf].forEach(function(s){ if (counts[s.signal] !== undefined) counts[s.signal]++; });
+  });
 
-  var html = '<div class="sig-summary">';
+  var html = '<div style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600">'
+    + selectedDate + ' 일간 매매 시그널</div>';
+
+  // Summary cards
+  html += '<div class="sig-summary">';
   [{k:"new",l:"신규편입",e:"\uD83D\uDFE3"},{k:"buy",l:"매수",e:"\uD83D\uDFE2"},{k:"sell",l:"매도",e:"\uD83D\uDD34"},{k:"removed",l:"제외",e:"\u26AB"}].forEach(function(item){
     html += '<div class="sig-card ' + item.k + '"><div class="label">' + item.e + ' ' + item.l + '</div><div class="count">' + counts[item.k] + '</div></div>';
   });
   html += '</div>';
 
-  if (signals.length === 0){
-    html += '<div class="empty">이번 주 매매 시그널이 없습니다.</div>';
+  var totalSignals = counts.buy + counts.sell + counts.new + counts.removed;
+  if (totalSignals === 0){
+    html += '<div class="empty">매매 시그널이 없습니다. (수량 변화 3% 이내)</div>';
     el.innerHTML = html;
     return;
   }
 
-  html += '<table class="tbl"><thead><tr>'
-    + '<th>ETF</th><th>티커</th><th>종목명</th><th>섹터</th>'
-    + '<th class="r">비중%</th><th class="r">변화</th><th>구분</th>'
-    + '</tr></thead><tbody>';
+  // ETF별 분리 렌더
+  ["TIME","KoAct"].forEach(function(etf){
+    var sigs = etfSignals[etf];
+    if (!sigs || !sigs.length) return;
 
-  signals.forEach(function(h){
-    var sig = SIGNAL_LABELS[h.signal] || SIGNAL_LABELS.hold;
-    var wchg = h.weight_chg != null ? (h.weight_chg > 0 ? "+" : "") + h.weight_chg.toFixed(2) : "-";
-    html += '<tr>'
-      + '<td style="font-weight:600">' + h.etf + '</td>'
-      + '<td class="ticker">' + h.ticker + '</td>'
-      + '<td>' + h.name + '</td>'
-      + '<td style="color:var(--muted)">' + (h.sector || "") + '</td>'
-      + '<td class="r" style="font-weight:700">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
-      + '<td class="r">' + wchg + '</td>'
-      + '<td><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
-      + '</tr>';
+    // 시그널 순서: 신규 → 매수 → 매도 → 제외
+    var order = {new:0, buy:1, sell:2, removed:3};
+    sigs.sort(function(a,b){ return (order[a.signal]||9) - (order[b.signal]||9) || (b.weight||0) - (a.weight||0); });
+
+    html += '<h3 style="font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--ink)">' + etf + '</h3>';
+    html += '<table class="tbl"><thead><tr>'
+      + '<th>구분</th><th>티커</th><th>종목명</th><th>섹터</th>'
+      + '<th class="r">비중%</th><th class="r">수량변화</th><th class="r">비중변화</th>'
+      + '</tr></thead><tbody>';
+
+    sigs.forEach(function(h){
+      var sig = SIGNAL_LABELS[h.signal] || SIGNAL_LABELS.hold;
+      var wchg = h.weight_chg != null ? (h.weight_chg > 0 ? "+" : "") + h.weight_chg.toFixed(2) : "-";
+      var wchgColor = h.weight_chg > 0 ? "var(--up)" : h.weight_chg < 0 ? "var(--down)" : "var(--muted)";
+      var schg = h.shares_chg_pct != null ? (h.shares_chg_pct > 0 ? "+" : "") + h.shares_chg_pct.toFixed(1) + "%" : "-";
+      var schgColor = h.shares_chg_pct > 0 ? "var(--up)" : h.shares_chg_pct < 0 ? "var(--down)" : "var(--muted)";
+      html += '<tr>'
+        + '<td><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
+        + '<td class="ticker">' + h.ticker + '</td>'
+        + '<td>' + h.name + '</td>'
+        + '<td style="color:var(--muted)">' + (h.sector || "") + '</td>'
+        + '<td class="r" style="font-weight:700">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
+        + '<td class="r" style="color:' + schgColor + '">' + schg + '</td>'
+        + '<td class="r" style="color:' + wchgColor + '">' + wchg + '</td>'
+        + '</tr>';
+    });
+    html += '</tbody></table>';
   });
-  html += '</tbody></table>';
+
   el.innerHTML = html;
 }
 
