@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>ETF Portfolio Tracker</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -310,10 +311,21 @@ function renderSectorView(el, week, key){
           borderWidth: 0,
         }]
       },
+      plugins: [ChartDataLabels],
       options: {
         responsive: true,
         plugins: {
-          legend: { position: "bottom", labels: { color: "#8b8fa3", font: {size: 11}, padding: 12 } }
+          legend: { position: "bottom", labels: { color: "#8b8fa3", font: {size: 11}, padding: 12 } },
+          datalabels: {
+            color: "#fff",
+            font: { size: 11, weight: "bold" },
+            formatter: function(value, ctx) {
+              var label = ctx.chart.data.labels[ctx.dataIndex];
+              if (value < 2) return "";
+              return label + "\n" + value.toFixed(1) + "%";
+            },
+            textAlign: "center",
+          }
         }
       }
     });
