@@ -20,12 +20,12 @@ OUT = ROOT / "docs" / "data" / "combined.json"
 SHARE_THRESHOLD = 0.03  # 3%
 
 def load_snapshots():
-    """data/ 에서 time_*.json, koact_*.json 로드"""
-    snapshots = {"time": [], "koact": []}
+    """data/ 에서 time_*.json, koact_*.json, kosdaq_*.json 로드"""
+    snapshots = {"time": [], "koact": [], "kosdaq": []}
     for f in sorted(DATA.glob("*.json")):
         if f.name == "sector_map.json":
             continue
-        m = re.match(r"(time|koact)_(\d{4}-\d{2}-\d{2})\.json", f.name)
+        m = re.match(r"(time|koact|kosdaq)_(\d{4}-\d{2}-\d{2})\.json", f.name)
         if not m:
             continue
         key = m.group(1)
@@ -188,29 +188,30 @@ def build_overlap(time_weeks, koact_weeks):
 def main():
     snapshots = load_snapshots()
 
-    time_weeks = build_etf_data(snapshots["time"])
-    koact_weeks = build_etf_data(snapshots["koact"])
+    etf_keys = ["time", "koact", "kosdaq"]
+    all_weeks = {}
+    all_history = {}
+    dates = []
 
-    time_history = build_ticker_history(time_weeks, "time")
-    koact_history = build_ticker_history(koact_weeks, "koact")
+    for key in etf_keys:
+        weeks = build_etf_data(snapshots[key])
+        all_weeks[key] = weeks
+        all_history[key] = build_ticker_history(weeks, key)
+        if weeks:
+            dates.append(weeks[-1]["date"])
 
-    overlap = build_overlap(time_weeks, koact_weeks)
+    overlap = build_overlap(all_weeks.get("time", []), all_weeks.get("koact", []))
 
     combined = {
-        "generated": max(
-            (time_weeks[-1]["date"] if time_weeks else ""),
-            (koact_weeks[-1]["date"] if koact_weeks else ""),
-        ),
-        "time": {
-            "weeks": time_weeks,
-            "history": time_history,
-        },
-        "koact": {
-            "weeks": koact_weeks,
-            "history": koact_history,
-        },
-        "overlap": overlap,
+        "generated": max(dates) if dates else "",
+        "etf_keys": etf_keys,
     }
+    for key in etf_keys:
+        combined[key] = {
+            "weeks": all_weeks[key],
+            "history": all_history[key],
+        }
+    combined["overlap"] = overlap
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
@@ -218,13 +219,14 @@ def main():
         encoding="utf-8",
     )
     print(f"빌드 완료: {OUT}")
-    print(f"TIME: {len(time_weeks)}주, KoAct: {len(koact_weeks)}주")
-    if time_weeks:
-        latest = time_weeks[-1]
-        signals = defaultdict(int)
-        for h in latest["holdings"]:
-            signals[h["signal"]] += 1
-        print(f"TIME 최신({latest['date']}): {dict(signals)}")
+    for key in etf_keys:
+        w = all_weeks[key]
+        if w:
+            latest = w[-1]
+            signals = defaultdict(int)
+            for h in latest["holdings"]:
+                signals[h["signal"]] += 1
+            print(f"{latest['etf']} ({latest['date']}): {len(w)}일, {dict(signals)}")
 
 if __name__ == "__main__":
     main()

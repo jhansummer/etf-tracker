@@ -170,27 +170,40 @@ def crawl_time(date_str):
 
 
 # ══════════════════════════════════════════════
-#  KoAct ETF — Playwright (samsungactive.co.kr)
+#  삼성액티브 ETF — Playwright (samsungactive.co.kr)
 # ══════════════════════════════════════════════
 
-KOACT_URL = "https://www.samsungactive.co.kr/etf/view.do?id=2ETFQ1"
+SAMSUNG_ETFS = {
+    "koact": {
+        "etf": "KoAct", "code": "0015B0",
+        "url": "https://www.samsungactive.co.kr/etf/view.do?id=2ETFQ1",
+        "file_prefix": "koact",
+    },
+    "kosdaq": {
+        "etf": "코스닥", "code": "0163Y0",
+        "url": "https://www.samsungactive.co.kr/etf/view.do?id=2ETFU6",
+        "file_prefix": "kosdaq",
+    },
+}
 
 
-def crawl_koact(date_str):
+def crawl_samsung(date_str, key="koact"):
     """Playwright로 samsungactive.co.kr 구성종목(PDF) 테이블 크롤링"""
-    print("[KoAct] samsungactive.co.kr Playwright 크롤링 중...")
+    meta = SAMSUNG_ETFS[key]
+    label = meta["etf"]
+    print(f"[{label}] samsungactive.co.kr Playwright 크롤링 중...")
 
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        print("[KoAct] playwright 미설치: pip install playwright && playwright install chromium")
+        print(f"[{label}] playwright 미설치: pip install playwright && playwright install chromium")
         return None
 
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.goto(KOACT_URL, timeout=30000)
+            page.goto(meta["url"], timeout=30000)
             page.wait_for_load_state("networkidle", timeout=15000)
 
             # '구성종목(PDF)' 탭 클릭
@@ -215,11 +228,10 @@ def crawl_koact(date_str):
             html = page.content()
             browser.close()
     except Exception as e:
-        print(f"[KoAct] Playwright 크롤링 실패: {e}")
+        print(f"[{label}] Playwright 크롤링 실패: {e}")
         return None
 
     # 가장 큰 테이블 (종목명+종목코드+비중 포함) 파싱
-    # 컬럼: 종목명, 종목코드, 수량, 비중(%), 평가금액(원), 현재가, 등락(원)
     tables = re.findall(r"<table[^>]*>(.*?)</table>", html, re.DOTALL)
     holdings_table = None
     max_rows = 0
@@ -231,7 +243,7 @@ def crawl_koact(date_str):
                 holdings_table = t
 
     if not holdings_table:
-        print("[KoAct] 구성종목 테이블을 찾지 못했습니다.")
+        print(f"[{label}] 구성종목 테이블을 찾지 못했습니다.")
         return None
 
     rows = re.findall(r"<tr[^>]*>(.*?)</tr>", holdings_table, re.DOTALL)
@@ -261,7 +273,7 @@ def crawl_koact(date_str):
         if weight is None or weight == 0:
             continue
 
-        # "ARM US Equity" → "ARM"
+        # "ARM US Equity" → "ARM", 한국종목 "A005930" 그대로
         ticker = raw_code.split()[0] if " " in raw_code else raw_code
 
         sector = sector_map.get(ticker, "미분류")
@@ -277,28 +289,28 @@ def crawl_koact(date_str):
             sector_map[ticker] = "미분류"
 
     if not holdings:
-        print("[KoAct] 종목 데이터를 파싱하지 못했습니다.")
+        print(f"[{label}] 종목 데이터를 파싱하지 못했습니다.")
         return None
 
     save_sector_map(sector_map)
 
     snapshot = {
-        "etf": "KoAct",
-        "code": "0015B0",
+        "etf": meta["etf"],
+        "code": meta["code"],
         "date": date_str,
         "nav": None,
         "aum_billion": None,
         "holdings": holdings,
     }
 
-    out_path = DATA / f"koact_{date_str}.json"
+    out_path = DATA / f"{meta['file_prefix']}_{date_str}.json"
     out_path.write_text(
         json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"[KoAct] 저장: {out_path} ({len(holdings)}종목)")
+    print(f"[{label}] 저장: {out_path} ({len(holdings)}종목)")
     unmapped = [h["ticker"] for h in holdings if h["sector"] == "미분류"]
     if unmapped:
-        print(f"[KoAct] 미분류 섹터: {', '.join(unmapped)}")
+        print(f"[{label}] 미분류 섹터: {', '.join(unmapped)}")
     return snapshot
 
 
@@ -318,7 +330,11 @@ def main():
         print()
 
     if target in ("all", "koact"):
-        crawl_koact(date_str)
+        crawl_samsung(date_str, "koact")
+        print()
+
+    if target in ("all", "kosdaq"):
+        crawl_samsung(date_str, "kosdaq")
         print()
 
     # 자동 빌드

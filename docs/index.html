@@ -76,11 +76,13 @@ a{color:var(--accent2);text-decoration:none}
 .cmp-bar{height:100%;border-radius:3px;min-width:1px;transition:width .3s}
 .cmp-bar.time{background:var(--accent)}
 .cmp-bar.koact{background:var(--new)}
-.cmp-val{font-size:10px;color:var(--muted);width:40px;text-align:right;flex-shrink:0}
+.cmp-bar.kosdaq{background:#14b8a6}
+.cmp-val{font-size:10px;color:var(--muted);width:60px;text-align:right;flex-shrink:0}
 .cmp-legend{display:flex;gap:16px;margin-bottom:12px;font-size:11px;color:var(--muted)}
 .cmp-legend span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
 .cmp-legend .l-time::before{background:var(--accent)}
 .cmp-legend .l-koact::before{background:var(--new)}
+.cmp-legend .l-kosdaq::before{background:#14b8a6}
 
 /* Overlap badge */
 .overlap-badge{font-size:9px;padding:1px 6px;border-radius:4px;background:rgba(99,102,241,0.2);color:var(--accent2);margin-left:4px;font-weight:600}
@@ -116,12 +118,13 @@ a{color:var(--accent2);text-decoration:none}
 
 <div class="header">
   <h1>ETF Portfolio Tracker<span>Active ETF Weekly Monitor</span></h1>
-  <div class="header-sub">TIME 미국나스닥100액티브 &middot; KoAct 미국나스닥성장기업액티브</div>
+  <div class="header-sub">TIME 미국나스닥100액티브 &middot; KoAct 미국나스닥성장기업액티브 &middot; KoAct 코스닥액티브</div>
 </div>
 
 <nav class="tabs" id="tabs">
   <button class="tab active" data-tab="time">TIME</button>
   <button class="tab" data-tab="koact">KoAct</button>
+  <button class="tab" data-tab="kosdaq">코스닥</button>
   <button class="tab" data-tab="compare">비교</button>
   <button class="tab" data-tab="signals">시그널</button>
   <button class="tab" data-tab="history">히스토리</button>
@@ -194,13 +197,14 @@ document.getElementById("week-select").addEventListener("change", function(){
 function updateUIVisibility(){
   var wb = document.getElementById("week-bar");
   var st = document.getElementById("sub-tabs");
+  var isETF = (activeTab === "time" || activeTab === "koact" || activeTab === "kosdaq");
   if (activeTab === "compare" || activeTab === "history") {
     wb.style.display = "none";
     st.style.display = activeTab === "compare" ? "flex" : "none";
   } else if (activeTab === "signals") {
     wb.style.display = "flex";
     st.style.display = "none";
-  } else {
+  } else if (isETF) {
     wb.style.display = "flex";
     st.style.display = "flex";
   }
@@ -208,7 +212,11 @@ function updateUIVisibility(){
 
 function initWeekSelect(){
   var sel = document.getElementById("week-select");
-  var weeks = (DATA.time.weeks.length > 0) ? DATA.time.weeks : DATA.koact.weeks;
+  // 가장 긴 weeks 배열 사용
+  var weeks = DATA.time.weeks;
+  ["koact","kosdaq"].forEach(function(k){
+    if (DATA[k] && DATA[k].weeks.length > weeks.length) weeks = DATA[k].weeks;
+  });
   sel.innerHTML = "";
   weeks.forEach(function(w, i){
     var opt = document.createElement("option");
@@ -224,7 +232,7 @@ function initWeekSelect(){
 function render(){
   var el = document.getElementById("content");
   if (!DATA) return;
-  if (activeTab === "time" || activeTab === "koact") renderETF(el, activeTab);
+  if (activeTab === "time" || activeTab === "koact" || activeTab === "kosdaq") renderETF(el, activeTab);
   else if (activeTab === "compare") renderCompare(el);
   else if (activeTab === "signals") renderSignals(el);
   else if (activeTab === "history") renderHistory(el);
@@ -339,26 +347,44 @@ function renderCompare(el){
     return;
   }
 
-  var overlap = DATA.overlap || [];
-  if (activeView === "top10") overlap = overlap.slice(0, 10);
+  // 3 ETF 최신 주의 전체 종목 비교
+  var allMap = {};
+  ["time","koact","kosdaq"].forEach(function(key){
+    if (!DATA[key]) return;
+    var weeks = DATA[key].weeks;
+    if (!weeks.length) return;
+    var latest = weeks[weeks.length - 1];
+    latest.holdings.forEach(function(h){
+      if (h.signal === "removed") return;
+      if (!allMap[h.ticker]) allMap[h.ticker] = {ticker: h.ticker, name: h.name, sector: h.sector || "미분류", time: 0, koact: 0, kosdaq: 0, count: 0};
+      allMap[h.ticker][key] = h.weight || 0;
+    });
+  });
+  var items = Object.values(allMap);
+  // 공통 여부 체크 (2개 이상 ETF에 포함)
+  items.forEach(function(o){
+    o.count = (o.time > 0 ? 1 : 0) + (o.koact > 0 ? 1 : 0) + (o.kosdaq > 0 ? 1 : 0);
+  });
+  items.sort(function(a,b){ return (b.time + b.koact + b.kosdaq) - (a.time + a.koact + a.kosdaq); });
+  if (activeView === "top10") items = items.slice(0, 10);
+
   var maxW = 0;
-  overlap.forEach(function(o){ maxW = Math.max(maxW, o.time_weight || 0, o.koact_weight || 0); });
+  items.forEach(function(o){ maxW = Math.max(maxW, o.time, o.koact, o.kosdaq); });
   if (maxW === 0) maxW = 1;
 
-  var html = '<div class="cmp-legend"><span class="l-time">TIME</span><span class="l-koact">KoAct</span></div>';
+  var html = '<div class="cmp-legend"><span class="l-time">TIME</span><span class="l-koact">KoAct</span><span class="l-kosdaq">코스닥</span></div>';
 
-  overlap.forEach(function(o){
-    var tw = o.time_weight || 0;
-    var kw = o.koact_weight || 0;
-    var bothBadge = o.both ? '<span class="overlap-badge">공통</span>' : '';
+  items.forEach(function(o){
+    var bothBadge = o.count >= 2 ? '<span class="overlap-badge">공통</span>' : '';
     html += '<div class="cmp-row">'
       + '<div class="cmp-ticker">' + o.ticker + '</div>'
       + '<div class="cmp-name">' + o.name + bothBadge + '</div>'
       + '<div class="cmp-bars">'
-      + '<div class="cmp-bar time" style="width:' + (tw/maxW*100) + '%"></div>'
-      + '<div class="cmp-bar koact" style="width:' + (kw/maxW*100) + '%"></div>'
+      + '<div class="cmp-bar time" style="width:' + (o.time/maxW*100) + '%"></div>'
+      + '<div class="cmp-bar koact" style="width:' + (o.koact/maxW*100) + '%"></div>'
+      + '<div class="cmp-bar kosdaq" style="width:' + (o.kosdaq/maxW*100) + '%"></div>'
       + '</div>'
-      + '<div class="cmp-val">' + tw.toFixed(1) + ' / ' + kw.toFixed(1) + '</div>'
+      + '<div class="cmp-val">' + o.time.toFixed(1) + '/' + o.koact.toFixed(1) + '/' + o.kosdaq.toFixed(1) + '</div>'
       + '</div>';
   });
 
@@ -366,23 +392,23 @@ function renderCompare(el){
 }
 
 function renderCompareSectors(el){
-  var tw = DATA.time.weeks;
-  var kw = DATA.koact.weeks;
-  if (!tw.length && !kw.length){ el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
-
-  var timeSectors = tw.length ? tw[tw.length-1].sectors : [];
-  var koactSectors = kw.length ? kw[kw.length-1].sectors : [];
-
   var sectorMap = {};
-  timeSectors.forEach(function(s){ sectorMap[s.sector] = {time: s.weight, koact: 0}; });
-  koactSectors.forEach(function(s){
-    if (!sectorMap[s.sector]) sectorMap[s.sector] = {time: 0, koact: 0};
-    sectorMap[s.sector].koact = s.weight;
+  ["time","koact","kosdaq"].forEach(function(key){
+    if (!DATA[key]) return;
+    var weeks = DATA[key].weeks;
+    if (!weeks.length) return;
+    var sectors = weeks[weeks.length-1].sectors || [];
+    sectors.forEach(function(s){
+      if (!sectorMap[s.sector]) sectorMap[s.sector] = {time: 0, koact: 0, kosdaq: 0};
+      sectorMap[s.sector][key] = s.weight;
+    });
   });
 
-  var labels = Object.keys(sectorMap).sort(function(a,b){ return (sectorMap[b].time + sectorMap[b].koact) - (sectorMap[a].time + sectorMap[a].koact); });
+  if (!Object.keys(sectorMap).length){ el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
 
-  var html = '<div class="chart-card"><h3>섹터 비중 비교</h3><canvas id="sector-compare-chart" height="350"></canvas></div>';
+  var labels = Object.keys(sectorMap).sort(function(a,b){ return (sectorMap[b].time + sectorMap[b].koact + sectorMap[b].kosdaq) - (sectorMap[a].time + sectorMap[a].koact + sectorMap[a].kosdaq); });
+
+  var html = '<div class="chart-card"><h3>섹터 비중 비교</h3><canvas id="sector-compare-chart" height="400"></canvas></div>';
   el.innerHTML = html;
 
   var ctx = document.getElementById("sector-compare-chart");
@@ -393,6 +419,7 @@ function renderCompareSectors(el){
       datasets: [
         {label: "TIME", data: labels.map(function(l){ return sectorMap[l].time; }), backgroundColor: "#6366f1"},
         {label: "KoAct", data: labels.map(function(l){ return sectorMap[l].koact; }), backgroundColor: "#a78bfa"},
+        {label: "코스닥", data: labels.map(function(l){ return sectorMap[l].kosdaq; }), backgroundColor: "#14b8a6"},
       ]
     },
     options: {
@@ -414,7 +441,8 @@ function renderSignals(el){
   // 각 ETF에서 선택된 날짜의 시그널 수집
   var etfSignals = {};
   var selectedDate = "";
-  ["time","koact"].forEach(function(key){
+  ["time","koact","kosdaq"].forEach(function(key){
+    if (!DATA[key]) return;
     var weeks = DATA[key].weeks;
     if (!weeks.length) return;
     var wi = Math.min(idx, weeks.length - 1);
@@ -453,7 +481,7 @@ function renderSignals(el){
   }
 
   // ETF별 분리 렌더
-  ["TIME","KoAct"].forEach(function(etf){
+  ["TIME","KoAct","코스닥"].forEach(function(etf){
     var sigs = etfSignals[etf];
     if (!sigs || !sigs.length) return;
 
@@ -493,10 +521,11 @@ function renderSignals(el){
 function renderHistory(el){
   // Build ticker options from both ETFs
   var allTickers = {};
-  ["time","koact"].forEach(function(key){
+  ["time","koact","kosdaq"].forEach(function(key){
+    if (!DATA[key]) return;
     var hist = DATA[key].history || {};
     Object.keys(hist).forEach(function(t){
-      if (!allTickers[t]) allTickers[t] = {time: false, koact: false};
+      if (!allTickers[t]) allTickers[t] = {time: false, koact: false, kosdaq: false};
       allTickers[t][key] = true;
     });
   });
@@ -510,6 +539,7 @@ function renderHistory(el){
     var tags = [];
     if (allTickers[t].time) tags.push("TIME");
     if (allTickers[t].koact) tags.push("KoAct");
+    if (allTickers[t].kosdaq) tags.push("코스닥");
     html += '<option value="' + t + '">' + t + ' (' + tags.join("+") + ')</option>';
   });
   html += '</select></div>';
@@ -530,8 +560,14 @@ function drawHistoryChart(ticker){
 
   var datasets = [];
   var allDates = new Set();
+  var etfMeta = {
+    time: {label:"TIME", border:"#6366f1", bg:"rgba(99,102,241,0.1)"},
+    koact: {label:"KoAct", border:"#a78bfa", bg:"rgba(167,139,250,0.1)"},
+    kosdaq: {label:"코스닥", border:"#14b8a6", bg:"rgba(20,184,166,0.1)"},
+  };
 
-  ["time","koact"].forEach(function(key){
+  ["time","koact","kosdaq"].forEach(function(key){
+    if (!DATA[key]) return;
     var hist = (DATA[key].history || {})[ticker];
     if (!hist) return;
     hist.forEach(function(p){ allDates.add(p.date); });
@@ -539,16 +575,18 @@ function drawHistoryChart(ticker){
 
   var dates = Array.from(allDates).sort();
 
-  ["time","koact"].forEach(function(key){
+  ["time","koact","kosdaq"].forEach(function(key){
+    if (!DATA[key]) return;
     var hist = (DATA[key].history || {})[ticker];
     if (!hist) return;
+    var m = etfMeta[key];
     var map = {};
     hist.forEach(function(p){ map[p.date] = p.weight; });
     datasets.push({
-      label: key === "time" ? "TIME" : "KoAct",
+      label: m.label,
       data: dates.map(function(d){ return map[d] != null ? map[d] : null; }),
-      borderColor: key === "time" ? "#6366f1" : "#a78bfa",
-      backgroundColor: key === "time" ? "rgba(99,102,241,0.1)" : "rgba(167,139,250,0.1)",
+      borderColor: m.border,
+      backgroundColor: m.bg,
       fill: true,
       tension: 0.3,
       pointRadius: 4,
