@@ -24,8 +24,9 @@ jobs:
           pip install playwright
           playwright install chromium --with-deps
 
-      - name: Crawl TIME + KoAct
-        run: python scripts/crawl.py $(date +%F)
+      - name: Crawl TIME + KoAct + 코스닥
+        run: python scripts/crawl.py $(TZ=Asia/Seoul date +%F)
+        continue-on-error: true
 
       - name: Commit & Push
         run: |

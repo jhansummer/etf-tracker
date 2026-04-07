@@ -35,15 +35,25 @@ HEADERS = {
     "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
 }
 
-def fetch_url(url, data=None, extra_headers=None):
+def fetch_url(url, data=None, extra_headers=None, retries=3, timeout=60):
     hdrs = dict(HEADERS)
     if extra_headers:
         hdrs.update(extra_headers)
     if data and isinstance(data, dict):
         data = urllib.parse.urlencode(data).encode("utf-8")
-    req = urllib.request.Request(url, data=data, headers=hdrs)
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return resp.read()
+    last_err = None
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, data=data, headers=hdrs)
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except Exception as e:
+            last_err = e
+            if attempt < retries - 1:
+                wait = 5 * (attempt + 1)
+                print(f"  fetch 실패 (attempt {attempt+1}/{retries}): {e} → {wait}s 후 재시도")
+                _time.sleep(wait)
+    raise last_err
 
 # ══════════════════════════════════════════════
 #  TIME ETF — timeetf.co.kr 크롤링
@@ -325,24 +335,46 @@ def main():
 
     print(f"=== ETF 크롤링 시작 ({date_str}) ===\n")
 
+    results = {}
+
     if target in ("all", "time"):
-        crawl_time(date_str)
+        try:
+            results["time"] = crawl_time(date_str) is not None
+        except Exception as e:
+            print(f"[TIME] 크롤링 실패: {e}")
+            results["time"] = False
         print()
 
     if target in ("all", "koact"):
-        crawl_samsung(date_str, "koact")
+        try:
+            results["koact"] = crawl_samsung(date_str, "koact") is not None
+        except Exception as e:
+            print(f"[KoAct] 크롤링 실패: {e}")
+            results["koact"] = False
         print()
 
     if target in ("all", "kosdaq"):
-        crawl_samsung(date_str, "kosdaq")
+        try:
+            results["kosdaq"] = crawl_samsung(date_str, "kosdaq") is not None
+        except Exception as e:
+            print(f"[코스닥] 크롤링 실패: {e}")
+            results["kosdaq"] = False
         print()
 
-    # 자동 빌드
-    print("=== combined.json 빌드 ===")
-    import subprocess
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "build.py")], check=True)
+    # 하나라도 성공하면 빌드
+    if any(results.values()):
+        print("=== combined.json 빌드 ===")
+        import subprocess
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "build.py")], check=True)
+        print("\n완료! git push하면 대시보드에 반영됩니다.")
+    else:
+        print("모든 크롤링 실패. 빌드 건너뜀.")
+        sys.exit(1)
 
-    print("\n완료! git push하면 대시보드에 반영됩니다.")
+    # 일부만 실패해도 종료 코드는 0 (workflow는 계속 진행)
+    failed = [k for k, v in results.items() if not v]
+    if failed:
+        print(f"\n경고: {', '.join(failed)} 크롤링 실패 (다른 ETF는 정상)")
 
 if __name__ == "__main__":
     main()
