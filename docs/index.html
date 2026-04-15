@@ -651,35 +651,49 @@ function renderHistory(el){
       && !tickerInfo[t].etfs.some(function(k){ return etfGroups.nasdaq.indexOf(k) !== -1; });
   }).sort(function(a,b){ return tickerInfo[b].maxWeight - tickerInfo[a].maxWeight; });
 
-  var html = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">'
-    + '<label style="font-size:12px;color:var(--muted);font-weight:600">종목 선택</label>'
-    + '<select class="history-select" id="history-ticker">';
+  var html = '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;align-items:center">';
 
+  // 나스닥 드롭박스
   if (nasdaqTickers.length) {
-    html += '<optgroup label="── 나스닥 ──">';
+    html += '<div style="display:flex;align-items:center;gap:8px">'
+      + '<label style="font-size:11px;color:var(--accent2);font-weight:700;white-space:nowrap">나스닥</label>'
+      + '<select class="history-select" id="history-nasdaq">';
     nasdaqTickers.forEach(function(t){
       var info = tickerInfo[t];
       html += '<option value="' + t + '">' + t + '  ' + info.name + '  (' + info.maxWeight.toFixed(1) + '%)</option>';
     });
-    html += '</optgroup>';
+    html += '</select></div>';
   }
+
+  // 코스닥 드롭박스
   if (kosdaqTickers.length) {
-    html += '<optgroup label="── 코스닥 ──">';
+    html += '<div style="display:flex;align-items:center;gap:8px">'
+      + '<label style="font-size:11px;color:#14b8a6;font-weight:700;white-space:nowrap">코스닥</label>'
+      + '<select class="history-select" id="history-kosdaq">';
     kosdaqTickers.forEach(function(t){
       var info = tickerInfo[t];
       html += '<option value="' + t + '">' + t + '  ' + info.name + '  (' + info.maxWeight.toFixed(1) + '%)</option>';
     });
-    html += '</optgroup>';
+    html += '</select></div>';
   }
 
-  html += '</select></div>';
+  html += '</div>';
   html += '<div class="chart-card"><canvas id="history-chart" height="300"></canvas></div>';
 
   el.innerHTML = html;
 
-  var sel = document.getElementById("history-ticker");
-  if (sel.value) drawHistoryChart(sel.value);
-  sel.addEventListener("change", function(){ drawHistoryChart(sel.value); });
+  var nasdaqSel = document.getElementById("history-nasdaq");
+  var kosdaqSel = document.getElementById("history-kosdaq");
+
+  if (nasdaqSel) {
+    drawHistoryChart(nasdaqSel.value);
+    nasdaqSel.addEventListener("change", function(){ drawHistoryChart(this.value); });
+  } else if (kosdaqSel) {
+    drawHistoryChart(kosdaqSel.value);
+  }
+  if (kosdaqSel) {
+    kosdaqSel.addEventListener("change", function(){ drawHistoryChart(this.value); });
+  }
 }
 
 var historyChartInstance = null;
