@@ -666,7 +666,8 @@ function renderHistory(el){
   }
 
   html += '</div>';
-  html += '<div class="chart-card"><canvas id="history-chart" height="300"></canvas></div>';
+  html += '<div class="chart-card" style="margin-bottom:12px"><h3>비중 (%)</h3><canvas id="history-chart" height="220"></canvas></div>';
+  html += '<div class="chart-card"><h3>수량</h3><canvas id="history-shares-chart" height="220"></canvas></div>';
 
   el.innerHTML = html;
 
@@ -685,64 +686,103 @@ function renderHistory(el){
 }
 
 var historyChartInstance = null;
-function drawHistoryChart(ticker){
-  var ctx = document.getElementById("history-chart");
-  if (!ctx) return;
-  if (historyChartInstance) historyChartInstance.destroy();
+var historySharesChartInstance = null;
 
-  var datasets = [];
-  var allDates = new Set();
+function drawHistoryChart(ticker){
   var etfMeta = {
-    time: {label:"TIME 나스닥", border:"#6366f1", bg:"rgba(99,102,241,0.1)"},
-    koact: {label:"KoAct 나스닥", border:"#a78bfa", bg:"rgba(167,139,250,0.1)"},
-    kosdaq: {label:"KoAct 코스닥", border:"#14b8a6", bg:"rgba(20,184,166,0.1)"},
-    time_kosdaq: {label:"TIME 코스닥", border:"#f59e0b", bg:"rgba(245,158,11,0.1)"},
+    time:        {label:"TIME 나스닥",  border:"#6366f1", bg:"rgba(99,102,241,0.1)"},
+    koact:       {label:"KoAct 나스닥", border:"#a78bfa", bg:"rgba(167,139,250,0.1)"},
+    kosdaq:      {label:"KoAct 코스닥", border:"#14b8a6", bg:"rgba(20,184,166,0.1)"},
+    time_kosdaq: {label:"TIME 코스닥",  border:"#f59e0b", bg:"rgba(245,158,11,0.1)"},
   };
 
+  var allDates = new Set();
   ["time","koact","kosdaq","time_kosdaq"].forEach(function(key){
     if (!DATA[key]) return;
     var hist = (DATA[key].history || {})[ticker];
-    if (!hist) return;
-    hist.forEach(function(p){ allDates.add(p.date); });
+    if (hist) hist.forEach(function(p){ allDates.add(p.date); });
   });
-
   var dates = Array.from(allDates).sort();
+
+  var weightDatasets = [], sharesDatasets = [];
 
   ["time","koact","kosdaq","time_kosdaq"].forEach(function(key){
     if (!DATA[key]) return;
     var hist = (DATA[key].history || {})[ticker];
     if (!hist) return;
     var m = etfMeta[key];
-    var map = {};
-    hist.forEach(function(p){ map[p.date] = p.weight; });
-    datasets.push({
+    var wMap = {}, sMap = {};
+    hist.forEach(function(p){ wMap[p.date] = p.weight; sMap[p.date] = p.shares; });
+
+    var base = {
       label: m.label,
-      data: dates.map(function(d){ return map[d] != null ? map[d] : null; }),
       borderColor: m.border,
       backgroundColor: m.bg,
       fill: true,
       tension: 0.3,
-      pointRadius: 4,
-      pointHoverRadius: 6,
+      pointRadius: 3,
+      pointHoverRadius: 5,
       spanGaps: true,
-    });
-  });
-
-  historyChartInstance = new Chart(ctx, {
-    type: "line",
-    data: {labels: dates, datasets: datasets},
-    options: {
-      responsive: true,
-      scales: {
-        x: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:10}}},
-        y: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}, title:{display:true, text:"비중(%)", color:"#8b8fa3"}}
-      },
-      plugins: {
-        legend:{labels:{color:"#8b8fa3"}},
-        tooltip:{mode:"index", intersect:false}
-      }
+    };
+    weightDatasets.push(Object.assign({}, base, {
+      data: dates.map(function(d){ return wMap[d] != null ? wMap[d] : null; })
+    }));
+    // 수량이 있는 ETF만
+    var hasShares = hist.some(function(p){ return p.shares != null; });
+    if (hasShares) {
+      sharesDatasets.push(Object.assign({}, base, {
+        fill: false,
+        data: dates.map(function(d){ return sMap[d] != null ? sMap[d] : null; })
+      }));
     }
   });
+
+  var commonOpts = {
+    responsive: true,
+    scales: {
+      x: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:10}}},
+      y: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}}
+    },
+    plugins: {
+      legend:{labels:{color:"#8b8fa3", font:{size:11}}},
+      tooltip:{mode:"index", intersect:false}
+    }
+  };
+
+  // 비중 차트
+  var ctx1 = document.getElementById("history-chart");
+  if (ctx1) {
+    if (historyChartInstance) historyChartInstance.destroy();
+    historyChartInstance = new Chart(ctx1, {
+      type: "line",
+      data: {labels: dates, datasets: weightDatasets},
+      options: Object.assign({}, commonOpts, {
+        scales: Object.assign({}, commonOpts.scales, {
+          y: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}, title:{display:true, text:"비중(%)", color:"#8b8fa3"}}
+        })
+      })
+    });
+  }
+
+  // 수량 차트
+  var ctx2 = document.getElementById("history-shares-chart");
+  if (ctx2) {
+    if (historySharesChartInstance) historySharesChartInstance.destroy();
+    if (sharesDatasets.length) {
+      historySharesChartInstance = new Chart(ctx2, {
+        type: "line",
+        data: {labels: dates, datasets: sharesDatasets},
+        options: Object.assign({}, commonOpts, {
+          scales: Object.assign({}, commonOpts.scales, {
+            y: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", callback: function(v){ return v >= 10000 ? (v/10000).toFixed(0)+'만' : v.toLocaleString(); }}, title:{display:true, text:"수량", color:"#8b8fa3"}}
+          })
+        })
+      });
+      ctx2.parentElement.style.display = "";
+    } else {
+      ctx2.parentElement.style.display = "none";
+    }
+  }
 }
 
 /* ── Initial UI state ── */
