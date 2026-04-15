@@ -20,12 +20,12 @@ OUT = ROOT / "docs" / "data" / "combined.json"
 SHARE_THRESHOLD = 0.03  # 3%
 
 def load_snapshots():
-    """data/ 에서 time_*.json, koact_*.json, kosdaq_*.json 로드"""
-    snapshots = {"time": [], "koact": [], "kosdaq": []}
+    """data/ 에서 time_*.json, koact_*.json, kosdaq_*.json, time_kosdaq_*.json 로드"""
+    snapshots = {"time": [], "koact": [], "kosdaq": [], "time_kosdaq": []}
     for f in sorted(DATA.glob("*.json")):
         if f.name == "sector_map.json":
             continue
-        m = re.match(r"(time|koact|kosdaq)_(\d{4}-\d{2}-\d{2})\.json", f.name)
+        m = re.match(r"(time_kosdaq|time|koact|kosdaq)_(\d{4}-\d{2}-\d{2})\.json", f.name)
         if not m:
             continue
         key = m.group(1)
@@ -188,7 +188,7 @@ def build_overlap(time_weeks, koact_weeks):
 def main():
     snapshots = load_snapshots()
 
-    etf_keys = ["time", "koact", "kosdaq"]
+    etf_keys = ["time", "koact", "kosdaq", "time_kosdaq"]
     all_weeks = {}
     all_history = {}
     dates = []
@@ -201,6 +201,7 @@ def main():
             dates.append(weeks[-1]["date"])
 
     overlap = build_overlap(all_weeks.get("time", []), all_weeks.get("koact", []))
+    overlap_time_kosdaq_pair = build_overlap(all_weeks.get("time_kosdaq", []), all_weeks.get("kosdaq", []))
 
     combined = {
         "generated": max(dates) if dates else "",
@@ -212,6 +213,7 @@ def main():
             "history": all_history[key],
         }
     combined["overlap"] = overlap
+    combined["overlap_time_kosdaq_pair"] = overlap_time_kosdaq_pair
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(

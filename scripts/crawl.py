@@ -2,10 +2,12 @@
 """
 ETF 포트폴리오 자동 크롤링
 사용법:
-  python scripts/crawl.py                    # 오늘 날짜로 둘 다 크롤링
-  python scripts/crawl.py 2026-04-04         # 특정 날짜
-  python scripts/crawl.py 2026-04-04 time    # TIME만
-  python scripts/crawl.py 2026-04-04 koact   # KoAct만
+  python scripts/crawl.py                         # 오늘 날짜로 전체 크롤링
+  python scripts/crawl.py 2026-04-04              # 특정 날짜
+  python scripts/crawl.py 2026-04-04 time         # TIME 미국나스닥100만
+  python scripts/crawl.py 2026-04-04 koact        # KoAct만
+  python scripts/crawl.py 2026-04-04 time_kosdaq  # TIME 코스닥액티브만
+  python scripts/crawl.py 2026-04-04 kosdaq       # KoAct 코스닥만
 """
 import sys, json, re, os, time as _time
 from pathlib import Path
@@ -79,9 +81,9 @@ def parse_float_str(s):
         return None
 
 
-def crawl_time(date_str):
-    print("[TIME] timeetf.co.kr 크롤링 중...")
-    url = "https://www.timeetf.co.kr/m11_view.php?idx=2"
+def crawl_time(date_str, idx=2, etf_label="TIME", code="426030", file_prefix="time"):
+    print(f"[{etf_label}] timeetf.co.kr 크롤링 중...")
+    url = f"https://www.timeetf.co.kr/m11_view.php?idx={idx}"
     html = fetch_url(url).decode("utf-8", errors="replace")
 
     # NAV, AUM 파싱 시도
@@ -103,7 +105,7 @@ def crawl_time(date_str):
             break
 
     if not holdings_table:
-        print("[TIME] 종목 테이블을 찾지 못했습니다.")
+        print(f"[{etf_label}] 종목 테이블을 찾지 못했습니다.")
         return None
 
     # <tr> 안의 <td> 파싱
@@ -154,28 +156,28 @@ def crawl_time(date_str):
             sector_map[ticker] = "미분류"
 
     if not holdings:
-        print("[TIME] 종목 데이터를 파싱하지 못했습니다.")
+        print(f"[{etf_label}] 종목 데이터를 파싱하지 못했습니다.")
         return None
 
     save_sector_map(sector_map)
 
     snapshot = {
-        "etf": "TIME",
-        "code": "426030",
+        "etf": etf_label,
+        "code": code,
         "date": date_str,
         "nav": nav,
         "aum_billion": aum,
         "holdings": holdings,
     }
 
-    out_path = DATA / f"time_{date_str}.json"
+    out_path = DATA / f"{file_prefix}_{date_str}.json"
     out_path.write_text(
         json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"[TIME] 저장: {out_path} ({len(holdings)}종목)")
+    print(f"[{etf_label}] 저장: {out_path} ({len(holdings)}종목)")
     unmapped = [h["ticker"] for h in holdings if h["sector"] == "미분류"]
     if unmapped:
-        print(f"[TIME] 미분류 섹터: {', '.join(unmapped)}")
+        print(f"[{etf_label}] 미분류 섹터: {', '.join(unmapped)}")
     return snapshot
 
 
@@ -339,10 +341,18 @@ def main():
 
     if target in ("all", "time"):
         try:
-            results["time"] = crawl_time(date_str) is not None
+            results["time"] = crawl_time(date_str, idx=2, etf_label="TIME", code="426030", file_prefix="time") is not None
         except Exception as e:
             print(f"[TIME] 크롤링 실패: {e}")
             results["time"] = False
+        print()
+
+    if target in ("all", "time_kosdaq"):
+        try:
+            results["time_kosdaq"] = crawl_time(date_str, idx=24, etf_label="TIME 코스닥", code="0162Y0", file_prefix="time_kosdaq") is not None
+        except Exception as e:
+            print(f"[TIME 코스닥] 크롤링 실패: {e}")
+            results["time_kosdaq"] = False
         print()
 
     if target in ("all", "koact"):

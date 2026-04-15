@@ -3,7 +3,8 @@
   "etf_keys": [
     "time",
     "koact",
-    "kosdaq"
+    "kosdaq",
+    "time_kosdaq"
   ],
   "time": {
     "weeks": [
@@ -31063,6 +31064,1092 @@
       ]
     }
   },
+  "time_kosdaq": {
+    "weeks": [
+      {
+        "date": "2026-04-07",
+        "etf": "TIME 코스닥",
+        "code": "0162Y0",
+        "nav": 17727871391.0,
+        "aum_billion": 4827,
+        "holdings": [
+          {
+            "ticker": "257720",
+            "name": "실리콘투",
+            "shares": 660,
+            "value_krw": 30591000,
+            "weight": 5.91,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "086520",
+            "name": "에코프로",
+            "shares": 200,
+            "value_krw": 28840000,
+            "weight": 5.57,
+            "sector": "2차전지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "196170",
+            "name": "알테오젠",
+            "shares": 79,
+            "value_krw": 27887000,
+            "weight": 5.39,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "247540",
+            "name": "에코프로비엠",
+            "shares": 130,
+            "value_krw": 25714000,
+            "weight": 4.97,
+            "sector": "2차전지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "476830",
+            "name": "알지노믹스",
+            "shares": 120,
+            "value_krw": 23820000,
+            "weight": 4.6,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "095610",
+            "name": "테스",
+            "shares": 250,
+            "value_krw": 20950000,
+            "weight": 4.05,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "490470",
+            "name": "세미파이브",
+            "shares": 500,
+            "value_krw": 18600000,
+            "weight": 3.59,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "010170",
+            "name": "대한광통신",
+            "shares": 900,
+            "value_krw": 18135000,
+            "weight": 3.5,
+            "sector": "광통신",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "082920",
+            "name": "비츠로셀",
+            "shares": 390,
+            "value_krw": 17238000,
+            "weight": 3.33,
+            "sector": "2차전지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "440110",
+            "name": "파두",
+            "shares": 300,
+            "value_krw": 17040000,
+            "weight": 3.29,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "347700",
+            "name": "스피어",
+            "shares": 350,
+            "value_krw": 16520000,
+            "weight": 3.19,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "058470",
+            "name": "리노공업",
+            "shares": 139,
+            "value_krw": 15512400,
+            "weight": 3.0,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "491000",
+            "name": "리브스메드",
+            "shares": 223,
+            "value_krw": 13469200,
+            "weight": 2.6,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "126340",
+            "name": "비나텍",
+            "shares": 100,
+            "value_krw": 13330000,
+            "weight": 2.57,
+            "sector": "전자부품",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "183300",
+            "name": "코미코",
+            "shares": 100,
+            "value_krw": 13250000,
+            "weight": 2.56,
+            "sector": "반도체소재",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "099320",
+            "name": "쎄트렉아이",
+            "shares": 70,
+            "value_krw": 11858000,
+            "weight": 2.29,
+            "sector": "우주/방산",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "095340",
+            "name": "ISC",
+            "shares": 50,
+            "value_krw": 11150000,
+            "weight": 2.15,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "226950",
+            "name": "올릭스",
+            "shares": 69,
+            "value_krw": 10819200,
+            "weight": 2.09,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "028300",
+            "name": "HLB",
+            "shares": 160,
+            "value_krw": 10032000,
+            "weight": 1.94,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "218410",
+            "name": "RFHIC",
+            "shares": 100,
+            "value_krw": 9570000,
+            "weight": 1.85,
+            "sector": "반도체",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "298380",
+            "name": "에이비엘바이오",
+            "shares": 60,
+            "value_krw": 9354000,
+            "weight": 1.81,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "295310",
+            "name": "에이치브이엠",
+            "shares": 100,
+            "value_krw": 9190000,
+            "weight": 1.77,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "039030",
+            "name": "이오테크닉스",
+            "shares": 19,
+            "value_krw": 9148500,
+            "weight": 1.77,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "141080",
+            "name": "리가켐바이오",
+            "shares": 49,
+            "value_krw": 8869000,
+            "weight": 1.71,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "263750",
+            "name": "펄어비스",
+            "shares": 149,
+            "value_krw": 8627100,
+            "weight": 1.67,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "108490",
+            "name": "로보티즈",
+            "shares": 29,
+            "value_krw": 7177500,
+            "weight": 1.39,
+            "sector": "로봇",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "330860",
+            "name": "네패스아크",
+            "shares": 200,
+            "value_krw": 6700000,
+            "weight": 1.29,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "403870",
+            "name": "HPSP",
+            "shares": 149,
+            "value_krw": 6354850,
+            "weight": 1.23,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "084370",
+            "name": "유진테크",
+            "shares": 50,
+            "value_krw": 6350000,
+            "weight": 1.23,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "347850",
+            "name": "디앤디파마텍",
+            "shares": 80,
+            "value_krw": 6144000,
+            "weight": 1.19,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "240810",
+            "name": "원익IPS",
+            "shares": 50,
+            "value_krw": 6100000,
+            "weight": 1.18,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "319400",
+            "name": "현대무벡스",
+            "shares": 200,
+            "value_krw": 6090000,
+            "weight": 1.18,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "277810",
+            "name": "레인보우로보틱스",
+            "shares": 10,
+            "value_krw": 6030000,
+            "weight": 1.16,
+            "sector": "로봇",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "078600",
+            "name": "대주전자재료",
+            "shares": 50,
+            "value_krw": 5815000,
+            "weight": 1.12,
+            "sector": "2차전지",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "124500",
+            "name": "아이티센글로벌",
+            "shares": 100,
+            "value_krw": 5310000,
+            "weight": 1.03,
+            "sector": "IT서비스",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "131970",
+            "name": "두산테스나",
+            "shares": 50,
+            "value_krw": 4890000,
+            "weight": 0.94,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "458870",
+            "name": "씨어스테크놀로지",
+            "shares": 100,
+            "value_krw": 4325000,
+            "weight": 0.84,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "214370",
+            "name": "케어젠",
+            "shares": 45,
+            "value_krw": 4315500,
+            "weight": 0.83,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "310210",
+            "name": "보로노이",
+            "shares": 15,
+            "value_krw": 4192500,
+            "weight": 0.81,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "083450",
+            "name": "GST",
+            "shares": 100,
+            "value_krw": 3910000,
+            "weight": 0.76,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "217590",
+            "name": "티엠씨",
+            "shares": 100,
+            "value_krw": 3465000,
+            "weight": 0.67,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "178320",
+            "name": "서진시스템",
+            "shares": 69,
+            "value_krw": 3446550,
+            "weight": 0.67,
+            "sector": "전자부품",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "145020",
+            "name": "휴젤",
+            "shares": 13,
+            "value_krw": 3289000,
+            "weight": 0.64,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "036930",
+            "name": "주성엔지니어링",
+            "shares": 50,
+            "value_krw": 3180000,
+            "weight": 0.61,
+            "sector": "반도체장비",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "319660",
+            "name": "피에스케이",
+            "shares": 39,
+            "value_krw": 3178500,
+            "weight": 0.61,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "032820",
+            "name": "우리기술",
+            "shares": 150,
+            "value_krw": 3150000,
+            "weight": 0.61,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "030530",
+            "name": "원익홀딩스",
+            "shares": 100,
+            "value_krw": 3105000,
+            "weight": 0.6,
+            "sector": "미분류",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "0009K0",
+            "name": "에임드바이오",
+            "shares": 60,
+            "value_krw": 2793000,
+            "weight": 0.54,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "058610",
+            "name": "에스피지",
+            "shares": 25,
+            "value_krw": 2755000,
+            "weight": 0.53,
+            "sector": "산업재",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "222800",
+            "name": "심텍",
+            "shares": 40,
+            "value_krw": 2652000,
+            "weight": 0.51,
+            "sector": "반도체소재",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          },
+          {
+            "ticker": "000250",
+            "name": "삼천당제약",
+            "shares": 5,
+            "value_krw": 2600000,
+            "weight": 0.5,
+            "sector": "바이오",
+            "signal": "hold",
+            "prev_shares": null,
+            "prev_weight": null,
+            "shares_chg_pct": null,
+            "weight_chg": null
+          }
+        ],
+        "sectors": [
+          {
+            "sector": "미분류",
+            "weight": 29.93
+          },
+          {
+            "sector": "바이오",
+            "weight": 19.28
+          },
+          {
+            "sector": "2차전지",
+            "weight": 14.99
+          },
+          {
+            "sector": "반도체장비",
+            "weight": 14.29
+          },
+          {
+            "sector": "반도체",
+            "weight": 5.14
+          },
+          {
+            "sector": "광통신",
+            "weight": 3.5
+          },
+          {
+            "sector": "전자부품",
+            "weight": 3.24
+          },
+          {
+            "sector": "반도체소재",
+            "weight": 3.07
+          },
+          {
+            "sector": "로봇",
+            "weight": 2.55
+          },
+          {
+            "sector": "우주/방산",
+            "weight": 2.29
+          },
+          {
+            "sector": "IT서비스",
+            "weight": 1.03
+          },
+          {
+            "sector": "산업재",
+            "weight": 0.53
+          }
+        ],
+        "total_holdings": 51
+      }
+    ],
+    "history": {
+      "257720": [
+        {
+          "date": "2026-04-07",
+          "weight": 5.91,
+          "shares": 660
+        }
+      ],
+      "086520": [
+        {
+          "date": "2026-04-07",
+          "weight": 5.57,
+          "shares": 200
+        }
+      ],
+      "196170": [
+        {
+          "date": "2026-04-07",
+          "weight": 5.39,
+          "shares": 79
+        }
+      ],
+      "247540": [
+        {
+          "date": "2026-04-07",
+          "weight": 4.97,
+          "shares": 130
+        }
+      ],
+      "476830": [
+        {
+          "date": "2026-04-07",
+          "weight": 4.6,
+          "shares": 120
+        }
+      ],
+      "095610": [
+        {
+          "date": "2026-04-07",
+          "weight": 4.05,
+          "shares": 250
+        }
+      ],
+      "490470": [
+        {
+          "date": "2026-04-07",
+          "weight": 3.59,
+          "shares": 500
+        }
+      ],
+      "010170": [
+        {
+          "date": "2026-04-07",
+          "weight": 3.5,
+          "shares": 900
+        }
+      ],
+      "082920": [
+        {
+          "date": "2026-04-07",
+          "weight": 3.33,
+          "shares": 390
+        }
+      ],
+      "440110": [
+        {
+          "date": "2026-04-07",
+          "weight": 3.29,
+          "shares": 300
+        }
+      ],
+      "347700": [
+        {
+          "date": "2026-04-07",
+          "weight": 3.19,
+          "shares": 350
+        }
+      ],
+      "058470": [
+        {
+          "date": "2026-04-07",
+          "weight": 3.0,
+          "shares": 139
+        }
+      ],
+      "491000": [
+        {
+          "date": "2026-04-07",
+          "weight": 2.6,
+          "shares": 223
+        }
+      ],
+      "126340": [
+        {
+          "date": "2026-04-07",
+          "weight": 2.57,
+          "shares": 100
+        }
+      ],
+      "183300": [
+        {
+          "date": "2026-04-07",
+          "weight": 2.56,
+          "shares": 100
+        }
+      ],
+      "099320": [
+        {
+          "date": "2026-04-07",
+          "weight": 2.29,
+          "shares": 70
+        }
+      ],
+      "095340": [
+        {
+          "date": "2026-04-07",
+          "weight": 2.15,
+          "shares": 50
+        }
+      ],
+      "226950": [
+        {
+          "date": "2026-04-07",
+          "weight": 2.09,
+          "shares": 69
+        }
+      ],
+      "028300": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.94,
+          "shares": 160
+        }
+      ],
+      "218410": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.85,
+          "shares": 100
+        }
+      ],
+      "298380": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.81,
+          "shares": 60
+        }
+      ],
+      "295310": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.77,
+          "shares": 100
+        }
+      ],
+      "039030": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.77,
+          "shares": 19
+        }
+      ],
+      "141080": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.71,
+          "shares": 49
+        }
+      ],
+      "263750": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.67,
+          "shares": 149
+        }
+      ],
+      "108490": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.39,
+          "shares": 29
+        }
+      ],
+      "330860": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.29,
+          "shares": 200
+        }
+      ],
+      "403870": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.23,
+          "shares": 149
+        }
+      ],
+      "084370": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.23,
+          "shares": 50
+        }
+      ],
+      "347850": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.19,
+          "shares": 80
+        }
+      ],
+      "240810": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.18,
+          "shares": 50
+        }
+      ],
+      "319400": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.18,
+          "shares": 200
+        }
+      ],
+      "277810": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.16,
+          "shares": 10
+        }
+      ],
+      "078600": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.12,
+          "shares": 50
+        }
+      ],
+      "124500": [
+        {
+          "date": "2026-04-07",
+          "weight": 1.03,
+          "shares": 100
+        }
+      ],
+      "131970": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.94,
+          "shares": 50
+        }
+      ],
+      "458870": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.84,
+          "shares": 100
+        }
+      ],
+      "214370": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.83,
+          "shares": 45
+        }
+      ],
+      "310210": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.81,
+          "shares": 15
+        }
+      ],
+      "083450": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.76,
+          "shares": 100
+        }
+      ],
+      "217590": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.67,
+          "shares": 100
+        }
+      ],
+      "178320": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.67,
+          "shares": 69
+        }
+      ],
+      "145020": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.64,
+          "shares": 13
+        }
+      ],
+      "036930": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.61,
+          "shares": 50
+        }
+      ],
+      "319660": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.61,
+          "shares": 39
+        }
+      ],
+      "032820": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.61,
+          "shares": 150
+        }
+      ],
+      "030530": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.6,
+          "shares": 100
+        }
+      ],
+      "0009K0": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.54,
+          "shares": 60
+        }
+      ],
+      "058610": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.53,
+          "shares": 25
+        }
+      ],
+      "222800": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.51,
+          "shares": 40
+        }
+      ],
+      "000250": [
+        {
+          "date": "2026-04-07",
+          "weight": 0.5,
+          "shares": 5
+        }
+      ]
+    }
+  },
   "overlap": [
     {
       "ticker": "SNDK",
@@ -31486,6 +32573,824 @@
       "sector": "소프트웨어",
       "time_weight": null,
       "koact_weight": 0.12,
+      "both": false
+    }
+  ],
+  "overlap_time_kosdaq_pair": [
+    {
+      "ticker": "043260",
+      "name": "성호전자",
+      "sector": "전자부품",
+      "time_weight": null,
+      "koact_weight": 9.27,
+      "both": false
+    },
+    {
+      "ticker": "086520",
+      "name": "에코프로",
+      "sector": "2차전지",
+      "time_weight": 5.57,
+      "koact_weight": 3.25,
+      "both": true
+    },
+    {
+      "ticker": "476830",
+      "name": "알지노믹스",
+      "sector": "바이오",
+      "time_weight": 4.6,
+      "koact_weight": 3.24,
+      "both": true
+    },
+    {
+      "ticker": "247540",
+      "name": "에코프로비엠",
+      "sector": "2차전지",
+      "time_weight": 4.97,
+      "koact_weight": 2.71,
+      "both": true
+    },
+    {
+      "ticker": "196170",
+      "name": "알테오젠",
+      "sector": "바이오",
+      "time_weight": 5.39,
+      "koact_weight": 1.21,
+      "both": true
+    },
+    {
+      "ticker": "257720",
+      "name": "실리콘투",
+      "sector": "미분류",
+      "time_weight": 5.91,
+      "koact_weight": 0.48,
+      "both": true
+    },
+    {
+      "ticker": "298380",
+      "name": "에이비엘바이오",
+      "sector": "바이오",
+      "time_weight": 1.81,
+      "koact_weight": 4.48,
+      "both": true
+    },
+    {
+      "ticker": "440110",
+      "name": "파두",
+      "sector": "반도체",
+      "time_weight": 3.29,
+      "koact_weight": 2.98,
+      "both": true
+    },
+    {
+      "ticker": "095610",
+      "name": "테스",
+      "sector": "반도체장비",
+      "time_weight": 4.05,
+      "koact_weight": 1.45,
+      "both": true
+    },
+    {
+      "ticker": "141080",
+      "name": "리가켐바이오",
+      "sector": "바이오",
+      "time_weight": 1.71,
+      "koact_weight": 3.58,
+      "both": true
+    },
+    {
+      "ticker": "010170",
+      "name": "대한광통신",
+      "sector": "광통신",
+      "time_weight": 3.5,
+      "koact_weight": 1.17,
+      "both": true
+    },
+    {
+      "ticker": "295310",
+      "name": "에이치브이엠",
+      "sector": "반도체장비",
+      "time_weight": 1.77,
+      "koact_weight": 2.69,
+      "both": true
+    },
+    {
+      "ticker": "183300",
+      "name": "코미코",
+      "sector": "반도체소재",
+      "time_weight": 2.56,
+      "koact_weight": 1.45,
+      "both": true
+    },
+    {
+      "ticker": "115180",
+      "name": "큐리언트",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 3.98,
+      "both": false
+    },
+    {
+      "ticker": "082920",
+      "name": "비츠로셀",
+      "sector": "2차전지",
+      "time_weight": 3.33,
+      "koact_weight": 0.57,
+      "both": true
+    },
+    {
+      "ticker": "058470",
+      "name": "리노공업",
+      "sector": "반도체장비",
+      "time_weight": 3.0,
+      "koact_weight": 0.88,
+      "both": true
+    },
+    {
+      "ticker": "095340",
+      "name": "ISC",
+      "sector": "반도체장비",
+      "time_weight": 2.15,
+      "koact_weight": 1.64,
+      "both": true
+    },
+    {
+      "ticker": "226950",
+      "name": "올릭스",
+      "sector": "바이오",
+      "time_weight": 2.09,
+      "koact_weight": 1.64,
+      "both": true
+    },
+    {
+      "ticker": "490470",
+      "name": "세미파이브",
+      "sector": "미분류",
+      "time_weight": 3.59,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "108490",
+      "name": "로보티즈",
+      "sector": "로봇",
+      "time_weight": 1.39,
+      "koact_weight": 2.1,
+      "both": true
+    },
+    {
+      "ticker": "218410",
+      "name": "RFHIC",
+      "sector": "반도체",
+      "time_weight": 1.85,
+      "koact_weight": 1.5,
+      "both": true
+    },
+    {
+      "ticker": "126340",
+      "name": "비나텍",
+      "sector": "전자부품",
+      "time_weight": 2.57,
+      "koact_weight": 0.78,
+      "both": true
+    },
+    {
+      "ticker": "039030",
+      "name": "이오테크닉스",
+      "sector": "반도체장비",
+      "time_weight": 1.77,
+      "koact_weight": 1.49,
+      "both": true
+    },
+    {
+      "ticker": "347700",
+      "name": "스피어",
+      "sector": "미분류",
+      "time_weight": 3.19,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "491000",
+      "name": "리브스메드",
+      "sector": "미분류",
+      "time_weight": 2.6,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "099320",
+      "name": "쎄트렉아이",
+      "sector": "우주/방산",
+      "time_weight": 2.29,
+      "koact_weight": 0.25,
+      "both": true
+    },
+    {
+      "ticker": "078600",
+      "name": "대주전자재료",
+      "sector": "2차전지",
+      "time_weight": 1.12,
+      "koact_weight": 1.29,
+      "both": true
+    },
+    {
+      "ticker": "277810",
+      "name": "레인보우로보틱스",
+      "sector": "로봇",
+      "time_weight": 1.16,
+      "koact_weight": 1.08,
+      "both": true
+    },
+    {
+      "ticker": "124500",
+      "name": "아이티센글로벌",
+      "sector": "IT서비스",
+      "time_weight": 1.03,
+      "koact_weight": 1.14,
+      "both": true
+    },
+    {
+      "ticker": "031980",
+      "name": "피에스케이홀딩스",
+      "sector": "반도체장비",
+      "time_weight": null,
+      "koact_weight": 2.12,
+      "both": false
+    },
+    {
+      "ticker": "310210",
+      "name": "보로노이",
+      "sector": "바이오",
+      "time_weight": 0.81,
+      "koact_weight": 1.28,
+      "both": true
+    },
+    {
+      "ticker": "083650",
+      "name": "비에이치아이",
+      "sector": "플랜트",
+      "time_weight": null,
+      "koact_weight": 2.01,
+      "both": false
+    },
+    {
+      "ticker": "347850",
+      "name": "디앤디파마텍",
+      "sector": "바이오",
+      "time_weight": 1.19,
+      "koact_weight": 0.78,
+      "both": true
+    },
+    {
+      "ticker": "028300",
+      "name": "HLB",
+      "sector": "미분류",
+      "time_weight": 1.94,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "015750",
+      "name": "성우하이텍",
+      "sector": "자동차부품",
+      "time_weight": null,
+      "koact_weight": 1.91,
+      "both": false
+    },
+    {
+      "ticker": "237690",
+      "name": "에스티팜",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 1.85,
+      "both": false
+    },
+    {
+      "ticker": "189300",
+      "name": "인텔리안테크",
+      "sector": "통신장비",
+      "time_weight": null,
+      "koact_weight": 1.78,
+      "both": false
+    },
+    {
+      "ticker": "178320",
+      "name": "서진시스템",
+      "sector": "전자부품",
+      "time_weight": 0.67,
+      "koact_weight": 1.09,
+      "both": true
+    },
+    {
+      "ticker": "039200",
+      "name": "오스코텍",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 1.73,
+      "both": false
+    },
+    {
+      "ticker": "263750",
+      "name": "펄어비스",
+      "sector": "미분류",
+      "time_weight": 1.67,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "222800",
+      "name": "심텍",
+      "sector": "반도체소재",
+      "time_weight": 0.51,
+      "koact_weight": 1.07,
+      "both": true
+    },
+    {
+      "ticker": "131970",
+      "name": "두산테스나",
+      "sector": "반도체장비",
+      "time_weight": 0.94,
+      "koact_weight": 0.58,
+      "both": true
+    },
+    {
+      "ticker": "425420",
+      "name": "티에프이",
+      "sector": "전자부품",
+      "time_weight": null,
+      "koact_weight": 1.46,
+      "both": false
+    },
+    {
+      "ticker": "354320",
+      "name": "알멕",
+      "sector": "2차전지",
+      "time_weight": null,
+      "koact_weight": 1.32,
+      "both": false
+    },
+    {
+      "ticker": "330860",
+      "name": "네패스아크",
+      "sector": "미분류",
+      "time_weight": 1.29,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "052400",
+      "name": "코나아이",
+      "sector": "IT서비스",
+      "time_weight": null,
+      "koact_weight": 1.28,
+      "both": false
+    },
+    {
+      "ticker": "036830",
+      "name": "솔브레인홀딩스",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 1.25,
+      "both": false
+    },
+    {
+      "ticker": "084370",
+      "name": "유진테크",
+      "sector": "미분류",
+      "time_weight": 1.23,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "403870",
+      "name": "HPSP",
+      "sector": "미분류",
+      "time_weight": 1.23,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "000250",
+      "name": "삼천당제약",
+      "sector": "바이오",
+      "time_weight": 0.5,
+      "koact_weight": 0.68,
+      "both": true
+    },
+    {
+      "ticker": "240810",
+      "name": "원익IPS",
+      "sector": "미분류",
+      "time_weight": 1.18,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "319400",
+      "name": "현대무벡스",
+      "sector": "미분류",
+      "time_weight": 1.18,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "058610",
+      "name": "에스피지",
+      "sector": "산업재",
+      "time_weight": 0.53,
+      "koact_weight": 0.61,
+      "both": true
+    },
+    {
+      "ticker": "023160",
+      "name": "태광",
+      "sector": "전자부품",
+      "time_weight": null,
+      "koact_weight": 1.12,
+      "both": false
+    },
+    {
+      "ticker": "101490",
+      "name": "에스앤에스텍",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 1.11,
+      "both": false
+    },
+    {
+      "ticker": "0009K0",
+      "name": "에임드바이오",
+      "sector": "바이오",
+      "time_weight": 0.54,
+      "koact_weight": 0.56,
+      "both": true
+    },
+    {
+      "ticker": "077360",
+      "name": "덕산하이메탈",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 1.08,
+      "both": false
+    },
+    {
+      "ticker": "107640",
+      "name": "한중엔시에스",
+      "sector": "반도체장비",
+      "time_weight": null,
+      "koact_weight": 1.06,
+      "both": false
+    },
+    {
+      "ticker": "145020",
+      "name": "휴젤",
+      "sector": "바이오",
+      "time_weight": 0.64,
+      "koact_weight": 0.41,
+      "both": true
+    },
+    {
+      "ticker": "102710",
+      "name": "이엔에프테크놀로지",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 1.04,
+      "both": false
+    },
+    {
+      "ticker": "036930",
+      "name": "주성엔지니어링",
+      "sector": "반도체장비",
+      "time_weight": 0.61,
+      "koact_weight": 0.42,
+      "both": true
+    },
+    {
+      "ticker": "036890",
+      "name": "진성티이씨",
+      "sector": "산업재",
+      "time_weight": null,
+      "koact_weight": 0.99,
+      "both": false
+    },
+    {
+      "ticker": "044490",
+      "name": "태웅",
+      "sector": "산업재",
+      "time_weight": null,
+      "koact_weight": 0.99,
+      "both": false
+    },
+    {
+      "ticker": "356860",
+      "name": "티엘비",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 0.96,
+      "both": false
+    },
+    {
+      "ticker": "475400",
+      "name": "씨메스",
+      "sector": "로봇",
+      "time_weight": null,
+      "koact_weight": 0.89,
+      "both": false
+    },
+    {
+      "ticker": "389020",
+      "name": "자람테크놀로지",
+      "sector": "반도체장비",
+      "time_weight": null,
+      "koact_weight": 0.86,
+      "both": false
+    },
+    {
+      "ticker": "458870",
+      "name": "씨어스테크놀로지",
+      "sector": "미분류",
+      "time_weight": 0.84,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "214370",
+      "name": "케어젠",
+      "sector": "미분류",
+      "time_weight": 0.83,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "475830",
+      "name": "오름테라퓨틱",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.79,
+      "both": false
+    },
+    {
+      "ticker": "083450",
+      "name": "GST",
+      "sector": "미분류",
+      "time_weight": 0.76,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "217590",
+      "name": "티엠씨",
+      "sector": "미분류",
+      "time_weight": 0.67,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "032820",
+      "name": "우리기술",
+      "sector": "미분류",
+      "time_weight": 0.61,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "319660",
+      "name": "피에스케이",
+      "sector": "미분류",
+      "time_weight": 0.61,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "030530",
+      "name": "원익홀딩스",
+      "sector": "미분류",
+      "time_weight": 0.6,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "417200",
+      "name": "LS머트리얼즈",
+      "sector": "전자부품",
+      "time_weight": null,
+      "koact_weight": 0.6,
+      "both": false
+    },
+    {
+      "ticker": "368770",
+      "name": "파이버프로",
+      "sector": "광통신",
+      "time_weight": null,
+      "koact_weight": 0.51,
+      "both": false
+    },
+    {
+      "ticker": "005290",
+      "name": "동진쎄미켐",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 0.5,
+      "both": false
+    },
+    {
+      "ticker": "122870",
+      "name": "와이지엔터테인먼트",
+      "sector": "엔터",
+      "time_weight": null,
+      "koact_weight": 0.5,
+      "both": false
+    },
+    {
+      "ticker": "100790",
+      "name": "미래에셋벤처투자",
+      "sector": "금융",
+      "time_weight": null,
+      "koact_weight": 0.43,
+      "both": false
+    },
+    {
+      "ticker": "166090",
+      "name": "하나머티리얼즈",
+      "sector": "반도체소재",
+      "time_weight": null,
+      "koact_weight": 0.42,
+      "both": false
+    },
+    {
+      "ticker": "376300",
+      "name": "디어유",
+      "sector": "IT서비스",
+      "time_weight": null,
+      "koact_weight": 0.42,
+      "both": false
+    },
+    {
+      "ticker": "051500",
+      "name": "CJ프레시웨이",
+      "sector": "식품",
+      "time_weight": null,
+      "koact_weight": 0.39,
+      "both": false
+    },
+    {
+      "ticker": "067000",
+      "name": "조이시티",
+      "sector": "게임",
+      "time_weight": null,
+      "koact_weight": 0.38,
+      "both": false
+    },
+    {
+      "ticker": "171090",
+      "name": "선익시스템",
+      "sector": "반도체장비",
+      "time_weight": null,
+      "koact_weight": 0.33,
+      "both": false
+    },
+    {
+      "ticker": "051370",
+      "name": "인터플렉스",
+      "sector": "전자부품",
+      "time_weight": null,
+      "koact_weight": 0.32,
+      "both": false
+    },
+    {
+      "ticker": "089970",
+      "name": "브이엠",
+      "sector": "미분류",
+      "time_weight": null,
+      "koact_weight": 0.3,
+      "both": false
+    },
+    {
+      "ticker": "035810",
+      "name": "이지홀딩스",
+      "sector": "IT서비스",
+      "time_weight": null,
+      "koact_weight": 0.28,
+      "both": false
+    },
+    {
+      "ticker": "054950",
+      "name": "제이브이엠",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.28,
+      "both": false
+    },
+    {
+      "ticker": "060370",
+      "name": "LS마린솔루션",
+      "sector": "산업재",
+      "time_weight": null,
+      "koact_weight": 0.28,
+      "both": false
+    },
+    {
+      "ticker": "138080",
+      "name": "오이솔루션",
+      "sector": "광통신",
+      "time_weight": null,
+      "koact_weight": 0.27,
+      "both": false
+    },
+    {
+      "ticker": "437730",
+      "name": "삼현",
+      "sector": "산업재",
+      "time_weight": null,
+      "koact_weight": 0.27,
+      "both": false
+    },
+    {
+      "ticker": "331740",
+      "name": "아우토크립트",
+      "sector": "IT서비스",
+      "time_weight": null,
+      "koact_weight": 0.26,
+      "both": false
+    },
+    {
+      "ticker": "102940",
+      "name": "코오롱생명과학",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.25,
+      "both": false
+    },
+    {
+      "ticker": "195940",
+      "name": "HK이노엔",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.25,
+      "both": false
+    },
+    {
+      "ticker": "206640",
+      "name": "바디텍메드",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.25,
+      "both": false
+    },
+    {
+      "ticker": "174900",
+      "name": "앱클론",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.23,
+      "both": false
+    },
+    {
+      "ticker": "089890",
+      "name": "코세스",
+      "sector": "미분류",
+      "time_weight": null,
+      "koact_weight": 0.19,
+      "both": false
+    },
+    {
+      "ticker": "125490",
+      "name": "한라캐스트",
+      "sector": "자동차부품",
+      "time_weight": null,
+      "koact_weight": 0.17,
+      "both": false
+    },
+    {
+      "ticker": "399720",
+      "name": "가온칩스",
+      "sector": "반도체",
+      "time_weight": null,
+      "koact_weight": 0.17,
+      "both": false
+    },
+    {
+      "ticker": "241710",
+      "name": "코스메카코리아",
+      "sector": "화장품",
+      "time_weight": null,
+      "koact_weight": 0.15,
+      "both": false
+    },
+    {
+      "ticker": "287840",
+      "name": "인투셀",
+      "sector": "바이오",
+      "time_weight": null,
+      "koact_weight": 0.13,
+      "both": false
+    },
+    {
+      "ticker": "278280",
+      "name": "천보",
+      "sector": "미분류",
+      "time_weight": null,
+      "koact_weight": 0.1,
       "both": false
     }
   ]
