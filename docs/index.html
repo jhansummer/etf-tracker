@@ -203,33 +203,12 @@ function updateUIVisibility(){
   if (activeTab === "compare" || activeTab === "history") {
     wb.style.display = "none";
     st.style.display = activeTab === "compare" ? "flex" : "none";
-    // 비교 탭에선 ETF 전용 sub-tabs만 보이도록
-    var allSubs = document.querySelectorAll(".sub-tab");
-    allSubs.forEach(function(b){
-      var v = b.dataset.view;
-      if (activeTab === "compare") {
-        b.style.display = "inline-block";
-      } else {
-        b.style.display = (v === "all" || v === "top10" || v === "sector") ? "inline-block" : "none";
-      }
-    });
   } else if (activeTab === "signals") {
     wb.style.display = "flex";
     st.style.display = "none";
   } else if (isETF) {
     wb.style.display = "flex";
     st.style.display = "flex";
-    // ETF 탭에선 pair 뷰 숨김
-    var allSubs = document.querySelectorAll(".sub-tab");
-    allSubs.forEach(function(b){
-      var v = b.dataset.view;
-      b.style.display = (v === "all" || v === "top10" || v === "sector") ? "inline-block" : "none";
-    });
-    // pair 뷰가 active였다면 all로 리셋
-    if (activeView.indexOf("pair-") === 0) {
-      activeView = "all";
-      allSubs.forEach(function(b){ b.classList.toggle("active", b.dataset.view === "all"); });
-    }
   }
 }
 
@@ -369,55 +348,66 @@ function renderCompare(el){
     renderCompareSectors(el);
     return;
   }
-  if (activeView === "pair-time-koact") {
-    renderComparePair(el, "time", "koact", "TIME 나스닥", "KoAct 나스닥", "var(--accent)", "var(--new)");
-    return;
-  }
-  if (activeView === "pair-kosdaq-pair") {
-    renderComparePair(el, "time_kosdaq", "kosdaq", "TIME 코스닥", "KoAct 코스닥", "#f59e0b", "#14b8a6");
-    return;
-  }
 
-  // 전체 종목 비교 (all / top10) — 나스닥 ETF 2개만 (time, koact)
+  var isTop10 = activeView === "top10";
+  var html = "";
+
+  // ── 나스닥 섹션 ──
+  html += buildPairSection("time", "koact", "TIME", "KoAct", "var(--accent)", "var(--new)", "나스닥", isTop10);
+  html += '<div style="height:24px"></div>';
+  // ── 코스닥 섹션 ──
+  html += buildPairSection("time_kosdaq", "kosdaq", "TIME", "KoAct", "#f59e0b", "#14b8a6", "코스닥", isTop10);
+
+  el.innerHTML = html;
+}
+
+function buildPairSection(keyA, keyB, labelA, labelB, colorA, colorB, marketLabel, isTop10){
   var allMap = {};
-  ["time","koact"].forEach(function(key){
+  [[keyA, "a"],[keyB, "b"]].forEach(function(pair){
+    var key = pair[0], side = pair[1];
     if (!DATA[key]) return;
     var weeks = DATA[key].weeks;
     if (!weeks.length) return;
-    var latest = weeks[weeks.length - 1];
-    latest.holdings.forEach(function(h){
+    weeks[weeks.length-1].holdings.forEach(function(h){
       if (h.signal === "removed") return;
-      if (!allMap[h.ticker]) allMap[h.ticker] = {ticker: h.ticker, name: h.name, sector: h.sector || "미분류", time: 0, koact: 0, count: 0};
-      allMap[h.ticker][key] = h.weight || 0;
+      if (!allMap[h.ticker]) allMap[h.ticker] = {ticker:h.ticker, name:h.name, a:0, b:0};
+      allMap[h.ticker][side] = h.weight || 0;
     });
   });
+
   var items = Object.values(allMap);
-  items.forEach(function(o){
-    o.count = (o.time > 0 ? 1 : 0) + (o.koact > 0 ? 1 : 0);
-  });
-  items.sort(function(a,b){ return (b.time + b.koact) - (a.time + a.koact); });
-  if (activeView === "top10") items = items.slice(0, 10);
+  items.sort(function(x,y){ return (y.a+y.b)-(x.a+x.b); });
+  if (isTop10) items = items.slice(0, 10);
+
+  if (!items.length) return "";
 
   var maxW = 0;
-  items.forEach(function(o){ maxW = Math.max(maxW, o.time, o.koact); });
+  items.forEach(function(o){ maxW = Math.max(maxW, o.a, o.b); });
   if (maxW === 0) maxW = 1;
 
-  var html = '<div class="cmp-legend"><span class="l-time">TIME 나스닥</span><span class="l-koact">KoAct 나스닥</span></div>';
+  var commonCount = items.filter(function(o){ return o.a > 0 && o.b > 0; }).length;
+
+  var html = '<div style="margin-bottom:6px;display:flex;align-items:center;gap:10px">'
+    + '<span style="font-size:13px;font-weight:800;color:var(--ink)">' + marketLabel + '</span>'
+    + '<span style="font-size:11px;color:var(--muted)">공통 ' + commonCount + '종목</span>'
+    + '<span style="font-size:11px;color:var(--muted);margin-left:auto">'
+    + '<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + colorA + ';margin-right:3px;vertical-align:middle"></span>' + labelA
+    + '&nbsp;&nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + colorB + ';margin-right:3px;vertical-align:middle"></span>' + labelB
+    + '</span></div>';
 
   items.forEach(function(o){
-    var bothBadge = o.count >= 2 ? '<span class="overlap-badge">공통</span>' : '';
+    var badge = (o.a>0&&o.b>0) ? '<span class="overlap-badge">공통</span>' : '';
     html += '<div class="cmp-row">'
       + '<div class="cmp-ticker">' + o.ticker + '</div>'
-      + '<div class="cmp-name">' + o.name + bothBadge + '</div>'
+      + '<div class="cmp-name">' + o.name + badge + '</div>'
       + '<div class="cmp-bars">'
-      + '<div class="cmp-bar time" style="width:' + (o.time/maxW*100) + '%"></div>'
-      + '<div class="cmp-bar koact" style="width:' + (o.koact/maxW*100) + '%"></div>'
+      + '<div class="cmp-bar" style="background:' + colorA + ';width:' + (o.a/maxW*100) + '%;height:100%;border-radius:3px;min-width:' + (o.a>0?'1px':'0') + '"></div>'
+      + '<div class="cmp-bar" style="background:' + colorB + ';width:' + (o.b/maxW*100) + '%;height:100%;border-radius:3px;min-width:' + (o.b>0?'1px':'0') + '"></div>'
       + '</div>'
-      + '<div class="cmp-val">' + o.time.toFixed(1) + '/' + o.koact.toFixed(1) + '</div>'
+      + '<div class="cmp-val">' + o.a.toFixed(1) + '/' + o.b.toFixed(1) + '</div>'
       + '</div>';
   });
-
-  el.innerHTML = html;
+  return html;
 }
 
 /* ── Pairwise Compare ── */
