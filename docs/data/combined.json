@@ -31079,7 +31079,7 @@
             "shares": 660,
             "value_krw": 30591000,
             "weight": 5.91,
-            "sector": "미분류",
+            "sector": "화장품",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31157,7 +31157,7 @@
             "shares": 500,
             "value_krw": 18600000,
             "weight": 3.59,
-            "sector": "미분류",
+            "sector": "반도체",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31209,7 +31209,7 @@
             "shares": 350,
             "value_krw": 16520000,
             "weight": 3.19,
-            "sector": "미분류",
+            "sector": "바이오",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31235,7 +31235,7 @@
             "shares": 223,
             "value_krw": 13469200,
             "weight": 2.6,
-            "sector": "미분류",
+            "sector": "바이오",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31313,7 +31313,7 @@
             "shares": 160,
             "value_krw": 10032000,
             "weight": 1.94,
-            "sector": "미분류",
+            "sector": "바이오",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31391,7 +31391,7 @@
             "shares": 149,
             "value_krw": 8627100,
             "weight": 1.67,
-            "sector": "미분류",
+            "sector": "게임",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31417,7 +31417,7 @@
             "shares": 200,
             "value_krw": 6700000,
             "weight": 1.29,
-            "sector": "미분류",
+            "sector": "반도체",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31430,7 +31430,7 @@
             "shares": 149,
             "value_krw": 6354850,
             "weight": 1.23,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31443,7 +31443,7 @@
             "shares": 50,
             "value_krw": 6350000,
             "weight": 1.23,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31469,7 +31469,7 @@
             "shares": 50,
             "value_krw": 6100000,
             "weight": 1.18,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31482,7 +31482,7 @@
             "shares": 200,
             "value_krw": 6090000,
             "weight": 1.18,
-            "sector": "미분류",
+            "sector": "자동차부품",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31547,7 +31547,7 @@
             "shares": 100,
             "value_krw": 4325000,
             "weight": 0.84,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31560,7 +31560,7 @@
             "shares": 45,
             "value_krw": 4315500,
             "weight": 0.83,
-            "sector": "미분류",
+            "sector": "바이오",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31586,7 +31586,7 @@
             "shares": 100,
             "value_krw": 3910000,
             "weight": 0.76,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31599,7 +31599,7 @@
             "shares": 100,
             "value_krw": 3465000,
             "weight": 0.67,
-            "sector": "미분류",
+            "sector": "반도체소재",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31651,7 +31651,7 @@
             "shares": 39,
             "value_krw": 3178500,
             "weight": 0.61,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31664,7 +31664,7 @@
             "shares": 150,
             "value_krw": 3150000,
             "weight": 0.61,
-            "sector": "미분류",
+            "sector": "산업재",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31677,7 +31677,7 @@
             "shares": 100,
             "value_krw": 3105000,
             "weight": 0.6,
-            "sector": "미분류",
+            "sector": "반도체장비",
             "signal": "hold",
             "prev_shares": null,
             "prev_weight": null,
@@ -31739,24 +31739,28 @@
         ],
         "sectors": [
           {
-            "sector": "미분류",
-            "weight": 29.93
+            "sector": "바이오",
+            "weight": 27.84
           },
           {
-            "sector": "바이오",
-            "weight": 19.28
+            "sector": "반도체장비",
+            "weight": 20.74
           },
           {
             "sector": "2차전지",
             "weight": 14.99
           },
           {
-            "sector": "반도체장비",
-            "weight": 14.29
+            "sector": "반도체",
+            "weight": 10.02
           },
           {
-            "sector": "반도체",
-            "weight": 5.14
+            "sector": "화장품",
+            "weight": 5.91
+          },
+          {
+            "sector": "반도체소재",
+            "weight": 3.74
           },
           {
             "sector": "광통신",
@@ -31767,10 +31771,6 @@
             "weight": 3.24
           },
           {
-            "sector": "반도체소재",
-            "weight": 3.07
-          },
-          {
             "sector": "로봇",
             "weight": 2.55
           },
@@ -31779,12 +31779,20 @@
             "weight": 2.29
           },
           {
-            "sector": "IT서비스",
-            "weight": 1.03
+            "sector": "게임",
+            "weight": 1.67
+          },
+          {
+            "sector": "자동차부품",
+            "weight": 1.18
           },
           {
             "sector": "산업재",
-            "weight": 0.53
+            "weight": 1.14
+          },
+          {
+            "sector": "IT서비스",
+            "weight": 1.03
           }
         ],
         "total_holdings": 51
@@ -32620,7 +32628,7 @@
     {
       "ticker": "257720",
       "name": "실리콘투",
-      "sector": "미분류",
+      "sector": "화장품",
       "time_weight": 5.91,
       "koact_weight": 0.48,
       "both": true
@@ -32724,7 +32732,7 @@
     {
       "ticker": "490470",
       "name": "세미파이브",
-      "sector": "미분류",
+      "sector": "반도체",
       "time_weight": 3.59,
       "koact_weight": null,
       "both": false
@@ -32764,7 +32772,7 @@
     {
       "ticker": "347700",
       "name": "스피어",
-      "sector": "미분류",
+      "sector": "바이오",
       "time_weight": 3.19,
       "koact_weight": null,
       "both": false
@@ -32772,7 +32780,7 @@
     {
       "ticker": "491000",
       "name": "리브스메드",
-      "sector": "미분류",
+      "sector": "바이오",
       "time_weight": 2.6,
       "koact_weight": null,
       "both": false
@@ -32844,7 +32852,7 @@
     {
       "ticker": "028300",
       "name": "HLB",
-      "sector": "미분류",
+      "sector": "바이오",
       "time_weight": 1.94,
       "koact_weight": null,
       "both": false
@@ -32892,7 +32900,7 @@
     {
       "ticker": "263750",
       "name": "펄어비스",
-      "sector": "미분류",
+      "sector": "게임",
       "time_weight": 1.67,
       "koact_weight": null,
       "both": false
@@ -32932,7 +32940,7 @@
     {
       "ticker": "330860",
       "name": "네패스아크",
-      "sector": "미분류",
+      "sector": "반도체",
       "time_weight": 1.29,
       "koact_weight": null,
       "both": false
@@ -32956,7 +32964,7 @@
     {
       "ticker": "084370",
       "name": "유진테크",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 1.23,
       "koact_weight": null,
       "both": false
@@ -32964,7 +32972,7 @@
     {
       "ticker": "403870",
       "name": "HPSP",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 1.23,
       "koact_weight": null,
       "both": false
@@ -32980,7 +32988,7 @@
     {
       "ticker": "240810",
       "name": "원익IPS",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 1.18,
       "koact_weight": null,
       "both": false
@@ -32988,7 +32996,7 @@
     {
       "ticker": "319400",
       "name": "현대무벡스",
-      "sector": "미분류",
+      "sector": "자동차부품",
       "time_weight": 1.18,
       "koact_weight": null,
       "both": false
@@ -33108,7 +33116,7 @@
     {
       "ticker": "458870",
       "name": "씨어스테크놀로지",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 0.84,
       "koact_weight": null,
       "both": false
@@ -33116,7 +33124,7 @@
     {
       "ticker": "214370",
       "name": "케어젠",
-      "sector": "미분류",
+      "sector": "바이오",
       "time_weight": 0.83,
       "koact_weight": null,
       "both": false
@@ -33132,7 +33140,7 @@
     {
       "ticker": "083450",
       "name": "GST",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 0.76,
       "koact_weight": null,
       "both": false
@@ -33140,7 +33148,7 @@
     {
       "ticker": "217590",
       "name": "티엠씨",
-      "sector": "미분류",
+      "sector": "반도체소재",
       "time_weight": 0.67,
       "koact_weight": null,
       "both": false
@@ -33148,7 +33156,7 @@
     {
       "ticker": "032820",
       "name": "우리기술",
-      "sector": "미분류",
+      "sector": "산업재",
       "time_weight": 0.61,
       "koact_weight": null,
       "both": false
@@ -33156,7 +33164,7 @@
     {
       "ticker": "319660",
       "name": "피에스케이",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 0.61,
       "koact_weight": null,
       "both": false
@@ -33164,7 +33172,7 @@
     {
       "ticker": "030530",
       "name": "원익홀딩스",
-      "sector": "미분류",
+      "sector": "반도체장비",
       "time_weight": 0.6,
       "koact_weight": null,
       "both": false
