@@ -224,12 +224,33 @@ function updateUIVisibility(){
   var es  = document.getElementById("etf-selector");
   var isETF = ETF_TABS.indexOf(activeTab) !== -1;
 
+  // ── 서브탭 버튼을 탭 컨텍스트에 맞게 교체 ──
+  var subBtns = st.querySelectorAll(".sub-tab");
+  if (isETF) {
+    // ETF 탭: 전체 종목 | TOP 10 | 섹터 분석
+    if (subBtns[1].dataset.view !== "top10") {
+      subBtns[1].textContent = "TOP 10";
+      subBtns[1].dataset.view = "top10";
+      // 비교탭에서 넘어올 때 공통·섹터 선택 상태 리셋
+      if (activeView === "common") activeView = "all";
+      subBtns.forEach(function(b){ b.classList.toggle("active", b.dataset.view === activeView); });
+    }
+  } else if (activeTab === "compare") {
+    // 비교 탭: 전체 종목 | 공통 | 섹터 분석
+    if (subBtns[1].dataset.view !== "common") {
+      subBtns[1].textContent = "공통";
+      subBtns[1].dataset.view = "common";
+      // ETF 탭에서 넘어올 때 top10 선택 상태 리셋
+      if (activeView === "top10") activeView = "all";
+      subBtns.forEach(function(b){ b.classList.toggle("active", b.dataset.view === activeView); });
+    }
+  }
+
   // ETF 셀렉터 버튼 텍스트를 시장에 맞게 업데이트
   if (activeTab === "kosdaq_market") {
     var btns = es.querySelectorAll(".sub-tab");
     btns[0].textContent = "TIME";  btns[0].dataset.etf = "time_kosdaq";
     btns[1].textContent = "KoAct"; btns[1].dataset.etf = "koact";
-    // active 표시
     btns[0].classList.toggle("active", activeEtf === "time_kosdaq");
     btns[1].classList.toggle("active", activeEtf === "koact");
   } else if (activeTab === "nasdaq") {
@@ -299,7 +320,7 @@ function renderETF(el, key){
   var holdings = week.holdings.filter(function(h){ return h.signal !== "removed"; });
   if (activeView === "top10") holdings = holdings.slice(0, 10);
 
-  var html = '<table class="tbl"><thead><tr>'
+  var html = '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="min-width:560px"><thead><tr>'
     + '<th>#</th><th>티커</th><th>종목명</th><th>섹터</th>'
     + '<th class="r">비중%</th><th class="r">수량</th>'
     + '<th class="r">비중변화</th><th>매매구분</th>'
@@ -321,7 +342,7 @@ function renderETF(el, key){
       + '</tr>';
   });
 
-  html += '</tbody></table>';
+  html += '</tbody></table></div>';
   el.innerHTML = html;
 }
 
@@ -739,7 +760,7 @@ function renderSignals(el){
     sigs.sort(function(a,b){ return (order[a.signal]||9) - (order[b.signal]||9) || (b.weight||0) - (a.weight||0); });
 
     html += '<h3 style="font-size:14px;font-weight:700;margin:20px 0 8px;color:var(--ink)">' + etf + '</h3>';
-    html += '<table class="tbl"><thead><tr>'
+    html += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="min-width:520px"><thead><tr>'
       + '<th>구분</th><th>티커</th><th>종목명</th><th>섹터</th>'
       + '<th class="r">비중%</th><th class="r">수량변화</th><th class="r">비중변화</th>'
       + '</tr></thead><tbody>';
