@@ -141,7 +141,7 @@ a{color:var(--accent2);text-decoration:none}
 
 <div class="sub-tabs" id="sub-tabs">
   <button class="sub-tab active" data-view="all">전체 종목</button>
-  <button class="sub-tab" data-view="top10">TOP 10</button>
+  <button class="sub-tab" data-view="common">공통</button>
   <button class="sub-tab" data-view="sector">섹터 분석</button>
 </div>
 
@@ -405,7 +405,7 @@ function renderCompare(el){
   el.innerHTML = html;
 }
 
-function buildPairSection(keyA, keyB, labelA, labelB, colorA, colorB, marketLabel, isTop10){
+function buildPairSection(keyA, keyB, labelA, labelB, colorA, colorB, marketLabel, marketKey, limit){
   var allMap = {};
   [[keyA, "a"],[keyB, "b"]].forEach(function(pair){
     var key = pair[0], side = pair[1];
@@ -419,19 +419,21 @@ function buildPairSection(keyA, keyB, labelA, labelB, colorA, colorB, marketLabe
     });
   });
 
-  var items = Object.values(allMap);
-  items.sort(function(x,y){ return (y.a+y.b)-(x.a+x.b); });
-  if (isTop10) items = items.slice(0, 10);
+  var allItems = Object.values(allMap);
+  allItems.sort(function(x,y){ return (y.a+y.b)-(x.a+x.b); });
+  var totalCount = allItems.length;
+  var items = (limit != null) ? allItems.slice(0, limit) : allItems;
 
   if (!items.length) return "";
 
   var maxW = 0;
-  items.forEach(function(o){ maxW = Math.max(maxW, o.a, o.b); });
+  allItems.forEach(function(o){ maxW = Math.max(maxW, o.a, o.b); });
   if (maxW === 0) maxW = 1;
 
-  var commonCount = items.filter(function(o){ return o.a > 0 && o.b > 0; }).length;
+  var commonCount = allItems.filter(function(o){ return o.a > 0 && o.b > 0; }).length;
 
-  var html = '<div style="margin-bottom:6px;display:flex;align-items:center;gap:10px">'
+  var html = '<div data-market-section="' + marketKey + '">';
+  html += '<div style="margin-bottom:6px;display:flex;align-items:center;gap:10px">'
     + '<span style="font-size:13px;font-weight:800;color:var(--ink)">' + marketLabel + '</span>'
     + '<span style="font-size:11px;color:var(--muted)">공통 ' + commonCount + '종목</span>'
     + '<span style="font-size:11px;color:var(--muted);margin-left:auto">'
@@ -451,6 +453,13 @@ function buildPairSection(keyA, keyB, labelA, labelB, colorA, colorB, marketLabe
       + '<div class="cmp-val">' + o.a.toFixed(1) + '/' + o.b.toFixed(1) + '</div>'
       + '</div>';
   });
+
+  if (limit != null && totalCount > limit) {
+    html += '<div style="text-align:center;margin-top:8px">'
+      + '<button class="expand-btn" data-market="' + marketKey + '" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:12px;padding:6px 20px;border-radius:20px;cursor:pointer">'
+      + '▼ 전체보기 (' + totalCount + '개)</button></div>';
+  }
+  html += '</div>';
   return html;
 }
 
