@@ -374,15 +374,19 @@ def crawl_ark(date_str, key="arkk"):
     holdings = []
     csv_date = None
 
+    def _s(v):
+        """None-safe strip"""
+        return (v or "").strip()
+
     for row in reader:
-        # 열 이름 정규화 (대소문자 무관)
-        row_lower = {k.strip().lower(): v for k, v in row.items() if k}
-        ticker = row_lower.get("ticker", "").strip()
-        name   = row_lower.get("company", "").strip()
-        shares_str = row_lower.get("shares", "")
-        weight_str = row_lower.get("weight (%)", "") or row_lower.get("weight", "")
-        value_str  = row_lower.get("market value ($)", "") or row_lower.get("market value", "")
-        date_val   = row_lower.get("date", "")
+        # 열 이름 정규화 (대소문자 무관, None-safe)
+        row_lower = {k.strip().lower(): v for k, v in row.items() if k and k.strip()}
+        ticker = _s(row_lower.get("ticker"))
+        name   = _s(row_lower.get("company"))
+        shares_str = _s(row_lower.get("shares"))
+        weight_str = _s(row_lower.get("weight (%)")) or _s(row_lower.get("weight"))
+        value_str  = _s(row_lower.get("market value ($)")) or _s(row_lower.get("market value"))
+        date_val   = _s(row_lower.get("date"))
 
         if not ticker or ticker in ("-", "USD"):
             continue
