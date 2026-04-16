@@ -117,7 +117,7 @@ a{color:var(--accent2);text-decoration:none}
 <body>
 
 <div class="header">
-  <h1>ETF Portfolio Tracker<span>Active ETF Weekly Monitor</span></h1>
+  <h1>ETF Portfolio Tracker<span>Active ETF Daily Monitor</span></h1>
   <div class="header-sub">TIME 미국나스닥100액티브 &middot; KoAct 미국나스닥성장기업액티브 &middot; KoAct 코스닥액티브 &middot; TIME 코스닥액티브</div>
 </div>
 
@@ -189,8 +189,19 @@ document.getElementById("tabs").addEventListener("click", function(e){
   var btn = e.target.closest(".tab");
   if (!btn) return;
   activeTab = btn.dataset.tab;
+  // 나스닥↔코스닥 전환 시 ETF 선택 초기화
+  if (activeTab === "nasdaq") activeEtf = "time";
+  if (activeTab === "kosdaq_market") activeEtf = "time_kosdaq";
   document.querySelectorAll(".tab").forEach(function(b){ b.classList.toggle("active", b.dataset.tab === activeTab); });
   updateUIVisibility();
+  render();
+});
+
+document.getElementById("etf-selector").addEventListener("click", function(e){
+  var btn = e.target.closest(".sub-tab");
+  if (!btn) return;
+  activeEtf = btn.dataset.etf;
+  document.querySelectorAll("#etf-selector .sub-tab").forEach(function(b){ b.classList.toggle("active", b.dataset.etf === activeEtf); });
   render();
 });
 
@@ -198,7 +209,7 @@ document.getElementById("sub-tabs").addEventListener("click", function(e){
   var btn = e.target.closest(".sub-tab");
   if (!btn) return;
   activeView = btn.dataset.view;
-  document.querySelectorAll(".sub-tab").forEach(function(b){ b.classList.toggle("active", b.dataset.view === activeView); });
+  document.querySelectorAll("#sub-tabs .sub-tab").forEach(function(b){ b.classList.toggle("active", b.dataset.view === activeView); });
   render();
 });
 
@@ -208,26 +219,48 @@ document.getElementById("week-select").addEventListener("change", function(){
 });
 
 function updateUIVisibility(){
-  var wb = document.getElementById("week-bar");
-  var st = document.getElementById("sub-tabs");
+  var wb  = document.getElementById("week-bar");
+  var st  = document.getElementById("sub-tabs");
+  var es  = document.getElementById("etf-selector");
   var isETF = ETF_TABS.indexOf(activeTab) !== -1;
+
+  // ETF 셀렉터 버튼 텍스트를 시장에 맞게 업데이트
+  if (activeTab === "kosdaq_market") {
+    var btns = es.querySelectorAll(".sub-tab");
+    btns[0].textContent = "TIME";  btns[0].dataset.etf = "time_kosdaq";
+    btns[1].textContent = "KoAct"; btns[1].dataset.etf = "koact";
+    // active 표시
+    btns[0].classList.toggle("active", activeEtf === "time_kosdaq");
+    btns[1].classList.toggle("active", activeEtf === "koact");
+  } else if (activeTab === "nasdaq") {
+    var btns = es.querySelectorAll(".sub-tab");
+    btns[0].textContent = "TIME";  btns[0].dataset.etf = "time";
+    btns[1].textContent = "KoAct"; btns[1].dataset.etf = "koact";
+    btns[0].classList.toggle("active", activeEtf === "time");
+    btns[1].classList.toggle("active", activeEtf === "koact");
+  }
+
   if (activeTab === "compare" || activeTab === "history") {
     wb.style.display = "none";
+    es.style.display = "none";
     st.style.display = activeTab === "compare" ? "flex" : "none";
   } else if (activeTab === "signals") {
     wb.style.display = "flex";
+    es.style.display = "none";
     st.style.display = "none";
   } else if (isETF) {
     wb.style.display = "flex";
+    es.style.display = "flex";
     st.style.display = "flex";
   }
 }
 
 function initWeekSelect(){
   var sel = document.getElementById("week-select");
-  // 가장 긴 weeks 배열 사용
-  var weeks = DATA.time.weeks;
-  ["koact","kosdaq","time_kosdaq"].forEach(function(k){
+  // 현재 선택된 ETF 기준 weeks 사용
+  var key = activeEtfKey();
+  var weeks = (DATA[key] && DATA[key].weeks.length) ? DATA[key].weeks : DATA.time.weeks;
+  ["time","koact","kosdaq","time_kosdaq"].forEach(function(k){
     if (DATA[k] && DATA[k].weeks.length > weeks.length) weeks = DATA[k].weeks;
   });
   sel.innerHTML = "";
@@ -245,7 +278,7 @@ function initWeekSelect(){
 function render(){
   var el = document.getElementById("content");
   if (!DATA) return;
-  if (ETF_TABS.indexOf(activeTab) !== -1) renderETF(el, activeTab);
+  if (ETF_TABS.indexOf(activeTab) !== -1) renderETF(el, activeEtfKey());
   else if (activeTab === "compare") renderCompare(el);
   else if (activeTab === "signals") renderSignals(el);
   else if (activeTab === "history") renderHistory(el);
