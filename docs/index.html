@@ -388,21 +388,34 @@ function renderSectorView(el, week, key){
 
 /* ── Compare Tab ── */
 function renderCompare(el){
-  if (activeView === "sector") {
-    renderCompareSectors(el);
-    return;
-  }
+  if (activeView === "sector") { renderCompareSectors(el); return; }
+  if (activeView === "common") { renderCompareCommon(el); return; }
 
-  var isTop10 = activeView === "top10";
+  // "all" view: show top 10 by default, expand to all on click
+  var limit = 10;
   var html = "";
-
-  // ── 나스닥 섹션 ──
-  html += buildPairSection("time", "koact", "TIME", "KoAct", "var(--accent)", "var(--new)", "나스닥", isTop10);
+  html += buildPairSection("time", "koact", "TIME", "KoAct", "var(--accent)", "var(--new)", "나스닥", "nasdaq", limit);
   html += '<div style="height:24px"></div>';
-  // ── 코스닥 섹션 ──
-  html += buildPairSection("time_kosdaq", "kosdaq", "TIME", "KoAct", "#f59e0b", "#14b8a6", "코스닥", isTop10);
+  html += buildPairSection("time_kosdaq", "kosdaq", "TIME", "KoAct", "#f59e0b", "#14b8a6", "코스닥", "kosdaq", limit);
 
   el.innerHTML = html;
+
+  // Expand button listeners
+  el.querySelectorAll(".expand-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var market = btn.dataset.market;
+      var section = el.querySelector('[data-market-section="' + market + '"]');
+      if (!section) return;
+      var newHtml;
+      if (market === "nasdaq")
+        newHtml = buildPairSection("time", "koact", "TIME", "KoAct", "var(--accent)", "var(--new)", "나스닥", "nasdaq", null);
+      else
+        newHtml = buildPairSection("time_kosdaq", "kosdaq", "TIME", "KoAct", "#f59e0b", "#14b8a6", "코스닥", "kosdaq", null);
+      var tmp = document.createElement("div");
+      tmp.innerHTML = newHtml;
+      section.replaceWith(tmp.firstElementChild);
+    });
+  });
 }
 
 function buildPairSection(keyA, keyB, labelA, labelB, colorA, colorB, marketLabel, marketKey, limit){
@@ -516,6 +529,65 @@ function renderComparePair(el, keyA, keyB, labelA, labelB, colorA, colorB){
   });
 
   el.innerHTML = html;
+}
+
+function getCommonItems(keyA, keyB){
+  var allMap = {};
+  [[keyA, "a"],[keyB, "b"]].forEach(function(pair){
+    var key = pair[0], side = pair[1];
+    if (!DATA[key]) return;
+    var weeks = DATA[key].weeks;
+    if (!weeks.length) return;
+    weeks[weeks.length-1].holdings.forEach(function(h){
+      if (h.signal === "removed") return;
+      if (!allMap[h.ticker]) allMap[h.ticker] = {ticker:h.ticker, name:h.name, a:0, b:0};
+      allMap[h.ticker][side] = h.weight || 0;
+    });
+  });
+  var items = Object.values(allMap).filter(function(o){ return o.a > 0 && o.b > 0; });
+  items.sort(function(x,y){ return (y.a+y.b)-(x.a+x.b); });
+  return items;
+}
+
+function renderCompareCommon(el){
+  var sections = [
+    {keyA:"time", keyB:"koact", labelA:"TIME", labelB:"KoAct", colorA:"var(--accent)", colorB:"var(--new)", market:"나스닥"},
+    {keyA:"time_kosdaq", keyB:"kosdaq", labelA:"TIME", labelB:"KoAct", colorA:"#f59e0b", colorB:"#14b8a6", market:"코스닥"},
+  ];
+
+  var html = "";
+  sections.forEach(function(s){
+    var items = getCommonItems(s.keyA, s.keyB);
+    if (!items.length) return;
+    var maxW = 0;
+    items.forEach(function(o){ maxW = Math.max(maxW, o.a, o.b); });
+    if (maxW === 0) maxW = 1;
+
+    html += '<div style="margin-bottom:24px">';
+    html += '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px">'
+      + '<span style="font-size:13px;font-weight:800;color:var(--ink)">' + s.market + '</span>'
+      + '<span style="font-size:11px;color:var(--muted)">공통 ' + items.length + '종목</span>'
+      + '<span style="font-size:11px;color:var(--muted);margin-left:auto">'
+      + '<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + s.colorA + ';margin-right:3px;vertical-align:middle"></span>' + s.labelA
+      + '&nbsp;&nbsp;<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + s.colorB + ';margin-right:3px;vertical-align:middle"></span>' + s.labelB
+      + '</span></div>';
+
+    items.forEach(function(o, i){
+      html += '<div class="cmp-row">'
+        + '<div class="cmp-ticker" style="color:var(--muted);text-align:right;width:22px;flex-shrink:0;font-size:11px">' + (i+1) + '</div>'
+        + '<div class="cmp-ticker" style="width:50px">' + o.ticker + '</div>'
+        + '<div class="cmp-name">' + o.name + '<span class="overlap-badge">공통</span></div>'
+        + '<div class="cmp-bars">'
+        + '<div class="cmp-bar" style="background:' + s.colorA + ';width:' + (o.a/maxW*100) + '%;height:100%;border-radius:3px;min-width:1px"></div>'
+        + '<div class="cmp-bar" style="background:' + s.colorB + ';width:' + (o.b/maxW*100) + '%;height:100%;border-radius:3px;min-width:1px"></div>'
+        + '</div>'
+        + '<div class="cmp-val">' + o.a.toFixed(1) + '/' + o.b.toFixed(1) + '</div>'
+        + '</div>';
+    });
+    html += '</div>';
+  });
+
+  el.innerHTML = html || '<div class="empty">공통 종목이 없습니다.</div>';
 }
 
 function renderCompareSectors(el){
