@@ -195,9 +195,11 @@ document.getElementById("tabs").addEventListener("click", function(e){
   var btn = e.target.closest(".tab");
   if (!btn) return;
   activeTab = btn.dataset.tab;
-  // 나스닥↔코스닥 전환 시 ETF 선택 초기화
+  // 탭 전환 시 ETF 선택 초기화
   if (activeTab === "nasdaq") activeEtf = "time";
   if (activeTab === "kosdaq_market") activeEtf = "time_kosdaq";
+  // ARK 선택 상태에서 다른 탭으로 이동했다가 돌아오면 TIME으로 리셋
+  if (activeEtf === "ark" && activeTab !== "nasdaq") activeEtf = "time";
   document.querySelectorAll(".tab").forEach(function(b){ b.classList.toggle("active", b.dataset.tab === activeTab); });
   updateUIVisibility();
   render();
@@ -723,7 +725,7 @@ function renderSignals(el){
   // 각 ETF에서 선택된 날짜의 시그널 수집
   var etfSignals = {};
   var selectedDate = "";
-  ["time","koact","kosdaq","time_kosdaq"].forEach(function(key){
+  ["time","koact","kosdaq","time_kosdaq","arkk"].forEach(function(key){
     if (!DATA[key]) return;
     var weeks = DATA[key].weeks;
     if (!weeks.length) return;
@@ -804,11 +806,11 @@ function renderHistory(el){
   // 종목별 최신 비중 + 소속 ETF 수집
   var tickerInfo = {};
   var etfGroups = {
-    nasdaq: ["time","koact"],
+    nasdaq: ["time","koact","arkk"],
     kosdaq: ["kosdaq","time_kosdaq"]
   };
 
-  ["time","koact","kosdaq","time_kosdaq"].forEach(function(key){
+  ["time","koact","kosdaq","time_kosdaq","arkk"].forEach(function(key){
     if (!DATA[key]) return;
     var hist = DATA[key].history || {};
     Object.keys(hist).forEach(function(t){
@@ -895,10 +897,11 @@ function drawHistoryChart(ticker){
     koact:       {label:"KoAct 나스닥", border:"#a78bfa", bg:"rgba(167,139,250,0.1)"},
     kosdaq:      {label:"KoAct 코스닥", border:"#14b8a6", bg:"rgba(20,184,166,0.1)"},
     time_kosdaq: {label:"TIME 코스닥",  border:"#f59e0b", bg:"rgba(245,158,11,0.1)"},
+    arkk:        {label:"ARKK",         border:"#ef4444", bg:"rgba(239,68,68,0.1)"},
   };
 
   var allDates = new Set();
-  ["time","koact","kosdaq","time_kosdaq"].forEach(function(key){
+  ["time","koact","kosdaq","time_kosdaq","arkk"].forEach(function(key){
     if (!DATA[key]) return;
     var hist = (DATA[key].history || {})[ticker];
     if (hist) hist.forEach(function(p){ allDates.add(p.date); });
@@ -907,7 +910,7 @@ function drawHistoryChart(ticker){
 
   var weightDatasets = [], sharesDatasets = [];
 
-  ["time","koact","kosdaq","time_kosdaq"].forEach(function(key){
+  ["time","koact","kosdaq","time_kosdaq","arkk"].forEach(function(key){
     if (!DATA[key]) return;
     var hist = (DATA[key].history || {})[ticker];
     if (!hist) return;
