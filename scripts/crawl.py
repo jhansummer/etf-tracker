@@ -8,8 +8,9 @@ ETF 포트폴리오 자동 크롤링
   python scripts/crawl.py 2026-04-04 koact        # KoAct만
   python scripts/crawl.py 2026-04-04 time_kosdaq  # TIME 코스닥액티브만
   python scripts/crawl.py 2026-04-04 kosdaq       # KoAct 코스닥만
+  python scripts/crawl.py 2026-04-04 arkk         # ARK Innovation ETF만
 """
-import sys, json, re, os, time as _time
+import sys, json, re, os, time as _time, csv, io
 from pathlib import Path
 from datetime import date, datetime
 from html.parser import HTMLParser
@@ -327,6 +328,122 @@ def crawl_samsung(date_str, key="koact"):
 
 
 # ══════════════════════════════════════════════
+#  ARK Invest ETF — 일간 CSV (assets.ark-funds.com)
+# ══════════════════════════════════════════════
+
+ARK_ETFS = {
+    "arkk": {
+        "etf": "ARKK",
+        "code": "ARKK",
+        "label": "ARK Innovation",
+        "file_prefix": "arkk",
+        "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv",
+    },
+    "arkq": {
+        "etf": "ARKQ",
+        "code": "ARKQ",
+        "label": "ARK Autonomous Tech",
+        "file_prefix": "arkq",
+        "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
+    },
+    "arkw": {
+        "etf": "ARKW",
+        "code": "ARKW",
+        "label": "ARK Next Gen Internet",
+        "file_prefix": "arkw",
+        "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv",
+    },
+}
+
+
+def crawl_ark(date_str, key="arkk"):
+    meta = ARK_ETFS[key]
+    label = meta["label"]
+    print(f"[{label}] ARK Holdings CSV 크롤링 중...")
+
+    try:
+        raw = fetch_url(meta["url"], extra_headers={"Accept": "text/csv,*/*"})
+        text = raw.decode("utf-8", errors="replace")
+    except Exception as e:
+        print(f"[{label}] 다운로드 실패: {e}")
+        return None
+
+    # CSV 파싱
+    reader = csv.DictReader(io.StringIO(text))
+    sector_map = load_sector_map()
+    holdings = []
+    csv_date = None
+
+    for row in reader:
+        # 열 이름 정규화 (대소문자 무관)
+        row_lower = {k.strip().lower(): v for k, v in row.items() if k}
+        ticker = row_lower.get("ticker", "").strip()
+        name   = row_lower.get("company", "").strip()
+        shares_str = row_lower.get("shares", "")
+        weight_str = row_lower.get("weight (%)", "") or row_lower.get("weight", "")
+        value_str  = row_lower.get("market value ($)", "") or row_lower.get("market value", "")
+        date_val   = row_lower.get("date", "")
+
+        if not ticker or ticker in ("-", "USD"):
+            continue
+        if "CASH" in ticker.upper() or not name:
+            continue
+
+        # CSV 날짜 파싱 (MM/DD/YYYY)
+        if date_val and not csv_date:
+            try:
+                csv_date = datetime.strptime(date_val.strip(), "%m/%d/%Y").strftime("%Y-%m-%d")
+            except Exception:
+                pass
+
+        shares    = parse_number_str(shares_str)
+        weight    = parse_float_str(weight_str)
+        value_usd = parse_float_str(value_str)
+
+        if weight is None or weight == 0:
+            continue
+
+        sector = sector_map.get(ticker, "미분류")
+        holdings.append({
+            "ticker":    ticker,
+            "name":      name,
+            "shares":    shares,
+            "value_krw": None,        # USD 펀드 — KRW 없음
+            "value_usd": value_usd,
+            "weight":    weight,
+            "sector":    sector,
+        })
+        if ticker not in sector_map:
+            sector_map[ticker] = "미분류"
+
+    if not holdings:
+        print(f"[{label}] 종목 데이터를 파싱하지 못했습니다.")
+        return None
+
+    effective_date = csv_date or date_str
+    save_sector_map(sector_map)
+
+    snapshot = {
+        "etf":          meta["etf"],
+        "code":         meta["code"],
+        "date":         effective_date,
+        "nav":          None,
+        "aum_billion":  None,
+        "holdings":     holdings,
+    }
+
+    out_path = DATA / f"{meta['file_prefix']}_{effective_date}.json"
+    out_path.write_text(
+        json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(f"[{label}] 저장: {out_path} ({len(holdings)}종목, 날짜:{effective_date})")
+    unmapped = [h["ticker"] for h in holdings if h["sector"] == "미분류"]
+    if unmapped:
+        print(f"[{label}] 미분류 섹터: {', '.join(unmapped[:20])}{'...' if len(unmapped) > 20 else ''}")
+    return snapshot
+
+
+# ══════════════════════════════════════════════
 #  메인
 # ══════════════════════════════════════════════
 
@@ -369,6 +486,14 @@ def main():
         except Exception as e:
             print(f"[코스닥] 크롤링 실패: {e}")
             results["kosdaq"] = False
+        print()
+
+    if target in ("all", "arkk"):
+        try:
+            results["arkk"] = crawl_ark(date_str, "arkk") is not None
+        except Exception as e:
+            print(f"[ARKK] 크롤링 실패: {e}")
+            results["arkk"] = False
         print()
 
     # 하나라도 성공하면 빌드
