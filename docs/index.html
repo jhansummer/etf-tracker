@@ -122,14 +122,17 @@ a{color:var(--accent2);text-decoration:none}
 </div>
 
 <nav class="tabs" id="tabs">
-  <button class="tab active" data-tab="time">TIME 나스닥</button>
-  <button class="tab" data-tab="koact">KoAct 나스닥</button>
-  <button class="tab" data-tab="kosdaq">KoAct 코스닥</button>
-  <button class="tab" data-tab="time_kosdaq">TIME 코스닥</button>
+  <button class="tab active" data-tab="nasdaq">나스닥</button>
+  <button class="tab" data-tab="kosdaq_market">코스닥</button>
   <button class="tab" data-tab="compare">비교</button>
   <button class="tab" data-tab="signals">시그널</button>
   <button class="tab" data-tab="history">히스토리</button>
 </nav>
+
+<div class="sub-tabs" id="etf-selector">
+  <button class="sub-tab active" data-etf="time">TIME</button>
+  <button class="sub-tab" data-etf="koact">KoAct</button>
+</div>
 
 <div class="week-bar" id="week-bar">
   <label>주차</label>
@@ -147,8 +150,16 @@ a{color:var(--accent2);text-decoration:none}
 <script>
 /* ── Data & State ── */
 var DATA = null;
-var activeTab = "time";
-var ETF_TABS = ["time", "koact", "kosdaq", "time_kosdaq"];
+var activeTab = "nasdaq";      // nasdaq | kosdaq_market | compare | signals | history
+var activeEtf = "time";        // time | koact (nasdaq) / time_kosdaq | kosdaq (kosdaq_market)
+var ETF_TABS = ["nasdaq", "kosdaq_market"];
+
+// 현재 실제 ETF 데이터 키 반환
+function activeEtfKey(){
+  if (activeTab === "nasdaq") return activeEtf === "koact" ? "koact" : "time";
+  if (activeTab === "kosdaq_market") return activeEtf === "koact" ? "kosdaq" : "time_kosdaq";
+  return "time";
+}
 var activeView = "all";
 var activeWeekIdx = -1; // -1 = latest
 
