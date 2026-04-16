@@ -36,6 +36,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "daily update $(date +%F): auto-crawl"
+            git commit -m "daily update $(TZ=Asia/Seoul date +%F): auto-crawl"
+            # 원격에 새 커밋이 있으면 rebase 후 push
+            git pull --rebase origin main || true
             git push
           fi
