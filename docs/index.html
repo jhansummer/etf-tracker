@@ -466,52 +466,95 @@ function renderComparePair(el, keyA, keyB, labelA, labelB, colorA, colorB){
 }
 
 function renderCompareSectors(el){
-  var sectorMap = {};
-  var etfMeta = [
-    {key:"time", label:"TIME 나스닥", color:"#6366f1"},
-    {key:"koact", label:"KoAct 나스닥", color:"#a78bfa"},
-    {key:"kosdaq", label:"KoAct 코스닥", color:"#14b8a6"},
-    {key:"time_kosdaq", label:"TIME 코스닥", color:"#f59e0b"},
+  var groups = [
+    {
+      label: "나스닥",
+      etfs: [
+        {key:"time",  label:"TIME",  color:"#6366f1"},
+        {key:"koact", label:"KoAct", color:"#a78bfa"},
+      ]
+    },
+    {
+      label: "코스닥",
+      etfs: [
+        {key:"time_kosdaq", label:"TIME",  color:"#f59e0b"},
+        {key:"kosdaq",      label:"KoAct", color:"#14b8a6"},
+      ]
+    }
   ];
-  etfMeta.forEach(function(m){
-    if (!DATA[m.key]) return;
-    var weeks = DATA[m.key].weeks;
-    if (!weeks.length) return;
-    var sectors = weeks[weeks.length-1].sectors || [];
-    sectors.forEach(function(s){
-      if (!sectorMap[s.sector]) sectorMap[s.sector] = {time:0, koact:0, kosdaq:0, time_kosdaq:0};
-      sectorMap[s.sector][m.key] = s.weight;
+
+  var html = '<div style="display:flex;flex-direction:column;gap:20px">';
+
+  groups.forEach(function(group, gi){
+    var sectorMap = {};
+    group.etfs.forEach(function(m){
+      if (!DATA[m.key]) return;
+      var weeks = DATA[m.key].weeks;
+      if (!weeks.length) return;
+      var sectors = weeks[weeks.length-1].sectors || [];
+      sectors.forEach(function(s){
+        if (!sectorMap[s.sector]) sectorMap[s.sector] = {};
+        sectorMap[s.sector][m.key] = s.weight;
+      });
     });
+    if (!Object.keys(sectorMap).length) return;
+
+    var labels = Object.keys(sectorMap).sort(function(a,b){
+      var sa = group.etfs.reduce(function(s,m){ return s+(sectorMap[a][m.key]||0); },0);
+      var sb = group.etfs.reduce(function(s,m){ return s+(sectorMap[b][m.key]||0); },0);
+      return sb - sa;
+    });
+
+    html += '<div class="chart-card"><h3>' + group.label + ' — 섹터 비중</h3>'
+      + '<canvas id="sector-compare-chart-' + gi + '" height="300"></canvas></div>';
   });
 
-  if (!Object.keys(sectorMap).length){ el.innerHTML = '<div class="empty">데이터 없음</div>'; return; }
-
-  var labels = Object.keys(sectorMap).sort(function(a,b){
-    var sa = sectorMap[a]; var sb = sectorMap[b];
-    return (sb.time+sb.koact+sb.kosdaq+sb.time_kosdaq) - (sa.time+sa.koact+sa.kosdaq+sa.time_kosdaq);
-  });
-
-  var html = '<div class="chart-card"><h3>섹터 비중 비교</h3><canvas id="sector-compare-chart" height="400"></canvas></div>';
+  html += '</div>';
   el.innerHTML = html;
 
-  var ctx = document.getElementById("sector-compare-chart");
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: etfMeta.map(function(m){
-        return {label: m.label, data: labels.map(function(l){ return sectorMap[l][m.key] || 0; }), backgroundColor: m.color};
-      })
-    },
-    options: {
-      responsive: true,
-      indexAxis: "y",
-      scales: {
-        x: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}},
-        y: {grid:{display:false}, ticks:{color:"#e4e6ed", font:{size:11}}}
+  groups.forEach(function(group, gi){
+    var sectorMap = {};
+    group.etfs.forEach(function(m){
+      if (!DATA[m.key]) return;
+      var weeks = DATA[m.key].weeks;
+      if (!weeks.length) return;
+      (weeks[weeks.length-1].sectors || []).forEach(function(s){
+        if (!sectorMap[s.sector]) sectorMap[s.sector] = {};
+        sectorMap[s.sector][m.key] = s.weight;
+      });
+    });
+    if (!Object.keys(sectorMap).length) return;
+
+    var labels = Object.keys(sectorMap).sort(function(a,b){
+      var sa = group.etfs.reduce(function(s,m){ return s+(sectorMap[a][m.key]||0); },0);
+      var sb = group.etfs.reduce(function(s,m){ return s+(sectorMap[b][m.key]||0); },0);
+      return sb - sa;
+    });
+
+    var ctx = document.getElementById("sector-compare-chart-" + gi);
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: group.etfs.map(function(m){
+          return {
+            label: m.label,
+            data: labels.map(function(l){ return sectorMap[l][m.key] || 0; }),
+            backgroundColor: m.color
+          };
+        })
       },
-      plugins: {legend:{labels:{color:"#8b8fa3"}}}
-    }
+      options: {
+        responsive: true,
+        indexAxis: "y",
+        scales: {
+          x: {grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}},
+          y: {grid:{display:false}, ticks:{color:"#e4e6ed", font:{size:11}}}
+        },
+        plugins: {legend:{labels:{color:"#8b8fa3"}}}
+      }
+    });
   });
 }
 
