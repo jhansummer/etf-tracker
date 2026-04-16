@@ -4,7 +4,8 @@
     "time",
     "koact",
     "kosdaq",
-    "time_kosdaq"
+    "time_kosdaq",
+    "arkk"
   ],
   "time": {
     "weeks": [
@@ -32157,6 +32158,10 @@
         }
       ]
     }
+  },
+  "arkk": {
+    "weeks": [],
+    "history": {}
   },
   "overlap": [
     {
