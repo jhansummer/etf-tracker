@@ -47,9 +47,11 @@ a{color:var(--accent2);text-decoration:none}
 .content{max-width:1200px;margin:0 auto;padding:16px 24px}
 
 /* Table */
-.tbl{width:100%;border-collapse:collapse;font-size:12px}
-.tbl th{text-align:left;padding:8px 10px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--border);font-size:11px;position:sticky;top:0;background:var(--bg);z-index:1}
-.tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;table-layout:auto}
+.tbl th{text-align:left;padding:8px 10px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--border);font-size:11px;white-space:nowrap;background:var(--bg)}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+.tbl .name-cell{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl .sector-cell{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
 .tbl tbody tr:hover{background:var(--surface)}
 .tbl .r{text-align:right}
 .tbl .ticker{font-weight:700;color:var(--accent2)}
@@ -331,14 +333,14 @@ function renderETF(el, key){
     var wchg = h.weight_chg != null ? (h.weight_chg > 0 ? "+" : "") + h.weight_chg.toFixed(2) : "-";
     var wchgColor = h.weight_chg > 0 ? "var(--up)" : h.weight_chg < 0 ? "var(--down)" : "var(--muted)";
     html += '<tr>'
-      + '<td style="color:var(--muted)">' + (i+1) + '</td>'
-      + '<td class="ticker">' + h.ticker + '</td>'
-      + '<td>' + h.name + '</td>'
-      + '<td style="color:var(--muted)">' + (h.sector || "") + '</td>'
-      + '<td class="r" style="font-weight:700">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
-      + '<td class="r">' + (h.shares != null ? h.shares.toLocaleString() : "-") + '</td>'
-      + '<td class="r" style="color:' + wchgColor + '">' + wchg + '</td>'
-      + '<td><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
+      + '<td style="color:var(--muted);width:28px">' + (i+1) + '</td>'
+      + '<td class="ticker" style="width:62px">' + h.ticker + '</td>'
+      + '<td class="name-cell" title="' + h.name + '">' + h.name + '</td>'
+      + '<td class="sector-cell" title="' + (h.sector||"") + '">' + (h.sector || "") + '</td>'
+      + '<td class="r" style="font-weight:700;width:54px">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
+      + '<td class="r" style="width:80px">' + (h.shares != null ? h.shares.toLocaleString() : "-") + '</td>'
+      + '<td class="r" style="color:' + wchgColor + ';width:60px">' + wchg + '</td>'
+      + '<td style="width:76px"><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
       + '</tr>';
   });
 
@@ -772,13 +774,13 @@ function renderSignals(el){
       var schg = h.shares_chg_pct != null ? (h.shares_chg_pct > 0 ? "+" : "") + h.shares_chg_pct.toFixed(1) + "%" : "-";
       var schgColor = h.shares_chg_pct > 0 ? "var(--up)" : h.shares_chg_pct < 0 ? "var(--down)" : "var(--muted)";
       html += '<tr>'
-        + '<td><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
-        + '<td class="ticker">' + h.ticker + '</td>'
-        + '<td>' + h.name + '</td>'
-        + '<td style="color:var(--muted)">' + (h.sector || "") + '</td>'
-        + '<td class="r" style="font-weight:700">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
-        + '<td class="r" style="color:' + schgColor + '">' + schg + '</td>'
-        + '<td class="r" style="color:' + wchgColor + '">' + wchg + '</td>'
+        + '<td style="width:76px"><span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span></td>'
+        + '<td class="ticker" style="width:62px">' + h.ticker + '</td>'
+        + '<td class="name-cell" title="' + h.name + '">' + h.name + '</td>'
+        + '<td class="sector-cell" title="' + (h.sector||"") + '">' + (h.sector || "") + '</td>'
+        + '<td class="r" style="font-weight:700;width:54px">' + (h.weight != null ? h.weight.toFixed(2) : "-") + '</td>'
+        + '<td class="r" style="color:' + schgColor + ';width:68px">' + schg + '</td>'
+        + '<td class="r" style="color:' + wchgColor + ';width:60px">' + wchg + '</td>'
         + '</tr>';
     });
     html += '</tbody></table></div>';
