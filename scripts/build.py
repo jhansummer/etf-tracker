@@ -20,12 +20,12 @@ OUT = ROOT / "docs" / "data" / "combined.json"
 SHARE_THRESHOLD = 0.03  # 3%
 
 def load_snapshots():
-    """data/ 에서 time_*.json, koact_*.json, kosdaq_*.json, time_kosdaq_*.json 로드"""
-    snapshots = {"time": [], "koact": [], "kosdaq": [], "time_kosdaq": []}
+    """data/ 에서 time_*.json, koact_*.json, kosdaq_*.json, time_kosdaq_*.json, arkk_*.json 로드"""
+    snapshots = {"time": [], "koact": [], "kosdaq": [], "time_kosdaq": [], "arkk": []}
     for f in sorted(DATA.glob("*.json")):
         if f.name == "sector_map.json":
             continue
-        m = re.match(r"(time_kosdaq|time|koact|kosdaq)_(\d{4}-\d{2}-\d{2})\.json", f.name)
+        m = re.match(r"(time_kosdaq|time|koact|kosdaq|arkk)_(\d{4}-\d{2}-\d{2})\.json", f.name)
         if not m:
             continue
         key = m.group(1)
@@ -188,7 +188,7 @@ def build_overlap(time_weeks, koact_weeks):
 def main():
     snapshots = load_snapshots()
 
-    etf_keys = ["time", "koact", "kosdaq", "time_kosdaq"]
+    etf_keys = ["time", "koact", "kosdaq", "time_kosdaq", "arkk"]
     all_weeks = {}
     all_history = {}
     dates = []

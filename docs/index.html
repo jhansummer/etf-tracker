@@ -158,7 +158,11 @@ var ETF_TABS = ["nasdaq", "kosdaq_market"];
 
 // 현재 실제 ETF 데이터 키 반환
 function activeEtfKey(){
-  if (activeTab === "nasdaq") return activeEtf === "koact" ? "koact" : "time";
+  if (activeTab === "nasdaq") {
+    if (activeEtf === "koact") return "koact";
+    if (activeEtf === "ark")   return "arkk";
+    return "time";
+  }
   if (activeTab === "kosdaq_market") return activeEtf === "koact" ? "kosdaq" : "time_kosdaq";
   return "time";
 }
@@ -250,17 +254,20 @@ function updateUIVisibility(){
 
   // ETF 셀렉터 버튼 텍스트를 시장에 맞게 업데이트
   if (activeTab === "kosdaq_market") {
-    var btns = es.querySelectorAll(".sub-tab");
-    btns[0].textContent = "TIME";  btns[0].dataset.etf = "time_kosdaq";
-    btns[1].textContent = "KoAct"; btns[1].dataset.etf = "koact";
-    btns[0].classList.toggle("active", activeEtf === "time_kosdaq");
-    btns[1].classList.toggle("active", activeEtf === "koact");
+    es.innerHTML =
+      '<button class="sub-tab" data-etf="time_kosdaq">TIME</button>' +
+      '<button class="sub-tab" data-etf="koact">KoAct</button>';
+    es.querySelectorAll(".sub-tab").forEach(function(b){
+      b.classList.toggle("active", b.dataset.etf === activeEtf);
+    });
   } else if (activeTab === "nasdaq") {
-    var btns = es.querySelectorAll(".sub-tab");
-    btns[0].textContent = "TIME";  btns[0].dataset.etf = "time";
-    btns[1].textContent = "KoAct"; btns[1].dataset.etf = "koact";
-    btns[0].classList.toggle("active", activeEtf === "time");
-    btns[1].classList.toggle("active", activeEtf === "koact");
+    es.innerHTML =
+      '<button class="sub-tab" data-etf="time">TIME</button>' +
+      '<button class="sub-tab" data-etf="koact">KoAct</button>' +
+      '<button class="sub-tab" data-etf="ark">ARK</button>';
+    es.querySelectorAll(".sub-tab").forEach(function(b){
+      b.classList.toggle("active", b.dataset.etf === activeEtf);
+    });
   }
 
   if (activeTab === "compare" || activeTab === "history") {
