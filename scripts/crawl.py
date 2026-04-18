@@ -690,6 +690,15 @@ def main():
                 results[ark_key] = False
             print()
 
+    for inv_key in ("berkshire", "pershing", "scion", "duquesne"):
+        if target in ("all", "13f", inv_key):
+            try:
+                results[inv_key] = crawl_13f(date_str, inv_key) is not None
+            except Exception as e:
+                print(f"[{inv_key}] 13F 크롤링 실패: {e}")
+                results[inv_key] = False
+            print()
+
     # 하나라도 성공하면 빌드
     if any(results.values()):
         print("=== combined.json 빌드 ===")

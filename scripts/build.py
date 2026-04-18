@@ -19,22 +19,93 @@ OUT = ROOT / "docs" / "data" / "combined.json"
 
 SHARE_THRESHOLD = 0.03  # 3%
 
+INVESTOR_13F_KEYS = ["berkshire", "pershing", "scion", "duquesne"]
+INVESTOR_13F_LABELS = {
+    "berkshire": "Berkshire (버핏)",
+    "pershing":  "Pershing Sq (애크먼)",
+    "scion":     "Scion (버리)",
+    "duquesne":  "Duquesne (드러켄밀러)",
+}
+
 def load_snapshots():
-    """data/ 에서 time_*.json, koact_*.json, kosdaq_*.json, time_kosdaq_*.json, ark*.json 로드"""
-    snapshots = {"time": [], "koact": [], "kosdaq": [], "time_kosdaq": [], "arkk": [], "arkq": [], "arkw": [], "arkg": []}
+    """data/ 에서 ETF 및 13F 스냅샷 로드"""
+    etf_prefixes = ["time_kosdaq", "time", "koact", "kosdaq", "arkk", "arkq", "arkw", "arkg"]
+    snapshots = {k: [] for k in etf_prefixes}
+    inv_snapshots = {k: [] for k in INVESTOR_13F_KEYS}
+
     for f in sorted(DATA.glob("*.json")):
         if f.name == "sector_map.json":
             continue
+        # ETF 파일
         m = re.match(r"(time_kosdaq|time|koact|kosdaq|arkk|arkq|arkw|arkg)_(\d{4}-\d{2}-\d{2})\.json", f.name)
-        if not m:
+        if m:
+            key = m.group(1)
+            snapshots[key].append(json.loads(f.read_text(encoding="utf-8")))
             continue
-        key = m.group(1)
-        data = json.loads(f.read_text(encoding="utf-8"))
-        snapshots[key].append(data)
-    # 날짜순 정렬
+        # 13F 파일
+        m2 = re.match(r"(berkshire|pershing|scion|duquesne)_(\d{4}-\d{2}-\d{2})\.json", f.name)
+        if m2:
+            key = m2.group(1)
+            inv_snapshots[key].append(json.loads(f.read_text(encoding="utf-8")))
+
     for key in snapshots:
         snapshots[key].sort(key=lambda x: x["date"])
-    return snapshots
+    for key in inv_snapshots:
+        inv_snapshots[key].sort(key=lambda x: x["filing_date"])
+
+    return snapshots, inv_snapshots
+
+def build_13f_data(snaps):
+    """13F 분기 스냅샷 → quarters 리스트 + 분기간 시그널"""
+    quarters = []
+    for i, snap in enumerate(snaps):
+        prev = snaps[i-1] if i > 0 else None
+        prev_map = {h["ticker"]: h for h in prev["holdings"] if h.get("ticker")} if prev else {}
+        curr_holdings = []
+        for h in snap["holdings"]:
+            ticker = h.get("ticker", "")
+            weight = h.get("weight", 0)
+            prev_h = prev_map.get(ticker)
+            if not prev_h:
+                signal = "new" if ticker else "hold"
+            else:
+                prev_w = prev_h.get("weight", 0)
+                prev_s = prev_h.get("shares", 0)
+                curr_s = h.get("shares", 0)
+                if prev_s and curr_s and abs(curr_s - prev_s) / prev_s > 0.03:
+                    signal = "buy" if curr_s > prev_s else "sell"
+                else:
+                    signal = "hold"
+            weight_chg = round(weight - (prev_map.get(ticker, {}).get("weight", weight)), 4) if prev else None
+            curr_holdings.append({**h, "signal": signal, "weight_chg": weight_chg})
+
+        # 제외 종목
+        removed = []
+        for ticker, ph in prev_map.items():
+            if ticker and not any(h.get("ticker") == ticker for h in snap["holdings"]):
+                removed.append({**ph, "signal": "removed", "weight_chg": -ph.get("weight", 0)})
+        curr_holdings.extend(removed)
+
+        quarters.append({
+            "filing_date": snap["filing_date"],
+            "label":       snap.get("label", ""),
+            "holdings":    curr_holdings,
+        })
+    return quarters
+
+def build_13f_history(quarters):
+    """종목별 분기별 비중 히스토리"""
+    history = defaultdict(list)
+    for q in quarters:
+        for h in q["holdings"]:
+            ticker = h.get("ticker", "")
+            if ticker and h.get("signal") != "removed":
+                history[ticker].append({
+                    "date":   q["filing_date"],
+                    "weight": h.get("weight", 0),
+                    "shares": h.get("shares", 0),
+                })
+    return dict(history)
 
 def compute_changes(current, previous):
     """이전 주 대비 변화 계산"""
@@ -186,7 +257,7 @@ def build_overlap(time_weeks, koact_weeks):
     return overlap
 
 def main():
-    snapshots = load_snapshots()
+    snapshots, inv_snapshots = load_snapshots()
 
     etf_keys = ["time", "koact", "kosdaq", "time_kosdaq", "arkk", "arkq", "arkw", "arkg"]
     all_weeks = {}
@@ -203,23 +274,36 @@ def main():
     overlap = build_overlap(all_weeks.get("time", []), all_weeks.get("koact", []))
     overlap_time_kosdaq_pair = build_overlap(all_weeks.get("time_kosdaq", []), all_weeks.get("kosdaq", []))
 
+    # 13F 투자거장
+    investors_combined = {}
+    for inv_key in INVESTOR_13F_KEYS:
+        snaps = inv_snapshots.get(inv_key, [])
+        quarters = build_13f_data(snaps)
+        history  = build_13f_history(quarters)
+        investors_combined[inv_key] = {
+            "label":    INVESTOR_13F_LABELS[inv_key],
+            "quarters": quarters,
+            "history":  history,
+        }
+        if quarters:
+            q = quarters[-1]
+            sigs = defaultdict(int)
+            for h in q["holdings"]: sigs[h.get("signal","hold")] += 1
+            print(f"{INVESTOR_13F_LABELS[inv_key]} ({q['filing_date']}): {len(quarters)}분기, {dict(sigs)}")
+
     combined = {
         "generated": max(dates) if dates else "",
-        "etf_keys": etf_keys,
+        "etf_keys":  etf_keys,
+        "investor_keys": INVESTOR_13F_KEYS,
     }
     for key in etf_keys:
-        combined[key] = {
-            "weeks": all_weeks[key],
-            "history": all_history[key],
-        }
+        combined[key] = {"weeks": all_weeks[key], "history": all_history[key]}
     combined["overlap"] = overlap
     combined["overlap_time_kosdaq_pair"] = overlap_time_kosdaq_pair
+    combined["investors_13f"] = investors_combined
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(
-        json.dumps(combined, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    OUT.write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"빌드 완료: {OUT}")
     for key in etf_keys:
         w = all_weeks[key]
