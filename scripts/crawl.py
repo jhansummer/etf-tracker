@@ -9,8 +9,11 @@ ETF 포트폴리오 자동 크롤링
   python scripts/crawl.py 2026-04-04 time_kosdaq  # TIME 코스닥액티브만
   python scripts/crawl.py 2026-04-04 kosdaq       # KoAct 코스닥만
   python scripts/crawl.py 2026-04-04 arkk         # ARK Innovation ETF만
+  python scripts/crawl.py 2026-04-04 berkshire    # 버핏 13F
+  python scripts/crawl.py 2026-04-04 13f          # 13F 전체 (4명)
 """
 import sys, json, re, os, time as _time, csv, io
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import date, datetime
 from html.parser import HTMLParser
@@ -366,6 +369,167 @@ ARK_ETFS = {
         "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_GENOMIC_REVOLUTION_ETF_ARKG_HOLDINGS.csv",
     },
 }
+
+# ── 13F 투자거장 ──
+INVESTORS_13F = {
+    "berkshire": {"cik": "0001067983", "label": "Berkshire (버핏)",       "file_prefix": "berkshire"},
+    "pershing":  {"cik": "0001336528", "label": "Pershing Sq (애크먼)",   "file_prefix": "pershing"},
+    "scion":     {"cik": "0001649339", "label": "Scion (버리)",           "file_prefix": "scion"},
+    "duquesne":  {"cik": "0001536411", "label": "Duquesne (드러켄밀러)", "file_prefix": "duquesne"},
+}
+
+SEC_UA = {"User-Agent": "ETF-Tracker/1.0 jin.han226@gmail.com", "Accept-Encoding": "gzip, deflate"}
+
+def _sec_get(url):
+    return fetch_url(url, extra_headers=SEC_UA)
+
+def get_latest_13f_info(cik_raw):
+    """SEC EDGAR submissions에서 최신 13F-HR 정보 반환"""
+    cik10 = cik_raw.lstrip("0").zfill(10)
+    data = json.loads(_sec_get(f"https://data.sec.gov/submissions/CIK{cik10}.json").decode("utf-8"))
+    recent = data.get("filings", {}).get("recent", {})
+    forms   = recent.get("form", [])
+    dates   = recent.get("filingDate", [])
+    accs    = recent.get("accessionNumber", [])
+    for i, f in enumerate(forms):
+        if f == "13F-HR":
+            return {"cik": cik_raw.lstrip("0"), "accession": accs[i], "filing_date": dates[i]}
+    return None
+
+def get_13f_xml_url(cik, accession):
+    """13F 제출에서 information table XML URL 찾기"""
+    acc_nd = accession.replace("-", "")
+    # 인덱스 JSON 시도
+    try:
+        idx = json.loads(_sec_get(
+            f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{accession}-index.json"
+        ).decode("utf-8"))
+        for doc in idx.get("documents", []):
+            dtype = (doc.get("type") or "").upper()
+            dname = (doc.get("document") or "").lower()
+            if "INFORMATION TABLE" in dtype or "infotable" in dname or dname.endswith("infotable.xml"):
+                return f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{doc['document']}"
+    except Exception as e:
+        print(f"  index.json 실패: {e}")
+    # fallback 후보
+    for name in ["infotable.xml", "form13fInfoTable.xml", "informationtable.xml",
+                 f"{accession}-infotable.xml"]:
+        url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{name}"
+        try:
+            _sec_get(url)
+            return url
+        except Exception:
+            continue
+    return None
+
+def parse_13f_xml(xml_bytes):
+    """13F information table XML → holdings 리스트"""
+    text = xml_bytes.decode("utf-8", errors="replace")
+    # 네임스페이스 제거 (ElementTree 단순화)
+    text = re.sub(r'\sxmlns[^=]*="[^"]*"', "", text)
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError as e:
+        print(f"  XML 파싱 오류: {e}")
+        return []
+
+    holdings = []
+    for info in root.iter("infoTable"):
+        name      = (info.findtext("nameOfIssuer") or "").strip()
+        cusip     = (info.findtext("cusip") or "").strip()
+        val_str   = (info.findtext("value") or "0").strip().replace(",", "")
+        sh_el     = info.find("shrsOrPrnAmt")
+        sh_str    = (sh_el.findtext("sshPrnamt") if sh_el is not None else "0") or "0"
+        sh_str    = sh_str.strip().replace(",", "")
+        try:
+            value  = float(val_str) * 1000   # 천달러 → 달러
+            shares = int(float(sh_str))
+        except (ValueError, TypeError):
+            continue
+        if name and value > 0:
+            holdings.append({"name": name, "cusip": cusip, "ticker": "",
+                              "shares": shares, "value_usd": value, "weight": 0.0, "sector": "미분류"})
+
+    total = sum(h["value_usd"] for h in holdings)
+    if total > 0:
+        for h in holdings:
+            h["weight"] = round(h["value_usd"] / total * 100, 4)
+    holdings.sort(key=lambda x: x["weight"], reverse=True)
+    return holdings
+
+def lookup_cusip_tickers(cusips):
+    """OpenFIGI API (무료, 무인증) CUSIP→ticker 일괄 조회"""
+    ticker_map = {}
+    batch_size = 10
+    for i in range(0, len(cusips), batch_size):
+        batch = cusips[i:i+batch_size]
+        payload = json.dumps([{"idType": "ID_CUSIP", "idValue": c} for c in batch]).encode("utf-8")
+        try:
+            raw = fetch_url("https://api.openfigi.com/v3/mapping", data=payload,
+                            extra_headers={"Content-Type": "application/json",
+                                           "User-Agent": "ETF-Tracker/1.0"})
+            results = json.loads(raw.decode("utf-8"))
+            for j, res in enumerate(results):
+                if "data" in res and res["data"]:
+                    for item in res["data"]:
+                        if item.get("exchCode") in ("US", "UN", "UQ", "UA", "UP"):
+                            ticker_map[batch[j]] = item.get("ticker", "")
+                            break
+                    if batch[j] not in ticker_map:
+                        ticker_map[batch[j]] = res["data"][0].get("ticker", "")
+        except Exception as e:
+            print(f"  OpenFIGI 배치 오류: {e}")
+        _time.sleep(0.6)
+    return ticker_map
+
+def crawl_13f(date_str, key):
+    """SEC EDGAR 13F 포트폴리오 크롤링"""
+    meta  = INVESTORS_13F[key]
+    label = meta["label"]
+    print(f"[{label}] 13F 크롤링 중...")
+
+    filing = get_latest_13f_info(meta["cik"])
+    if not filing:
+        print(f"[{label}] 13F 제출 없음"); return None
+
+    filing_date = filing["filing_date"]
+    cik         = filing["cik"]
+    accession   = filing["accession"]
+    print(f"[{label}] 최신 13F: {filing_date}  acc={accession}")
+
+    out_file = DATA / f"{meta['file_prefix']}_{filing_date}.json"
+    if out_file.exists():
+        print(f"[{label}] 이미 있음, 스킵"); return True
+
+    xml_url = get_13f_xml_url(cik, accession)
+    if not xml_url:
+        print(f"[{label}] XML URL 찾기 실패"); return None
+    print(f"[{label}] XML: {xml_url}")
+
+    try:
+        xml_bytes = _sec_get(xml_url)
+    except Exception as e:
+        print(f"[{label}] XML 다운로드 실패: {e}"); return None
+
+    holdings = parse_13f_xml(xml_bytes)
+    if not holdings:
+        print(f"[{label}] holdings 파싱 실패"); return None
+    print(f"[{label}] {len(holdings)}개 포지션 파싱")
+
+    # CUSIP→ticker
+    cusips = [h["cusip"] for h in holdings if h.get("cusip")]
+    print(f"[{label}] ticker 조회 중 ({len(cusips)}개)...")
+    tmap = lookup_cusip_tickers(cusips)
+    sector_map = load_sector_map()
+    for h in holdings:
+        h["ticker"] = tmap.get(h.get("cusip", ""), "")
+        t = h["ticker"]
+        h["sector"] = sector_map.get(t, "미분류") if t else "미분류"
+
+    payload = {"investor": key, "label": label, "filing_date": filing_date, "holdings": holdings}
+    out_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[{label}] 저장: {out_file.name}")
+    return True
 
 
 def crawl_ark(date_str, key="arkk"):
