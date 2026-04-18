@@ -27,7 +27,8 @@ if ! git diff --quiet 2>/dev/null || \
         >> "$LOG" 2>&1
 fi
 
-# 미push 커밋 있으면 push
+# 미push 커밋 있으면 rebase 후 push
 if git log origin/main..HEAD --oneline 2>/dev/null | grep -q .; then
+    git pull --rebase origin main >> "$LOG" 2>&1
     git push >> "$LOG" 2>&1
 fi
