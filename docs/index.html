@@ -140,6 +140,7 @@ a{color:var(--accent2);text-decoration:none}
   <button class="tab active" data-tab="nasdaq">나스닥</button>
   <button class="tab" data-tab="kosdaq_market">코스닥</button>
   <button class="tab" data-tab="ark_market">ARK</button>
+  <button class="tab" data-tab="investors">거장</button>
   <button class="tab" data-tab="compare">비교</button>
   <button class="tab" data-tab="signals">시그널</button>
   <button class="tab" data-tab="history">히스토리</button>
@@ -166,7 +167,8 @@ a{color:var(--accent2);text-decoration:none}
 <script>
 /* ── Data & State ── */
 var DATA = null;
-var activeTab = "nasdaq";      // nasdaq | kosdaq_market | ark_market | compare | signals | history
+var activeTab = "nasdaq";      // nasdaq | kosdaq_market | ark_market | investors | compare | signals | history
+var activeInvestor = "berkshire"; // berkshire | pershing | scion | duquesne
 var activeEtf = "time";        // time|koact / time_kosdaq|koact / arkk|arkq|arkw|arkg
 var ETF_TABS = ["nasdaq", "kosdaq_market", "ark_market"];
 
@@ -294,6 +296,10 @@ function updateUIVisibility(){
     wb.style.display = "flex";
     es.style.display = "none";
     st.style.display = "none";
+  } else if (activeTab === "investors") {
+    wb.style.display = "none";
+    es.style.display = "none";
+    st.style.display = "none";
   } else if (isETF) {
     wb.style.display = "flex";
     es.style.display = "flex";
@@ -325,6 +331,7 @@ function render(){
   var el = document.getElementById("content");
   if (!DATA) return;
   if (ETF_TABS.indexOf(activeTab) !== -1) renderETF(el, activeEtfKey());
+  else if (activeTab === "investors") renderInvestors(el);
   else if (activeTab === "compare") renderCompare(el);
   else if (activeTab === "signals") renderSignals(el);
   else if (activeTab === "history") renderHistory(el);

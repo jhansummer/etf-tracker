@@ -10,6 +10,12 @@
     "arkw",
     "arkg"
   ],
+  "investor_keys": [
+    "berkshire",
+    "pershing",
+    "scion",
+    "duquesne"
+  ],
   "time": {
     "weeks": [
       {
@@ -43280,5 +43286,27 @@
       "koact_weight": 0.1,
       "both": false
     }
-  ]
+  ],
+  "investors_13f": {
+    "berkshire": {
+      "label": "Berkshire (버핏)",
+      "quarters": [],
+      "history": {}
+    },
+    "pershing": {
+      "label": "Pershing Sq (애크먼)",
+      "quarters": [],
+      "history": {}
+    },
+    "scion": {
+      "label": "Scion (버리)",
+      "quarters": [],
+      "history": {}
+    },
+    "duquesne": {
+      "label": "Duquesne (드러켄밀러)",
+      "quarters": [],
+      "history": {}
+    }
+  }
 }
