@@ -857,7 +857,6 @@ function renderSignals(el){
 
 /* ── History Tab ── */
 function renderHistory(el){
-  // 종목별 최신 비중 + 소속 ETF 수집
   var tickerInfo = {};
   var etfGroups = {
     nasdaq: ["time","koact"],
@@ -869,30 +868,27 @@ function renderHistory(el){
     if (!DATA[key]) return;
     var hist = DATA[key].history || {};
     Object.keys(hist).forEach(function(t){
-      if (!tickerInfo[t]) tickerInfo[t] = {etfs: [], maxWeight: 0, name: t};
+      if (!tickerInfo[t]) tickerInfo[t] = {etfs:[], maxWeight:0, name:t};
       if (tickerInfo[t].etfs.indexOf(key) === -1) tickerInfo[t].etfs.push(key);
-      // 최신 비중
       var arr = hist[t];
-      if (arr && arr.length) {
+      if (arr && arr.length){
         var w = arr[arr.length-1].weight || 0;
         if (w > tickerInfo[t].maxWeight) tickerInfo[t].maxWeight = w;
       }
     });
-    // 종목명 보완: 최신 주 holdings에서
     var weeks = DATA[key].weeks;
-    if (weeks && weeks.length) {
+    if (weeks && weeks.length){
       weeks[weeks.length-1].holdings.forEach(function(h){
         if (tickerInfo[h.ticker]) tickerInfo[h.ticker].name = h.name || h.ticker;
       });
     }
   });
 
-  // 그룹별 종목 분리 및 비중순 정렬
   function groupTickers(groupKeys, excludeGroups){
     var excludeKeys = [];
     (excludeGroups||[]).forEach(function(g){ excludeKeys = excludeKeys.concat(etfGroups[g]||[]); });
     return Object.keys(tickerInfo).filter(function(t){
-      var inGroup = tickerInfo[t].etfs.some(function(k){ return groupKeys.indexOf(k) !== -1; });
+      var inGroup   = tickerInfo[t].etfs.some(function(k){ return groupKeys.indexOf(k) !== -1; });
       var inExclude = excludeKeys.length && tickerInfo[t].etfs.some(function(k){ return excludeKeys.indexOf(k) !== -1; });
       return inGroup && !inExclude;
     }).sort(function(a,b){ return tickerInfo[b].maxWeight - tickerInfo[a].maxWeight; });
@@ -902,38 +898,54 @@ function renderHistory(el){
   var arkTickers    = groupTickers(etfGroups.ark, ["nasdaq"]);
   var kosdaqTickers = groupTickers(etfGroups.kosdaq, ["nasdaq","ark"]);
 
-  var selectorGroups = [
-    {id:"history-nasdaq", label:"나스닥", color:"var(--accent2)", tickers:nasdaqTickers},
-    {id:"history-ark",    label:"ARK",    color:"#ef4444",        tickers:arkTickers},
-    {id:"history-kosdaq", label:"코스닥", color:"#14b8a6",        tickers:kosdaqTickers},
-  ];
-
-  var html = '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;align-items:center">';
-  selectorGroups.forEach(function(g){
-    if (!g.tickers.length) return;
-    html += '<div style="display:flex;align-items:center;gap:8px">'
-      + '<label style="font-size:11px;color:' + g.color + ';font-weight:700;white-space:nowrap">' + g.label + '</label>'
-      + '<select class="history-select" id="' + g.id + '">';
-    g.tickers.forEach(function(t){
+  function buildSelect(id, label, color, tickers){
+    if (!tickers.length) return "";
+    var s = '<div style="display:flex;align-items:center;gap:8px">'
+      + '<label style="font-size:11px;color:' + color + ';font-weight:700;white-space:nowrap">' + label + '</label>'
+      + '<select class="history-select" id="' + id + '">';
+    tickers.forEach(function(t){
       var info = tickerInfo[t];
-      html += '<option value="' + t + '">' + t + '  ' + info.name + '  (' + info.maxWeight.toFixed(1) + '%)</option>';
+      s += '<option value="' + t + '">' + t + '  ' + info.name + '  (' + info.maxWeight.toFixed(1) + '%)</option>';
     });
-    html += '</select></div>';
-  });
+    return s + '</select></div>';
+  }
+
+  // ── 한국 ETF 섹션 ──
+  var html = '<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:10px">🇰🇷 한국 ETF</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;align-items:center">';
+  html += buildSelect("history-nasdaq","나스닥","var(--accent2)",nasdaqTickers);
+  html += buildSelect("history-kosdaq","코스닥","#14b8a6",kosdaqTickers);
   html += '</div>';
-  html += '<div class="chart-card" style="margin-bottom:12px"><h3>비중 (%)</h3><canvas id="history-chart" height="220"></canvas></div>';
-  html += '<div class="chart-card"><h3>수량</h3><canvas id="history-shares-chart" height="220"></canvas></div>';
+  html += '<div class="chart-card" style="margin-bottom:12px"><h3>비중 (%)</h3><canvas id="history-chart" height="200"></canvas></div>';
+  html += '<div class="chart-card" style="margin-bottom:32px"><h3>수량</h3><canvas id="history-shares-chart" height="200"></canvas></div>';
+
+  // ── ARK ETF 섹션 (구분) ──
+  html += '<div style="border-top:1px solid var(--border);padding-top:24px;margin-bottom:10px">';
+  html += '<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:10px">🇺🇸 ARK ETF</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;align-items:center">';
+  html += buildSelect("history-ark","ARK","#ef4444",arkTickers);
+  html += '</div>';
+  html += '<div class="chart-card" style="margin-bottom:12px"><h3>비중 (%)</h3><canvas id="ark-history-chart" height="200"></canvas></div>';
+  html += '<div class="chart-card"><h3>수량 (주)</h3><canvas id="ark-history-shares-chart" height="200"></canvas></div>';
+  html += '</div>';
 
   el.innerHTML = html;
 
-  // 첫 번째 드롭다운 기본 렌더
-  var firstSel = null;
-  selectorGroups.forEach(function(g){
-    var sel = document.getElementById(g.id);
+  // 한국 ETF 이벤트
+  ["history-nasdaq","history-kosdaq"].forEach(function(id){
+    var sel = document.getElementById(id);
     if (!sel) return;
-    if (!firstSel) { firstSel = sel; drawHistoryChart(sel.value); }
     sel.addEventListener("change", function(){ drawHistoryChart(this.value); });
   });
+  var firstKor = document.getElementById("history-nasdaq") || document.getElementById("history-kosdaq");
+  if (firstKor) drawHistoryChart(firstKor.value);
+
+  // ARK ETF 이벤트
+  var arkSel = document.getElementById("history-ark");
+  if (arkSel){
+    arkSel.addEventListener("change", function(){ drawArkHistoryChart(this.value); });
+    drawArkHistoryChart(arkSel.value);
+  }
 }
 
 var historyChartInstance = null;
