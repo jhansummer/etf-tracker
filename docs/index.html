@@ -862,6 +862,138 @@ function renderSignals(el){
   el.innerHTML = html;
 }
 
+/* ── Investors 13F Tab ── */
+var INVESTOR_META = {
+  berkshire: {label:"Berkshire (버핏)",       color:"#6366f1", flag:"🇺🇸"},
+  pershing:  {label:"Pershing Sq (애크먼)",   color:"#f97316", flag:"🇺🇸"},
+  scion:     {label:"Scion (버리)",           color:"#ef4444", flag:"🇺🇸"},
+  duquesne:  {label:"Duquesne (드러켄밀러)", color:"#10b981", flag:"🇺🇸"},
+};
+
+function renderInvestors(el){
+  var inv13f = DATA.investors_13f || {};
+  var keys = ["berkshire","pershing","scion","duquesne"];
+
+  // 서브탭 헤더 렌더
+  var html = '<div class="sub-tabs" style="margin-bottom:20px;flex-wrap:wrap;gap:6px;display:flex">';
+  keys.forEach(function(k){
+    var m = INVESTOR_META[k];
+    var active = k === activeInvestor ? "active" : "";
+    html += '<button class="sub-tab ' + active + '" data-inv="' + k + '" style="font-size:12px">'
+      + m.flag + ' ' + m.label + '</button>';
+  });
+  html += '</div><div id="inv-content"></div>';
+  el.innerHTML = html;
+
+  el.querySelectorAll("[data-inv]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      activeInvestor = this.dataset.inv;
+      el.querySelectorAll("[data-inv]").forEach(function(b){ b.classList.remove("active"); });
+      this.classList.add("active");
+      renderInvestorPortfolio(document.getElementById("inv-content"), activeInvestor);
+    });
+  });
+
+  renderInvestorPortfolio(document.getElementById("inv-content"), activeInvestor);
+}
+
+function renderInvestorPortfolio(el, key){
+  var inv13f = DATA.investors_13f || {};
+  var inv = inv13f[key];
+  var meta = INVESTOR_META[key] || {label:key, color:"#8b8fa3"};
+
+  if (!inv || !inv.quarters || !inv.quarters.length){
+    el.innerHTML = '<div class="empty" style="margin-top:32px">📭 아직 데이터 없음<br>'
+      + '<span style="font-size:12px;color:var(--muted)">맥에서 python scripts/crawl.py $(date +%F) ' + key + ' 실행</span></div>';
+    return;
+  }
+
+  var q = inv.quarters[inv.quarters.length - 1];  // 최신 분기
+  var holdings = q.holdings || [];
+  var sigCounts = {new:0, buy:0, sell:0, removed:0, hold:0};
+  holdings.forEach(function(h){ if(sigCounts[h.signal]!==undefined) sigCounts[h.signal]++; });
+
+  var sigLabels = {new:"🟣 신규", buy:"🟢 추가매수", sell:"🔴 매도감소", removed:"⚫ 청산", hold:""};
+  var sigColors = {new:"var(--new)", buy:"var(--up)", sell:"var(--down)", removed:"var(--muted)"};
+
+  // 요약 카드
+  var html = '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;font-weight:600">'
+    + meta.flag + ' ' + meta.label
+    + '  <span style="font-weight:400">' + q.filing_date + ' 기준</span></div>';
+
+  html += '<div class="sig-summary" style="margin-bottom:16px">';
+  [{k:"new",l:"신규편입"},{k:"buy",l:"추가매수"},{k:"sell",l:"매도감소"},{k:"removed",l:"청산"}].forEach(function(item){
+    if (!sigCounts[item.k]) return;
+    html += '<div class="sig-card ' + item.k + '"><div class="label">' + item.l + '</div>'
+      + '<div class="count">' + sigCounts[item.k] + '</div></div>';
+  });
+  html += '</div>';
+
+  // 신규편입 스포트라이트
+  var newItems = holdings.filter(function(h){ return h.signal === "new"; });
+  if (newItems.length){
+    html += '<div style="font-size:12px;font-weight:700;color:var(--new);margin-bottom:8px">🔔 신규편입 ' + newItems.length + '종목</div>';
+    html += '<div class="spotlight" style="margin-bottom:20px">';
+    newItems.forEach(function(h){
+      html += '<div class="spotlight-card">'
+        + '<div class="sp-etf" style="color:' + meta.color + '">' + meta.label + '</div>'
+        + '<div class="sp-ticker">' + (h.ticker||"?") + '</div>'
+        + '<div class="sp-name" title="' + h.name + '">' + h.name + '</div>'
+        + '<div class="sp-weight">' + h.weight.toFixed(2) + '%</div>'
+        + '</div>';
+    });
+    html += '</div>';
+  }
+
+  // 전체 포트폴리오 테이블
+  var order = {new:0,buy:1,sell:2,hold:3,removed:4};
+  var sorted = holdings.slice().sort(function(a,b){
+    return (order[a.signal]||3)-(order[b.signal]||3) || (b.weight||0)-(a.weight||0);
+  });
+  var SIG = {new:{cls:"new",emoji:"🟣",label:"신규"}, buy:{cls:"buy",emoji:"🟢",label:"추가"},
+             sell:{cls:"sell",emoji:"🔴",label:"감소"}, removed:{cls:"sell",emoji:"⚫",label:"청산"},
+             hold:{cls:"hold",emoji:"",label:""}};
+
+  html += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">'
+    + '<table class="tbl" style="min-width:480px"><thead><tr>'
+    + '<th>구분</th><th>티커</th><th class="name-cell">종목명</th><th class="sector-cell">섹터</th>'
+    + '<th class="r">비중%</th><th class="r">비중변화</th><th class="r">주식수</th>'
+    + '</tr></thead><tbody>';
+
+  sorted.forEach(function(h){
+    var sig = SIG[h.signal] || SIG.hold;
+    var wchg = h.weight_chg != null ? (h.weight_chg > 0 ? "+" : "") + h.weight_chg.toFixed(2) : "-";
+    var wchgColor = (h.weight_chg||0) > 0 ? "var(--up)" : (h.weight_chg||0) < 0 ? "var(--down)" : "var(--muted)";
+    var rowCls = h.signal === "new" ? "row-new" : h.signal === "buy" ? "row-buy" : h.signal === "sell" || h.signal === "removed" ? "row-sell" : "";
+    var shares = h.shares ? h.shares.toLocaleString() : "-";
+    html += '<tr class="' + rowCls + '">'
+      + '<td style="width:54px">' + (sig.emoji ? '<span class="sig ' + sig.cls + '">' + sig.emoji + ' ' + sig.label + '</span>' : '') + '</td>'
+      + '<td class="ticker" style="width:62px">' + (h.ticker||"<span style='color:var(--muted);font-size:11px'>"+h.name.slice(0,8)+"</span>") + '</td>'
+      + '<td class="name-cell" title="' + h.name + '">' + h.name + '</td>'
+      + '<td class="sector-cell" title="' + (h.sector||"") + '">' + (h.sector||"") + '</td>'
+      + '<td class="r" style="font-weight:700;width:54px">' + h.weight.toFixed(2) + '</td>'
+      + '<td class="r" style="color:' + wchgColor + ';width:66px">' + wchg + '</td>'
+      + '<td class="r" style="width:80px;font-size:11px">' + shares + '</td>'
+      + '</tr>';
+  });
+  html += '</tbody></table></div>';
+
+  // 분기 히스토리 요약
+  if (inv.quarters.length > 1){
+    html += '<div style="font-size:12px;color:var(--muted);margin-top:20px;margin-bottom:8px;font-weight:600">📅 분기 히스토리</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
+    inv.quarters.slice().reverse().forEach(function(q2){
+      var active2 = q2.filing_date === q.filing_date;
+      html += '<div style="font-size:11px;padding:4px 8px;border-radius:4px;background:' + (active2?"rgba(99,102,241,0.15)":"var(--surface)") + ';color:' + (active2?"var(--accent2)":"var(--muted)") + ';border:1px solid var(--border)">'
+        + q2.filing_date + ' (' + q2.holdings.filter(function(h){return h.signal!=="removed";}).length + '종목)'
+        + '</div>';
+    });
+    html += '</div>';
+  }
+
+  el.innerHTML = html;
+}
+
 /* ── History Tab ── */
 function renderHistory(el){
   var tickerInfo = {};
