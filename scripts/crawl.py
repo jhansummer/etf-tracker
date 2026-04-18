@@ -12,7 +12,7 @@ ETF 포트폴리오 자동 크롤링
   python scripts/crawl.py 2026-04-04 berkshire    # 버핏 13F
   python scripts/crawl.py 2026-04-04 13f          # 13F 전체 (4명)
 """
-import sys, json, re, os, time as _time, csv, io
+import sys, json, re, os, time as _time, csv, io, gzip
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from datetime import date, datetime
@@ -378,10 +378,14 @@ INVESTORS_13F = {
     "duquesne":  {"cik": "0001536411", "label": "Duquesne (드러켄밀러)", "file_prefix": "duquesne"},
 }
 
-SEC_UA = {"User-Agent": "ETF-Tracker/1.0 jin.han226@gmail.com", "Accept-Encoding": "gzip, deflate"}
+SEC_UA = {"User-Agent": "ETF-Tracker/1.0 jin.han226@gmail.com"}
 
 def _sec_get(url):
-    return fetch_url(url, extra_headers=SEC_UA)
+    raw = fetch_url(url, extra_headers=SEC_UA)
+    # SEC EDGAR가 gzip 응답을 보낼 경우 자동 해제
+    if raw[:2] == b'\x1f\x8b':
+        raw = gzip.decompress(raw)
+    return raw
 
 def get_latest_13f_info(cik_raw):
     """SEC EDGAR submissions에서 최신 13F-HR 정보 반환"""
