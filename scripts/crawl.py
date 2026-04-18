@@ -344,7 +344,12 @@ ARK_ETFS = {
         "code": "ARKQ",
         "label": "ARK Autonomous Tech",
         "file_prefix": "arkq",
-        "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
+        # ARK 실제 파일명 패턴: TECH.(약어+점), & 리터럴 사용
+        "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_AUTONOMOUS_TECH._&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
+        "url_fallbacks": [
+            "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
+            "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_AUTONOMOUS_TECHNOLOGY_AND_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
+        ],
     },
     "arkw": {
         "etf": "ARKW",
@@ -352,6 +357,13 @@ ARK_ETFS = {
         "label": "ARK Next Gen Internet",
         "file_prefix": "arkw",
         "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv",
+    },
+    "arkg": {
+        "etf": "ARKG",
+        "code": "ARKG",
+        "label": "ARK Genomic Revolution",
+        "file_prefix": "arkg",
+        "url": "https://assets.ark-funds.com/fund-documents/funds-etf-csv/ARK_GENOMIC_REVOLUTION_ETF_ARKG_HOLDINGS.csv",
     },
 }
 
@@ -361,11 +373,24 @@ def crawl_ark(date_str, key="arkk"):
     label = meta["label"]
     print(f"[{label}] ARK Holdings CSV 크롤링 중...")
 
-    try:
-        raw = fetch_url(meta["url"], extra_headers={"Accept": "text/csv,*/*"})
-        text = raw.decode("utf-8", errors="replace")
-    except Exception as e:
-        print(f"[{label}] 다운로드 실패: {e}")
+    urls_to_try = [meta["url"]] + meta.get("url_fallbacks", [])
+    text = None
+    for url in urls_to_try:
+        try:
+            raw = fetch_url(url, extra_headers={"Accept": "text/csv,*/*"})
+            text = raw.decode("utf-8", errors="replace")
+            if text and "ticker" in text.lower():
+                print(f"[{label}] URL 성공: {url}")
+                break
+            else:
+                print(f"[{label}] 응답 이상 (CSV 아님), 다음 URL 시도...")
+                text = None
+        except Exception as e:
+            print(f"[{label}] URL 실패 ({url}): {e}")
+            text = None
+
+    if text is None:
+        print(f"[{label}] 모든 URL 실패")
         return None
 
     # CSV 파싱
@@ -492,13 +517,14 @@ def main():
             results["kosdaq"] = False
         print()
 
-    if target in ("all", "arkk"):
-        try:
-            results["arkk"] = crawl_ark(date_str, "arkk") is not None
-        except Exception as e:
-            print(f"[ARKK] 크롤링 실패: {e}")
-            results["arkk"] = False
-        print()
+    for ark_key in ("arkk", "arkq", "arkw", "arkg"):
+        if target in ("all", ark_key):
+            try:
+                results[ark_key] = crawl_ark(date_str, ark_key) is not None
+            except Exception as e:
+                print(f"[{ark_key.upper()}] 크롤링 실패: {e}")
+                results[ark_key] = False
+            print()
 
     # 하나라도 성공하면 빌드
     if any(results.values()):
