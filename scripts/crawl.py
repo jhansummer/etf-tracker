@@ -53,6 +53,14 @@ def fetch_url(url, data=None, extra_headers=None, retries=3, timeout=60):
             req = urllib.request.Request(url, data=data, headers=hdrs)
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return resp.read()
+        except urllib.error.HTTPError as e:
+            if e.code in (404, 403, 410):
+                raise  # 재시도 없이 즉시 전파
+            last_err = e
+            if attempt < retries - 1:
+                wait = 5 * (attempt + 1)
+                print(f"  fetch 실패 (attempt {attempt+1}/{retries}): {e} → {wait}s 후 재시도")
+                _time.sleep(wait)
         except Exception as e:
             last_err = e
             if attempt < retries - 1:
