@@ -409,58 +409,30 @@ def get_latest_13f_info(cik_raw):
     return None
 
 def get_13f_xml_url(cik, accession):
-    """13F 제출에서 information table XML URL 찾기 (없으면 None)"""
+    """13F 제출에서 information table XML URL 찾기"""
     acc_nd = accession.replace("-", "")
-    base = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}"
-    # 1) 인덱스 JSON
+    # 인덱스 JSON 시도
     try:
-        idx = json.loads(_sec_get(f"{base}/{accession}-index.json").decode("utf-8"))
+        idx = json.loads(_sec_get(
+            f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{accession}-index.json"
+        ).decode("utf-8"))
         for doc in idx.get("documents", []):
             dtype = (doc.get("type") or "").upper()
             dname = (doc.get("document") or "").lower()
-            if "INFORMATION TABLE" in dtype or "infotable" in dname:
-                return f"{base}/{doc['document']}"
-    except Exception:
-        pass
-    # 2) 공통 파일명 후보
-    for name in ["infotable.xml", "form13fInfoTable.xml", "informationtable.xml"]:
+            if "INFORMATION TABLE" in dtype or "infotable" in dname or dname.endswith("infotable.xml"):
+                return f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{doc['document']}"
+    except Exception as e:
+        print(f"  index.json 실패: {e}")
+    # fallback 후보
+    for name in ["infotable.xml", "form13fInfoTable.xml", "informationtable.xml",
+                 f"{accession}-infotable.xml"]:
+        url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{name}"
         try:
-            _sec_get(f"{base}/{name}")
-            return f"{base}/{name}"
+            _sec_get(url)
+            return url
         except Exception:
             continue
     return None
-
-def get_13f_xml_from_submission(cik, accession):
-    """전체 제출 텍스트 파일에서 information table XML 바이트 직접 추출"""
-    acc_nd = accession.replace("-", "")
-    txt_url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nd}/{accession}.txt"
-    print(f"  전체 제출 파일 파싱 중: {txt_url}")
-    try:
-        raw = _sec_get(txt_url)
-        text = raw.decode("utf-8", errors="replace")
-    except Exception as e:
-        print(f"  전체 제출 파일 다운로드 실패: {e}")
-        return None
-
-    # SGML 포맷: <TYPE>INFORMATION TABLE 블록에서 XML 추출
-    m = re.search(
-        r'<TYPE>INFORMATION TABLE.*?<TEXT>\s*(<\?xml[^>]*\?>)?\s*(<informationTable[\s\S]*?</informationTable>)',
-        text, re.IGNORECASE | re.DOTALL
-    )
-    if not m:
-        # <XML>...</XML> 래핑 형태도 시도
-        m = re.search(
-            r'<TYPE>INFORMATION TABLE[\s\S]*?<XML>([\s\S]*?)</XML>',
-            text, re.IGNORECASE
-        )
-        if m:
-            return m.group(1).strip().encode("utf-8")
-        print("  information table 블록을 찾지 못했습니다")
-        return None
-
-    xml_str = (m.group(1) or "") + m.group(2)
-    return xml_str.strip().encode("utf-8")
 
 def parse_13f_xml(xml_bytes):
     """13F information table XML → holdings 리스트"""
@@ -542,20 +514,14 @@ def crawl_13f(date_str, key):
         print(f"[{label}] 이미 있음, 스킵"); return True
 
     xml_url = get_13f_xml_url(cik, accession)
-    xml_bytes = None
-    if xml_url:
-        print(f"[{label}] XML: {xml_url}")
-        try:
-            xml_bytes = _sec_get(xml_url)
-        except Exception as e:
-            print(f"[{label}] XML 다운로드 실패: {e}")
+    if not xml_url:
+        print(f"[{label}] XML URL 찾기 실패"); return None
+    print(f"[{label}] XML: {xml_url}")
 
-    if not xml_bytes:
-        # fallback: 전체 제출 파일에서 직접 추출
-        xml_bytes = get_13f_xml_from_submission(cik, accession)
-
-    if not xml_bytes:
-        print(f"[{label}] XML 획득 실패"); return None
+    try:
+        xml_bytes = _sec_get(xml_url)
+    except Exception as e:
+        print(f"[{label}] XML 다운로드 실패: {e}"); return None
 
     holdings = parse_13f_xml(xml_bytes)
     if not holdings:
