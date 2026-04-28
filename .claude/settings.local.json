@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/hanjin/Desktop/**)",
+      "Bash(python reservation.py)"
+    ]
+  }
+}
