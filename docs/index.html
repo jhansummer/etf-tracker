@@ -1049,8 +1049,29 @@ function renderHistory(el){
     return s + '</select></div>';
   }
 
+  // ── 비교 TOP 10 합산 비중 추이 섹션 ──
+  var top10Colors = ["#6366f1","#22c55e","#f59e0b","#ef4444","#14b8a6","#a78bfa","#f97316","#3b82f6","#ec4899","#84cc16"];
+  var top10overlap = (DATA.overlap || [])
+    .filter(function(o){ return (o.time_weight||0)+(o.koact_weight||0) > 0; })
+    .sort(function(a,b){ return ((b.time_weight||0)+(b.koact_weight||0))-((a.time_weight||0)+(a.koact_weight||0)); })
+    .slice(0,10);
+
+  var html = '';
+  if (top10overlap.length){
+    html += '<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:10px">📊 비교 TOP 10 — Time+KoAct 합산 비중 추이</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">';
+    top10overlap.forEach(function(o,i){
+      var total = ((o.time_weight||0)+(o.koact_weight||0)).toFixed(1);
+      html += '<span style="font-size:10px;padding:3px 10px;border-radius:12px;background:var(--surface2);border:1px solid '+top10Colors[i]+'44;color:'+top10Colors[i]+';font-weight:700">'
+        + o.ticker + ' <span style="color:var(--muted);font-weight:400">'+total+'%</span></span>';
+    });
+    html += '</div>';
+    html += '<div class="chart-card" style="margin-bottom:28px"><h3>비중 합산 추이 (%)</h3><canvas id="top10-history-chart" height="220"></canvas></div>';
+    html += '<div style="border-top:1px solid var(--border);margin-bottom:20px"></div>';
+  }
+
   // ── 한국 ETF 섹션 ──
-  var html = '<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:10px">🇰🇷 한국 ETF</div>';
+  html += '<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:10px">🇰🇷 한국 ETF</div>';
   html += '<div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;align-items:center">';
   html += buildSelect("history-nasdaq","나스닥","var(--accent2)",nasdaqTickers);
   html += buildSelect("history-kosdaq","코스닥","#14b8a6",kosdaqTickers);
@@ -1070,6 +1091,9 @@ function renderHistory(el){
 
   el.innerHTML = html;
 
+  // TOP 10 차트
+  if (top10overlap.length) drawTop10Chart(top10overlap, top10Colors);
+
   // 한국 ETF 이벤트
   ["history-nasdaq","history-kosdaq"].forEach(function(id){
     var sel = document.getElementById(id);
@@ -1087,6 +1111,7 @@ function renderHistory(el){
   }
 }
 
+var top10HistoryChartInstance = null;
 var historyChartInstance = null;
 var historySharesChartInstance = null;
 var arkHistoryChartInstance = null;
@@ -1139,6 +1164,57 @@ function _buildHistoryDatasets(ticker, keys){
     }
   });
   return {dates:dates, weightDs:weightDs, sharesDs:sharesDs};
+}
+
+// 비교 TOP 10 합산 비중 추이 차트
+function drawTop10Chart(top10list, colors){
+  var allDates = new Set();
+  top10list.forEach(function(o){
+    ["time","koact"].forEach(function(key){
+      var hist = (DATA[key] && DATA[key].history && DATA[key].history[o.ticker]);
+      if (hist) hist.forEach(function(p){ allDates.add(p.date); });
+    });
+  });
+  var dates = Array.from(allDates).sort();
+  var datasets = top10list.map(function(o, i){
+    var tMap = {}, kMap = {};
+    var tHist = (DATA.time && DATA.time.history && DATA.time.history[o.ticker]) || [];
+    var kHist = (DATA.koact && DATA.koact.history && DATA.koact.history[o.ticker]) || [];
+    tHist.forEach(function(p){ tMap[p.date] = p.weight || 0; });
+    kHist.forEach(function(p){ kMap[p.date] = p.weight || 0; });
+    var data = dates.map(function(d){
+      var tw = tMap[d]||0, kw = kMap[d]||0;
+      return (tw+kw) > 0 ? parseFloat((tw+kw).toFixed(2)) : null;
+    });
+    return {
+      label: o.ticker,
+      data: data,
+      borderColor: colors[i],
+      backgroundColor: colors[i]+"22",
+      fill: false,
+      tension: 0.3,
+      pointRadius: 2,
+      pointHoverRadius: 5,
+      borderWidth: 2,
+      spanGaps: true
+    };
+  });
+  var ctx = document.getElementById("top10-history-chart");
+  if (!ctx) return;
+  if (top10HistoryChartInstance) top10HistoryChartInstance.destroy();
+  top10HistoryChartInstance = new Chart(ctx, {
+    type: "line",
+    data: { labels: dates, datasets: datasets },
+    options: Object.assign({}, CHART_COMMON_OPTS, {
+      scales: Object.assign({}, CHART_COMMON_OPTS.scales, {
+        y: { grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3"}, title:{display:true,text:"합산 비중(%)",color:"#8b8fa3"} }
+      }),
+      plugins: Object.assign({}, CHART_COMMON_OPTS.plugins, {
+        legend: { labels:{color:"#8b8fa3", font:{size:11}, boxWidth:12} },
+        tooltip: { mode:"index", intersect:false }
+      })
+    })
+  });
 }
 
 // 한국 ETF 히스토리 차트
