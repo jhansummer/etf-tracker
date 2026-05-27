@@ -1,0 +1,396 @@
+{
+  "etf": "ARKK",
+  "code": "ARKK",
+  "date": "2026-05-27",
+  "nav": null,
+  "aum_billion": null,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "name": "TESLA INC",
+      "shares": 1624819,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 10.85,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "AMD",
+      "name": "ADVANCED MICRO DEVICES",
+      "shares": 735731,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 5.71,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "CRSP",
+      "name": "CRISPR THERAPEUTICS AG",
+      "shares": 6060272,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.81,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TEM",
+      "name": "TEMPUS AI INC-CL A",
+      "shares": 6537684,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.7,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CRCL",
+      "name": "CIRCLE INTERNET GROUP INC",
+      "shares": 2722027,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.37,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "ROKU",
+      "name": "ROKU INC",
+      "shares": 2211077,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.34,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "HOOD",
+      "name": "ROBINHOOD MARKETS INC - A",
+      "shares": 3758815,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.29,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "SHOP",
+      "name": "SHOPIFY INC - CLASS A",
+      "shares": 2536477,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.1,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "COIN",
+      "name": "COINBASE GLOBAL INC -CLASS A",
+      "shares": 1435388,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.98,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "TWST",
+      "name": "TWIST BIOSCIENCE CORP",
+      "shares": 3089924,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.09,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES INC-A",
+      "shares": 1434325,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.02,
+      "sector": "소프트웨어"
+    },
+    {
+      "ticker": "BEAM",
+      "name": "BEAM THERAPEUTICS INC",
+      "shares": 6423734,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.95,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "RBLX",
+      "name": "ROBLOX CORP -CLASS A",
+      "shares": 3761776,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.66,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AMZN",
+      "name": "AMAZON.COM INC",
+      "shares": 643106,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.63,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "TXG",
+      "name": "10X GENOMICS INC-CLASS A",
+      "shares": 6667815,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.53,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CRWV",
+      "name": "COREWEAVE INC-CL A",
+      "shares": 1552557,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.53,
+      "sector": "AI/클라우드"
+    },
+    {
+      "ticker": "NTLA",
+      "name": "INTELLIA THERAPEUTICS INC",
+      "shares": 11925813,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.32,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BLSH",
+      "name": "BULLISH",
+      "shares": 4190208,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.24,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BMNR",
+      "name": "BITMINE IMMERSION TECHNOLOGI",
+      "shares": 6034588,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.78,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ACHR",
+      "name": "ARCHER AVIATION INC-A",
+      "shares": 17237159,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.73,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "XYZ",
+      "name": "BLOCK INC",
+      "shares": 1386443,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.48,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GOOG",
+      "name": "ALPHABET INC-CL C",
+      "shares": 246308,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.46,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ILMN",
+      "name": "ILLUMINA INC",
+      "shares": 603544,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.35,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TER",
+      "name": "TERADYNE INC",
+      "shares": 209737,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.26,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA CORP",
+      "shares": 379052,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.25,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "NTRA",
+      "name": "NATERA INC",
+      "shares": 395866,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.22,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "VCYT",
+      "name": "VERACYTE INC",
+      "shares": 1729302,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.18,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "XE",
+      "name": "X-ENERGY INC",
+      "shares": 2571614,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.17,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AVGO",
+      "name": "BROADCOM INC",
+      "shares": 177761,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.16,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "DE",
+      "name": "DEERE & CO",
+      "shares": 131520,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.07,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CBRS",
+      "name": "CEREBRAS SYSTEMS INC - A",
+      "shares": 277817,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.03,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BIDU",
+      "name": "BAIDU INC - SPON ADR",
+      "shares": 520996,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.02,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "RXRX",
+      "name": "RECURSION PHARMACEUTICALS-A",
+      "shares": 21353124,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.98,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TSM",
+      "name": "TAIWAN SEMICONDUCTOR-SP ADR",
+      "shares": 150138,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.95,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "BWXT",
+      "name": "BWX TECHNOLOGIES INC",
+      "shares": 295258,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.93,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "KTOS",
+      "name": "KRATOS DEFENSE & SECURITY",
+      "shares": 1061936,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.93,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BABA",
+      "name": "ALIBABA GROUP HOLDING-SP ADR",
+      "shares": 443651,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.88,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "WGS",
+      "name": "GENEDX HOLDINGS CORP",
+      "shares": 1010413,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.77,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "META",
+      "name": "META PLATFORMS INC-CLASS A",
+      "shares": 62625,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.59,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "FIG",
+      "name": "FIGMA INC-CL A",
+      "shares": 1723348,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.58,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SOFI",
+      "name": "SOFI TECHNOLOGIES INC",
+      "shares": 2138347,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.53,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CERS",
+      "name": "CERUS CORP",
+      "shares": 9473775,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.4,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "PACB",
+      "name": "PACIFIC BIOSCIENCES OF CALIF",
+      "shares": 14475051,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.28,
+      "sector": "미분류"
+    }
+  ]
+}
