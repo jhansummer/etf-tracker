@@ -1,0 +1,409 @@
+{
+  "etf": "KoAct",
+  "code": "0015B0",
+  "date": "2026-05-28",
+  "nav": null,
+  "aum_billion": null,
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA Corp",
+      "shares": 295,
+      "value_krw": 95100002,
+      "weight": 8.15,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "AMD",
+      "name": "ADVANCED MICRO DEVICES",
+      "shares": 120,
+      "value_krw": 90462619,
+      "weight": 7.75,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "ALPHABET INC-CL A",
+      "shares": 151,
+      "value_krw": 88192650,
+      "weight": 7.56,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "INTC",
+      "name": "INTEL Corp",
+      "shares": 394,
+      "value_krw": 73106931,
+      "weight": 6.26,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "SNDK",
+      "name": "Sandisk Corp/DE",
+      "shares": 30,
+      "value_krw": 70799517,
+      "weight": 6.07,
+      "sector": "스토리지"
+    },
+    {
+      "ticker": "AMZN",
+      "name": "Amazon.com Inc",
+      "shares": 161,
+      "value_krw": 64214369,
+      "weight": 5.5,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "BE",
+      "name": "BLOOM ENERGY CORPORATION",
+      "shares": 117,
+      "value_krw": 53236226,
+      "weight": 4.56,
+      "sector": "에너지"
+    },
+    {
+      "ticker": "ARM",
+      "name": "ARM Holdings PLC",
+      "shares": 110,
+      "value_krw": 53053345,
+      "weight": 4.55,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "AVGO",
+      "name": "BROADCOM LTD",
+      "shares": 72,
+      "value_krw": 45562859,
+      "weight": 3.9,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "MU",
+      "name": "MICRON TECH",
+      "shares": 34,
+      "value_krw": 45444003,
+      "weight": 3.89,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "AAPL",
+      "name": "APPLE Inc",
+      "shares": 88,
+      "value_krw": 40621032,
+      "weight": 3.48,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "TSLA",
+      "name": "TESLA MOTORS",
+      "shares": 55,
+      "value_krw": 35806300,
+      "weight": 3.07,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "STX",
+      "name": "SEAGATE TECHNOLOGY",
+      "shares": 27,
+      "value_krw": 34509220,
+      "weight": 2.96,
+      "sector": "스토리지"
+    },
+    {
+      "ticker": "WDC",
+      "name": "WESTERN DIGITAL",
+      "shares": 43,
+      "value_krw": 33622839,
+      "weight": 2.88,
+      "sector": "스토리지"
+    },
+    {
+      "ticker": "MRVL",
+      "name": "MARVELL TECHNOLOGY INC",
+      "shares": 91,
+      "value_krw": 28509633,
+      "weight": 2.44,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "LITE",
+      "name": "Lumentum Holdings Inc",
+      "shares": 20,
+      "value_krw": 27578601,
+      "weight": 2.36,
+      "sector": "광통신"
+    },
+    {
+      "ticker": "RKLB",
+      "name": "Rocket Lab USA Inc",
+      "shares": 95,
+      "value_krw": 20493265,
+      "weight": 1.76,
+      "sector": "우주/방산"
+    },
+    {
+      "ticker": "ALAB",
+      "name": "Astera Labs Inc",
+      "shares": 39,
+      "value_krw": 18770082,
+      "weight": 1.61,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "MSFT",
+      "name": "MICROSOFT",
+      "shares": 29,
+      "value_krw": 17924419,
+      "weight": 1.54,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "LUNR",
+      "name": "Intuitive Machines Inc",
+      "shares": 331,
+      "value_krw": 17309800,
+      "weight": 1.48,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SATS",
+      "name": "EchoStar Corp",
+      "shares": 92,
+      "value_krw": 17018938,
+      "weight": 1.46,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "DELL",
+      "name": "Dell Technologies Inc",
+      "shares": 34,
+      "value_krw": 15736402,
+      "weight": 1.35,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CRCL",
+      "name": "Circle Internet Group Inc",
+      "shares": 86,
+      "value_krw": 13440861,
+      "weight": 1.15,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "NBIS",
+      "name": "YANDEX NV-A",
+      "shares": 37,
+      "value_krw": 11444125,
+      "weight": 0.98,
+      "sector": "소프트웨어"
+    },
+    {
+      "ticker": "CSCO",
+      "name": "CISCO SYSTEMS INC",
+      "shares": 64,
+      "value_krw": 11343898,
+      "weight": 0.97,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "PANW",
+      "name": "PALO ALTO NETWORKS INC",
+      "shares": 29,
+      "value_krw": 11235374,
+      "weight": 0.96,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "COIN",
+      "name": "COINBASE GLOBAL INC -CLASS A",
+      "shares": 41,
+      "value_krw": 11087578,
+      "weight": 0.95,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "CIEN",
+      "name": "Ciena Corp",
+      "shares": 11,
+      "value_krw": 10128248,
+      "weight": 0.87,
+      "sector": "광통신"
+    },
+    {
+      "ticker": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS INC - A",
+      "shares": 10,
+      "value_krw": 10111552,
+      "weight": 0.87,
+      "sector": "소프트웨어"
+    },
+    {
+      "ticker": "STM",
+      "name": "STMICROELECTRONICS NV-NY SHS",
+      "shares": 94,
+      "value_krw": 9977386,
+      "weight": 0.85,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AMAT",
+      "name": "APPLIED MATERIALS INC",
+      "shares": 14,
+      "value_krw": 9799340,
+      "weight": 0.84,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "LRCX",
+      "name": "LAM RESEARCH",
+      "shares": 20,
+      "value_krw": 9571886,
+      "weight": 0.82,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "TXN",
+      "name": "TEXAS INSTRUMENTS",
+      "shares": 17,
+      "value_krw": 8052337,
+      "weight": 0.69,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "COHR",
+      "name": "COHERENT CORP",
+      "shares": 11,
+      "value_krw": 6537751,
+      "weight": 0.56,
+      "sector": "광통신"
+    },
+    {
+      "ticker": "SIMO",
+      "name": "Silicon Motion Technology Corp",
+      "shares": 15,
+      "value_krw": 6424110,
+      "weight": 0.55,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "QCOM",
+      "name": "QUALCOMM Inc",
+      "shares": 16,
+      "value_krw": 6125868,
+      "weight": 0.52,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "VRT",
+      "name": "Vertiv Holdings Co",
+      "shares": 12,
+      "value_krw": 6058721,
+      "weight": 0.52,
+      "sector": "에너지"
+    },
+    {
+      "ticker": "TSEM",
+      "name": "Tower Semiconductor Ltd",
+      "shares": 14,
+      "value_krw": 5877726,
+      "weight": 0.5,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "KLAC",
+      "name": "KLA Corp",
+      "shares": 2,
+      "value_krw": 5827632,
+      "weight": 0.5,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "ADI",
+      "name": "ANALOG DEVICES",
+      "shares": 9,
+      "value_krw": 5560250,
+      "weight": 0.48,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "VICR",
+      "name": "Vicor Corp",
+      "shares": 8,
+      "value_krw": 4093562,
+      "weight": 0.35,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GILD",
+      "name": "GILEAD SCIENCES INC",
+      "shares": 18,
+      "value_krw": 3633674,
+      "weight": 0.31,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "MPWR",
+      "name": "MONOLITHIC POWER SYSTEMS INC",
+      "shares": 1,
+      "value_krw": 2446536,
+      "weight": 0.21,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ASML",
+      "name": "ASML HOLDING",
+      "shares": 1,
+      "value_krw": 2376503,
+      "weight": 0.2,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "FTNT",
+      "name": "FORTINET INC",
+      "shares": 11,
+      "value_krw": 2139712,
+      "weight": 0.18,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "NXPI",
+      "name": "NXP SEMICONDUCTORS NV",
+      "shares": 4,
+      "value_krw": 1957664,
+      "weight": 0.17,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "MCHP",
+      "name": "MICROCHIP TECHNOLOGY INC",
+      "shares": 9,
+      "value_krw": 1298239,
+      "weight": 0.11,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "FLEX",
+      "name": "Flextronics International Ltd",
+      "shares": 6,
+      "value_krw": 1264387,
+      "weight": 0.11,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TER",
+      "name": "TERADYNE INC",
+      "shares": 2,
+      "value_krw": 1144986,
+      "weight": 0.1,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "CRWV",
+      "name": "Coreweave Inc",
+      "shares": 7,
+      "value_krw": 1090479,
+      "weight": 0.09,
+      "sector": "AI/클라우드"
+    }
+  ]
+}
