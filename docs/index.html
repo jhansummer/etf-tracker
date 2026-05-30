@@ -1330,29 +1330,35 @@ function renderMAAlert(el){
     {
       sym: "QQQ",
       label: "나스닥100 ETF",
-      lev2: { etf:"QLD (2x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"19.0%", wr:"77%", trades:"53회/10년" },
-      lev3: { etf:"TQQQ (3x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"31.8%", wr:"73%", trades:"60회/10년" },
-      note:"손절 -10% 적용 시 재진입 횟수 증가 → CAGR 대폭 향상. QQQ 3x는 B&H(31.3%)와 동일 수준."
+      bh:"31.3%",
+      lev2: { etf:"QLD (2x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"41.6%", wr:"77%", trades:"53회/10년" },
+      lev3: { etf:"TQQQ (3x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"54.3%", wr:"73%", trades:"60회/10년" },
+      note:"손절 -10% 시 재진입 횟수 증가 → 큰 반등을 더 낮은 가격에 포착. 비신호 구간 1x 보유 포함 시 B&H(31.3%) 대비 TQQQ 전략 CAGR 23%p 초과."
     },
     {
       sym: "SOXX",
       label: "반도체 ETF",
-      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"30.1%", wr:"80%", trades:"49회/10년" },
-      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"36.0%", wr:"82%", trades:"61회/10년" },
-      note:"SOXX는 변동성이 커서 타이트한 손절(-10~15%)이면 반등을 놓치고 오히려 손해. 손절 -30%(넓게)이 최적. 손절 없이 MA복귀 대기보다 -30% 설정 시 CAGR 소폭 향상."
+      bh:"51.9%",
+      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"68.6%", wr:"80%", trades:"49회/10년" },
+      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"77.0%", wr:"82%", trades:"61회/10년" },
+      note:"손절 -10~15%는 반등 놓침. -30%(넓게)이 최적. B&H(51.9%) 대비 SOXL 전략 CAGR 25%p 초과."
     },
     {
       sym: "SPY",
       label: "S&P500 ETF",
-      lev2: { etf:"SSO (2x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"7.8%", wr:"88%", trades:"17회/10년" },
-      lev3: { etf:"UPRO (3x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"8.8%", wr:"88%", trades:"17회/10년" },
-      note:"SPY는 신호 자체가 적고(10년 14~19회) 절대 수익이 낮음. B&H(20.4%) 대비 열위 → 레버리지 단기 전략 적합도 낮음."
+      bh:"20.4%",
+      lev2: { etf:"SSO (2x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"없음", cagr:"24.0%", wr:"88%", trades:"17회/10년" },
+      lev3: { etf:"UPRO (3x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"없음", cagr:"25.2%", wr:"89%", trades:"19회/10년" },
+      note:"신호 빈도 낮음(10년 14~19회). B&H(20.4%) 대비 소폭 초과. 1x 보유 중 신호 시 UPRO 교체로 추가 수익 가능."
     },
   ];
 
   rules.forEach(function(r){
     html += '<div class="chart-card" style="margin-bottom:16px">';
-    html += '<div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:12px">' + r.sym + ' <span style="font-size:12px;font-weight:400;color:var(--muted)">' + r.label + '</span></div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
+      + '<div style="font-size:15px;font-weight:800;color:var(--ink)">' + r.sym + ' <span style="font-size:12px;font-weight:400;color:var(--muted)">' + r.label + '</span></div>'
+      + (r.bh ? '<div style="font-size:11px;color:var(--muted)">B&H 기준 <span style="color:var(--ink);font-weight:700">' + r.bh + ' CAGR</span></div>' : '')
+      + '</div>';
 
     [r.lev2, r.lev3].forEach(function(lev){
       html += '<div style="background:var(--surface2);border-radius:8px;padding:12px 14px;margin-bottom:10px">';
