@@ -652,6 +652,47 @@ def crawl_ark(date_str, key="arkk"):
 #  메인
 # ══════════════════════════════════════════════
 
+# ══════════════════════════════════════════════
+#  미국 ETF 가격 크롤링 (Yahoo Finance)
+# ══════════════════════════════════════════════
+
+US_PRICE_SYMBOLS = ["SPY", "QQQ", "SOXX"]
+
+def crawl_us_prices(date_str):
+    """Yahoo Finance에서 SPY/QQQ/SOXX 일별 종가 60일치 fetch"""
+    import time as _t
+    result = {}
+    for symbol in US_PRICE_SYMBOLS:
+        try:
+            url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+                   f"?interval=1d&range=3mo")
+            raw = fetch_url(url, extra_headers={
+                "Accept": "application/json",
+                "Referer": "https://finance.yahoo.com/",
+            })
+            data = json.loads(raw)
+            res = data["chart"]["result"][0]
+            timestamps = res["timestamp"]
+            closes = res["indicators"]["quote"][0]["close"]
+            prices = []
+            for ts, c in zip(timestamps, closes):
+                if c is None:
+                    continue
+                d = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d")
+                prices.append({"date": d, "close": round(c, 2)})
+            prices.sort(key=lambda x: x["date"])
+            out = {"symbol": symbol, "fetched": date_str, "prices": prices}
+            path = DATA / f"us_price_{symbol}.json"
+            path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+            print(f"[US가격] {symbol} 저장: {len(prices)}일")
+            result[symbol] = True
+            _t.sleep(0.5)
+        except Exception as e:
+            print(f"[US가격] {symbol} 실패: {e}")
+            result[symbol] = False
+    return any(result.values())
+
+
 def main():
     today = date.today().isoformat()
     date_str = sys.argv[1] if len(sys.argv) > 1 else today
