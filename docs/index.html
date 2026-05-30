@@ -1320,6 +1320,65 @@ function renderMAAlert(el){
   });
 
   html += '<div style="font-size:11px;color:var(--muted);margin-top:8px">데이터: Yahoo Finance · 매일 자동 업데이트</div>';
+
+  // ── 전략 원칙 섹션 ──
+  html += '<div style="margin-top:28px">';
+  html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:14px">📋 백테스트 기반 레버리지 단기 전략 원칙</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">10년(2016–2026) 실데이터 백테스트 결과 · 변동성 손실(decay) 반영 · 운용 보수 미반영</div>';
+
+  var rules = [
+    {
+      sym: "QQQ",
+      label: "나스닥100 ETF",
+      lev2: { etf:"QLD (2x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"19.0%", wr:"77%", trades:"53회/10년" },
+      lev3: { etf:"TQQQ (3x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"31.8%", wr:"73%", trades:"60회/10년" },
+      note:"손절 -10% 적용 시 재진입 횟수 증가 → CAGR 대폭 향상. QQQ 3x는 B&H(31.3%)와 동일 수준."
+    },
+    {
+      sym: "SOXX",
+      label: "반도체 ETF",
+      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -20%", cagr:"28.8%", wr:"79%", trades:"53회/10년" },
+      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"없음 (MA 복귀 대기)", cagr:"35.6%", wr:"82%", trades:"49회/10년" },
+      note:"SOXX는 변동성이 커서 손절 후 즉시 반등하는 경우 많음 → 손절 타이트하게 잡으면 오히려 손해. 3x는 손절 없이 버티는 게 최적."
+    },
+    {
+      sym: "SPY",
+      label: "S&P500 ETF",
+      lev2: { etf:"SSO (2x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"7.8%", wr:"88%", trades:"17회/10년" },
+      lev3: { etf:"UPRO (3x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"8.8%", wr:"88%", trades:"17회/10년" },
+      note:"SPY는 신호 자체가 적고(10년 14~19회) 절대 수익이 낮음. B&H(20.4%) 대비 열위 → 레버리지 단기 전략 적합도 낮음."
+    },
+  ];
+
+  rules.forEach(function(r){
+    html += '<div class="chart-card" style="margin-bottom:16px">';
+    html += '<div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:12px">' + r.sym + ' <span style="font-size:12px;font-weight:400;color:var(--muted)">' + r.label + '</span></div>';
+
+    [r.lev2, r.lev3].forEach(function(lev){
+      html += '<div style="background:var(--surface2);border-radius:8px;padding:12px 14px;margin-bottom:10px">';
+      html += '<div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:8px">' + lev.etf + '</div>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:11px">';
+      html += '<div><span style="color:var(--muted)">진입 조건 </span><span style="color:var(--ink)">' + lev.entry + '</span></div>';
+      html += '<div><span style="color:var(--muted)">청산 조건 </span><span style="color:var(--up)">' + lev.exit + '</span></div>';
+      html += '<div><span style="color:var(--muted)">손절 라인 </span><span style="color:var(--down)">' + lev.stop + '</span></div>';
+      html += '<div><span style="color:var(--muted)">거래 횟수 </span><span style="color:var(--ink)">' + lev.trades + '</span></div>';
+      html += '<div><span style="color:var(--muted)">승률 </span><span style="color:var(--ink)">' + lev.wr + '</span></div>';
+      html += '<div><span style="color:var(--muted)">CAGR </span><span style="color:var(--accent2);font-weight:700">' + lev.cagr + '</span></div>';
+      html += '</div></div>';
+    });
+
+    html += '<div style="font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6">💡 ' + r.note + '</div>';
+    html += '</div>';
+  });
+
+  html += '<div style="font-size:11px;color:var(--muted);margin-top:4px;padding:10px 14px;background:var(--surface2);border-radius:8px;line-height:1.7">'
+    + '⚠️ <strong style="color:var(--ink)">주의사항</strong><br>'
+    + '• 이 전략은 메인 포트(QQQ/SPY B&H) 유지 중 여유 현금으로 단기 레버리지를 타는 오버레이 전략입니다<br>'
+    + '• 운용 보수 미반영(TQQQ 0.88%/년, SOXL 0.75%/년) — 단기 보유(1~3일) 시 영향 미미<br>'
+    + '• 과거 수익이 미래를 보장하지 않으며, 개인 투자 판단 하에 사용하세요'
+    + '</div>';
+  html += '</div>';
+
   html += '</div>';
   el.innerHTML = html;
 
