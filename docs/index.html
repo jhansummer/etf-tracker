@@ -1337,9 +1337,9 @@ function renderMAAlert(el){
     {
       sym: "SOXX",
       label: "반도체 ETF",
-      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -20%", cagr:"28.8%", wr:"79%", trades:"53회/10년" },
-      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"없음 (MA 복귀 대기)", cagr:"35.6%", wr:"82%", trades:"49회/10년" },
-      note:"SOXX는 변동성이 커서 손절 후 즉시 반등하는 경우 많음 → 손절 타이트하게 잡으면 오히려 손해. 3x는 손절 없이 버티는 게 최적."
+      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"30.1%", wr:"80%", trades:"49회/10년" },
+      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"36.0%", wr:"82%", trades:"61회/10년" },
+      note:"SOXX는 변동성이 커서 타이트한 손절(-10~15%)이면 반등을 놓치고 오히려 손해. 손절 -30%(넓게)이 최적. 손절 없이 MA복귀 대기보다 -30% 설정 시 CAGR 소폭 향상."
     },
     {
       sym: "SPY",
