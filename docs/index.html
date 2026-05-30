@@ -1324,32 +1324,32 @@ function renderMAAlert(el){
   // ── 전략 원칙 섹션 ──
   html += '<div style="margin-top:28px">';
   html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:14px">📋 백테스트 기반 레버리지 단기 전략 원칙</div>';
-  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">10년(2016–2026) 실데이터 백테스트 · 비신호 구간 1x 보유 + 신호 시 레버리지 교체 전략 · 변동성 손실(decay) 반영 · 운용 보수 미반영</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">10년(2016–2026) 실데이터 백테스트 · 평소 1.5x 혼합 보유 + 신호 시 레버리지 전환 전략 · 변동성 손실(decay) 반영 · 운용 보수 미반영</div>';
 
   var rules = [
     {
       sym: "QQQ",
       label: "나스닥100 ETF",
       bh:"31.3%",
-      lev2: { etf:"QLD (2x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"41.6%", wr:"77%", trades:"53회/10년" },
-      lev3: { etf:"TQQQ (3x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"54.3%", wr:"73%", trades:"60회/10년" },
-      note:"손절 -10% 시 재진입 횟수 증가 → 큰 반등을 더 낮은 가격에 포착. 비신호 구간 1x 보유 포함 시 B&H(31.3%) 대비 TQQQ 전략 CAGR 23%p 초과."
+      lev2: { etf:"QLD (2x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"51.6%", wr:"77%", trades:"53회/10년" },
+      lev3: { etf:"TQQQ (3x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"63.9%", wr:"73%", trades:"60회/10년" },
+      note:"평소 1.5x 혼합(QQQ 50% + QLD 50%) 보유 → 신호 시 TQQQ 전환. 순수 1.5x B&H(46.4%) 대비 +17%p. 손절 -10% 적용으로 큰 반등을 더 낮은 가격에 재진입."
     },
     {
       sym: "SOXX",
       label: "반도체 ETF",
       bh:"51.9%",
-      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"68.6%", wr:"80%", trades:"49회/10년" },
-      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"77.0%", wr:"82%", trades:"61회/10년" },
-      note:"손절 -10~15%는 반등 놓침. -30%(넓게)이 최적. B&H(51.9%) 대비 SOXL 전략 CAGR 25%p 초과."
+      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"84.5%", wr:"80%", trades:"49회/10년" },
+      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"93.8%", wr:"82%", trades:"61회/10년" },
+      note:"평소 1.5x 혼합(SOXX 50% + USD 50%) 보유 → 신호 시 SOXL 전환. 3x 상시보유(115.4%) 보다 MDD -15%p 낮으면서 CAGR 93.8%. 손절은 -30%로 넓게 설정(타이트하면 반등 놓침)."
     },
     {
       sym: "SPY",
       label: "S&P500 ETF",
       bh:"20.4%",
-      lev2: { etf:"SSO (2x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"없음", cagr:"24.0%", wr:"88%", trades:"17회/10년" },
-      lev3: { etf:"UPRO (3x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"없음", cagr:"25.2%", wr:"89%", trades:"19회/10년" },
-      note:"신호 빈도 낮음(10년 14~19회). B&H(20.4%) 대비 소폭 초과. 1x 보유 중 신호 시 UPRO 교체로 추가 수익 가능."
+      lev2: { etf:"SSO (2x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"없음", cagr:"31.5%", wr:"88%", trades:"17회/10년" },
+      lev3: { etf:"UPRO (3x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"32.9%", wr:"89%", trades:"19회/10년" },
+      note:"평소 1.5x 혼합(SPY 50% + SSO 50%) 보유 → 신호 시 전환. 신호 빈도 낮아(10년 14~19회) 베이스 레버리지가 수익 대부분을 담당. 1.5x B&H(29.8%) 대비 소폭 초과."
     },
   ];
 
@@ -1379,9 +1379,9 @@ function renderMAAlert(el){
 
   html += '<div style="font-size:11px;color:var(--muted);margin-top:4px;padding:10px 14px;background:var(--surface2);border-radius:8px;line-height:1.7">'
     + '📌 <strong style="color:var(--ink)">전략 구조</strong><br>'
-    + '• 평소: 1x ETF(QQQ/SOXX/SPY) 그대로 보유<br>'
-    + '• 신호 발생 시: 1x 전량 매도 → 레버리지 ETF(TQQQ/SOXL/UPRO) 매수<br>'
-    + '• 청산 조건 충족 시: 레버리지 매도 → 1x 재매수<br>'
+    + '• 평소: 1x ETF 50% + 2x ETF 50% 혼합 보유 (실효 1.5x)<br>'
+    + '• 신호 발생 시(종가 < MA20 × 0.95): 전량 매도 → 3x 레버리지 ETF(TQQQ/SOXL/UPRO) 매수<br>'
+    + '• 청산 조건 충족 시(익실현 or MA20 복귀 or 손절): 레버리지 매도 → 1.5x 혼합 재매수<br>'
     + '• 백테스트는 이 교체 전략을 10년 전체에 걸쳐 계산한 결과입니다<br><br>'
     + '⚠️ <strong style="color:var(--ink)">주의사항</strong><br>'
     + '• 운용 보수 미반영(TQQQ 0.88%/년, SOXL 0.75%/년) — 단기 보유(1~3일) 시 영향 미미<br>'
