@@ -144,6 +144,7 @@ a{color:var(--accent2);text-decoration:none}
   <button class="tab" data-tab="compare">비교</button>
   <button class="tab" data-tab="signals">시그널</button>
   <button class="tab" data-tab="history">히스토리</button>
+  <button class="tab" data-tab="ma_alert">📡 매수알림</button>
 </nav>
 
 <div class="sub-tabs" id="etf-selector">
@@ -288,7 +289,7 @@ function updateUIVisibility(){
     });
   }
 
-  if (activeTab === "compare" || activeTab === "history") {
+  if (activeTab === "compare" || activeTab === "history" || activeTab === "ma_alert") {
     wb.style.display = "none";
     es.style.display = "none";
     st.style.display = activeTab === "compare" ? "flex" : "none";
@@ -335,6 +336,7 @@ function render(){
   else if (activeTab === "compare") renderCompare(el);
   else if (activeTab === "signals") renderSignals(el);
   else if (activeTab === "history") renderHistory(el);
+  else if (activeTab === "ma_alert") renderMAAlert(el);
 }
 
 /* ── ETF Tab ── */

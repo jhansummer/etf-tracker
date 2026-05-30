@@ -291,6 +291,49 @@ def main():
             for h in q["holdings"]: sigs[h.get("signal","hold")] += 1
             print(f"{INVESTOR_13F_LABELS[inv_key]} ({q['filing_date']}): {len(quarters)}분기, {dict(sigs)}")
 
+    # ── 미국 ETF 가격 / 20일 MA 신호 ──
+    us_prices = {}
+    MA_WINDOW = 20
+    ALERT_THRESHOLD = -5.0
+    for symbol in ["SPY", "QQQ", "SOXX"]:
+        price_file = DATA / f"us_price_{symbol}.json"
+        if not price_file.exists():
+            continue
+        try:
+            raw = json.loads(price_file.read_text(encoding="utf-8"))
+            prices = raw.get("prices", [])
+            if len(prices) < MA_WINDOW:
+                continue
+            closes = [p["close"] for p in prices]
+            ma20 = round(sum(closes[-MA_WINDOW:]) / MA_WINDOW, 2)
+            current = closes[-1]
+            pct_diff = round((current - ma20) / ma20 * 100, 2)
+            # 차트용: 최근 60일
+            chart_prices = prices[-60:]
+            # 각 날짜의 20일 MA (rolling)
+            ma_series = []
+            for i in range(len(prices)):
+                if i < MA_WINDOW - 1:
+                    ma_series.append(None)
+                else:
+                    w = prices[i - MA_WINDOW + 1 : i + 1]
+                    ma_series.append(round(sum(p["close"] for p in w) / MA_WINDOW, 2))
+            chart_ma = ma_series[-60:]
+            us_prices[symbol] = {
+                "symbol":   symbol,
+                "current":  current,
+                "ma20":     ma20,
+                "pct_diff": pct_diff,
+                "alert":    pct_diff <= ALERT_THRESHOLD,
+                "date":     prices[-1]["date"],
+                "prices":   [p["close"] for p in chart_prices],
+                "dates":    [p["date"]  for p in chart_prices],
+                "ma_line":  chart_ma,
+            }
+            print(f"{symbol}: 현재 {current} / MA20 {ma20} / {pct_diff:+.2f}% {'🚨' if pct_diff <= ALERT_THRESHOLD else ''}")
+        except Exception as e:
+            print(f"{symbol} 가격 빌드 실패: {e}")
+
     combined = {
         "generated": max(dates) if dates else "",
         "etf_keys":  etf_keys,
@@ -301,6 +344,7 @@ def main():
     combined["overlap"] = overlap
     combined["overlap_time_kosdaq_pair"] = overlap_time_kosdaq_pair
     combined["investors_13f"] = investors_combined
+    combined["us_prices"] = us_prices
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

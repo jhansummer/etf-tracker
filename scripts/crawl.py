@@ -752,6 +752,14 @@ def main():
                 results[inv_key] = False
             print()
 
+    if target in ("all", "us_price"):
+        try:
+            results["us_price"] = crawl_us_prices(date_str)
+        except Exception as e:
+            print(f"[US가격] 크롤링 실패: {e}")
+            results["us_price"] = False
+        print()
+
     # 하나라도 성공하면 빌드
     if any(results.values()):
         print("=== combined.json 빌드 ===")
