@@ -659,21 +659,60 @@ def crawl_ark(date_str, key="arkk"):
 US_PRICE_SYMBOLS = ["SPY", "QQQ", "SOXX"]
 
 def crawl_us_prices(date_str):
-    """Yahoo Finance에서 SPY/QQQ/SOXX 일별 종가 60일치 fetch"""
+    """Yahoo Finance에서 SPY/QQQ/SOXX 일별 종가 60일치 fetch
+    v8 실패 시 v8/finance/chart 쿠키 없이 재시도 → yf_download fallback
+    """
     import time as _t
     result = {}
+
+    def _fetch_yahoo(symbol):
+        """v8 API 시도, 실패 시 yf_download fallback"""
+        endpoints = [
+            f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=3mo",
+            f"https://query2.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=3mo",
+        ]
+        extra = {
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Referer": f"https://finance.yahoo.com/quote/{symbol}/",
+            "Origin": "https://finance.yahoo.com",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-site",
+        }
+        for url in endpoints:
+            try:
+                raw = fetch_url(url, extra_headers=extra, retries=2, timeout=30)
+                data = json.loads(raw)
+                res = data["chart"]["result"][0]
+                return res["timestamp"], res["indicators"]["quote"][0]["close"]
+            except Exception as e:
+                print(f"  [{symbol}] {url} 실패: {e}")
+                _t.sleep(2)
+
+        # yfinance 패키지 fallback
+        try:
+            import yfinance as yf
+            df = yf.download(symbol, period="3mo", interval="1d", progress=False, auto_adjust=True)
+            if df.empty:
+                raise ValueError("yfinance 빈 결과")
+            import math
+            timestamps = [int(d.timestamp()) for d in df.index]
+            closes = [None if math.isnan(float(v)) else float(v) for v in df["Close"]]
+            print(f"  [{symbol}] yfinance fallback 성공")
+            return timestamps, closes
+        except ImportError:
+            print(f"  [{symbol}] yfinance 미설치, pip install yfinance")
+        except Exception as e:
+            print(f"  [{symbol}] yfinance fallback 실패: {e}")
+        return None, None
+
     for symbol in US_PRICE_SYMBOLS:
         try:
-            url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-                   f"?interval=1d&range=3mo")
-            raw = fetch_url(url, extra_headers={
-                "Accept": "application/json",
-                "Referer": "https://finance.yahoo.com/",
-            })
-            data = json.loads(raw)
-            res = data["chart"]["result"][0]
-            timestamps = res["timestamp"]
-            closes = res["indicators"]["quote"][0]["close"]
+            timestamps, closes = _fetch_yahoo(symbol)
+            if timestamps is None:
+                raise ValueError("모든 fetch 방법 실패")
             prices = []
             for ts, c in zip(timestamps, closes):
                 if c is None:
@@ -684,11 +723,11 @@ def crawl_us_prices(date_str):
             out = {"symbol": symbol, "fetched": date_str, "prices": prices}
             path = DATA / f"us_price_{symbol}.json"
             path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-            print(f"[US가격] {symbol} 저장: {len(prices)}일")
+            print(f"[US가격] {symbol} 저장: {len(prices)}일 (최신: {prices[-1]['date']})")
             result[symbol] = True
-            _t.sleep(0.5)
+            _t.sleep(1)
         except Exception as e:
-            print(f"[US가격] {symbol} 실패: {e}")
+            print(f"[US가격] {symbol} 최종 실패: {e}")
             result[symbol] = False
     return any(result.values())
 

@@ -19,9 +19,9 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Playwright
+      - name: Install dependencies
         run: |
-          pip install playwright
+          pip install playwright yfinance
           playwright install chromium --with-deps
 
       - name: Crawl ETF + ARK + 13F 투자거장
