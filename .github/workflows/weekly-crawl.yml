@@ -24,9 +24,60 @@ jobs:
           pip install playwright yfinance
           playwright install chromium --with-deps
 
+      - name: Fetch US prices (curl)
+        run: |
+          DATE=$(TZ=Asia/Seoul date +%F)
+          for SYMBOL in SPY QQQ SOXX; do
+            echo "Fetching $SYMBOL..."
+            curl -s --max-time 30 --retry 3 \
+              "https://query1.finance.yahoo.com/v8/finance/chart/${SYMBOL}?interval=1d&range=3mo" \
+              -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+              -H "Accept: application/json" \
+              -H "Accept-Language: en-US,en;q=0.9" \
+              -H "Referer: https://finance.yahoo.com/" \
+              -o "data/us_price_${SYMBOL}_raw.json" \
+              && echo "$SYMBOL OK" || echo "$SYMBOL curl 실패"
+            sleep 1
+          done
+          # raw json → us_price_{symbol}.json 변환
+          python3 - <<'EOF'
+          import json, os
+          from datetime import datetime
+          from pathlib import Path
+          DATA = Path("data")
+          DATE = os.environ.get("DATE", datetime.now().strftime("%Y-%m-%d"))
+          for symbol in ["SPY", "QQQ", "SOXX"]:
+              raw_path = DATA / f"us_price_{symbol}_raw.json"
+              if not raw_path.exists():
+                  print(f"{symbol}: raw 파일 없음")
+                  continue
+              try:
+                  data = json.loads(raw_path.read_text())
+                  res = data["chart"]["result"][0]
+                  ts_arr = res["timestamp"]
+                  closes = res["indicators"]["quote"][0]["close"]
+                  prices = []
+                  for ts, c in zip(ts_arr, closes):
+                      if c is None: continue
+                      d = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d")
+                      prices.append({"date": d, "close": round(c, 2)})
+                  prices.sort(key=lambda x: x["date"])
+                  out = {"symbol": symbol, "fetched": DATE, "prices": prices}
+                  (DATA / f"us_price_{symbol}.json").write_text(json.dumps(out, indent=2))
+                  print(f"{symbol}: {len(prices)}일 저장 (최신: {prices[-1]['date']})")
+              except Exception as e:
+                  print(f"{symbol}: 파싱 실패 - {e}")
+          EOF
+        env:
+          DATE: $(TZ=Asia/Seoul date +%F)
+        continue-on-error: true
+
       - name: Crawl ETF + ARK + 13F 투자거장
         run: python scripts/crawl.py $(TZ=Asia/Seoul date +%F)
         continue-on-error: true
+
+      - name: Build combined.json
+        run: python scripts/build.py
 
       - name: Commit & Push
         run: |
@@ -37,7 +88,6 @@ jobs:
             echo "No changes"
           else
             git commit -m "daily update $(TZ=Asia/Seoul date +%F): auto-crawl"
-            # 원격에 새 커밋이 있으면 rebase 후 push
             git pull --rebase origin main || true
             git push
           fi
