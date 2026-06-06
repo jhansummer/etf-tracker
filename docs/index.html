@@ -1402,13 +1402,43 @@ function renderMAAlertCards(el, prices, isLive) {
   return html;
 }
 
-function renderMAAlert(el){
-  var cachedPrices = DATA.us_prices || {};
+function renderMACharts(prices) {
   var symbols = ["SPY","QQQ","SOXX"];
-  var names = {SPY:"S&P 500 ETF", QQQ:"나스닥 100 ETF", SOXX:"반도체 ETF"};
+  Object.values(maAlertCharts).forEach(function(c){ try{c.destroy();}catch(e){} });
+  maAlertCharts = {};
+  symbols.forEach(function(sym){
+    var d = prices[sym];
+    if (!d || !d.dates) return;
+    var ctx = document.getElementById("ma-chart-" + sym);
+    if (!ctx) return;
+    maAlertCharts[sym] = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: d.dates,
+        datasets: [
+          { label: "종가", data: d.prices, borderColor: "#6366f1", backgroundColor: "rgba(99,102,241,0.08)",
+            fill: true, tension: 0.3, pointRadius: 0, pointHoverRadius: 4, borderWidth: 2 },
+          { label: "MA20", data: d.ma_line, borderColor: "#f59e0b", backgroundColor: "transparent",
+            fill: false, tension: 0.3, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5, borderDash: [4,3] }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: { grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:9}, maxTicksLimit:8} },
+          y: { grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:9}} }
+        },
+        plugins: {
+          legend: { labels:{color:"#8b8fa3", font:{size:10}, boxWidth:10} },
+          tooltip: { mode:"index", intersect:false }
+        }
+      }
+    });
+  });
+}
 
-  // ── 전략 원칙 섹션 ──
-  html += '<div style="margin-top:28px">';
+function buildStrategySection() {
+  var html = '';
   html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:14px">📋 백테스트 기반 레버리지 단기 전략 원칙</div>';
   html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">10년(2016–2026) 실데이터 백테스트 · 평소 1.5x 혼합 보유 + 신호 시 레버리지 전환 전략 · 변동성 손실(decay) 반영 · 운용 보수 미반영</div>';
 
@@ -1474,41 +1504,34 @@ function renderMAAlert(el){
     + '• 과거 수익이 미래를 보장하지 않으며, 개인 투자 판단 하에 사용하세요'
     + '</div>';
   html += '</div>';
+  return html;
+}
 
-  html += '</div>';
-  el.innerHTML = html;
+function renderMAAlert(el){
+  var cachedPrices = DATA.us_prices || {};
 
-  // 차트 렌더
-  Object.values(maAlertCharts).forEach(function(c){ try{c.destroy();}catch(e){} });
-  maAlertCharts = {};
-  symbols.forEach(function(sym){
-    var d = prices[sym];
-    if (!d || !d.dates) return;
-    var ctx = document.getElementById("ma-chart-" + sym);
-    if (!ctx) return;
-    maAlertCharts[sym] = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: d.dates,
-        datasets: [
-          { label: "종가", data: d.prices, borderColor: "#6366f1", backgroundColor: "rgba(99,102,241,0.08)",
-            fill: true, tension: 0.3, pointRadius: 0, pointHoverRadius: 4, borderWidth: 2 },
-          { label: "MA20", data: d.ma_line, borderColor: "#f59e0b", backgroundColor: "transparent",
-            fill: false, tension: 0.3, pointRadius: 0, pointHoverRadius: 4, borderWidth: 1.5, borderDash: [4,3] }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: { grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:9}, maxTicksLimit:8} },
-          y: { grid:{color:"#2e3341"}, ticks:{color:"#8b8fa3", font:{size:9}} }
-        },
-        plugins: {
-          legend: { labels:{color:"#8b8fa3", font:{size:10}, boxWidth:10} },
-          tooltip: { mode:"index", intersect:false }
-        }
-      }
-    });
+  // 캐시 데이터로 즉시 렌더
+  var wrapper = document.createElement("div");
+  wrapper.innerHTML = '<div id="ma-cards-zone">' + renderMAAlertCards(el, cachedPrices, false) + '</div>'
+    + '<div style="margin-top:28px">' + buildStrategySection() + '</div>';
+  el.innerHTML = "";
+  el.appendChild(wrapper);
+  renderMACharts(cachedPrices);
+
+  // 라이브 fetch → 카드 영역만 교체
+  fetchLivePrices().then(function(livePrices) {
+    var zone = document.getElementById("ma-cards-zone");
+    if (!zone) return;
+    var hasData = Object.keys(livePrices).length > 0;
+    if (!hasData) {
+      var sp = document.getElementById("ma-live-spinner");
+      if (sp) sp.textContent = "⚠ 실시간 로드 실패 (캐시 표시)";
+      return;
+    }
+    zone.innerHTML = renderMAAlertCards(el, livePrices, true);
+    renderMACharts(livePrices);
+  }).catch(function(e){
+    console.warn("live fetch error:", e);
   });
 }
 
