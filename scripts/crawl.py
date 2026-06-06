@@ -659,76 +659,123 @@ def crawl_ark(date_str, key="arkk"):
 US_PRICE_SYMBOLS = ["SPY", "QQQ", "SOXX"]
 
 def crawl_us_prices(date_str):
-    """Yahoo Finance에서 SPY/QQQ/SOXX 일별 종가 60일치 fetch
-    v8 실패 시 v8/finance/chart 쿠키 없이 재시도 → yf_download fallback
+    """SPY/QQQ/SOXX 일별 종가 fetch
+    1순위: stooq.com (API키 불필요, CI 환경 안정적)
+    2순위: Yahoo Finance v8
+    3순위: yfinance 패키지
     """
-    import time as _t
+    import time as _t, csv as _csv, io as _io
+    from datetime import date as _date, timedelta as _td
     result = {}
 
+    # stooq 심볼 매핑 (소문자.us)
+    STOOQ_MAP = {"SPY": "spy.us", "QQQ": "qqq.us", "SOXX": "soxx.us"}
+
+    def _fetch_stooq(symbol):
+        """stooq.com CSV → (dates, closes)"""
+        s = STOOQ_MAP.get(symbol, symbol.lower() + ".us")
+        d2 = _date.today().strftime("%Y%m%d")
+        d1 = (_date.today() - _td(days=100)).strftime("%Y%m%d")
+        url = f"https://stooq.com/q/d/l/?s={s}&d1={d1}&d2={d2}&i=d"
+        raw = fetch_url(url, extra_headers={
+            "Accept": "text/csv,*/*",
+            "Referer": "https://stooq.com/",
+        }, retries=2, timeout=20)
+        text = raw.decode("utf-8", errors="replace")
+        if "No data" in text or len(text) < 50:
+            raise ValueError(f"stooq 데이터 없음: {text[:80]}")
+        reader = _csv.DictReader(_io.StringIO(text))
+        prices = []
+        for row in reader:
+            try:
+                d = row.get("Date", "").strip()
+                c = float(row.get("Close", 0))
+                if d and c > 0:
+                    prices.append({"date": d, "close": round(c, 2)})
+            except (ValueError, KeyError):
+                continue
+        prices.sort(key=lambda x: x["date"])
+        return prices
+
     def _fetch_yahoo(symbol):
-        """v8 API 시도, 실패 시 yf_download fallback"""
+        """Yahoo Finance v8 API → prices list"""
         endpoints = [
             f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=3mo",
             f"https://query2.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=3mo",
         ]
         extra = {
             "Accept": "application/json",
-            "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "en-US,en;q=0.9",
             "Referer": f"https://finance.yahoo.com/quote/{symbol}/",
-            "Origin": "https://finance.yahoo.com",
-            "Sec-Fetch-Dest": "empty",
-            "Sec-Fetch-Mode": "cors",
-            "Sec-Fetch-Site": "same-site",
         }
         for url in endpoints:
             try:
                 raw = fetch_url(url, extra_headers=extra, retries=2, timeout=30)
                 data = json.loads(raw)
                 res = data["chart"]["result"][0]
-                return res["timestamp"], res["indicators"]["quote"][0]["close"]
+                ts_arr = res["timestamp"]
+                closes = res["indicators"]["quote"][0]["close"]
+                prices = []
+                for ts, c in zip(ts_arr, closes):
+                    if c is None:
+                        continue
+                    d = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d")
+                    prices.append({"date": d, "close": round(c, 2)})
+                prices.sort(key=lambda x: x["date"])
+                return prices
             except Exception as e:
-                print(f"  [{symbol}] {url} 실패: {e}")
+                print(f"  [{symbol}] Yahoo {url[-40:]} 실패: {e}")
                 _t.sleep(2)
+        return None
 
-        # yfinance 패키지 fallback
+    def _fetch_yfinance(symbol):
+        """yfinance 패키지 fallback"""
         try:
-            import yfinance as yf
-            df = yf.download(symbol, period="3mo", interval="1d", progress=False, auto_adjust=True)
+            import yfinance as yf, math
+            df = yf.download(symbol, period="3mo", interval="1d",
+                             progress=False, auto_adjust=True)
             if df.empty:
-                raise ValueError("yfinance 빈 결과")
-            import math
-            timestamps = [int(d.timestamp()) for d in df.index]
-            closes = [None if math.isnan(float(v)) else float(v) for v in df["Close"]]
-            print(f"  [{symbol}] yfinance fallback 성공")
-            return timestamps, closes
-        except ImportError:
-            print(f"  [{symbol}] yfinance 미설치, pip install yfinance")
+                raise ValueError("빈 결과")
+            prices = []
+            for idx, row in df.iterrows():
+                c = float(row["Close"])
+                if not math.isnan(c):
+                    prices.append({"date": idx.strftime("%Y-%m-%d"), "close": round(c, 2)})
+            return sorted(prices, key=lambda x: x["date"])
         except Exception as e:
-            print(f"  [{symbol}] yfinance fallback 실패: {e}")
-        return None, None
+            print(f"  [{symbol}] yfinance 실패: {e}")
+            return None
 
     for symbol in US_PRICE_SYMBOLS:
+        prices = None
+        source = ""
         try:
-            timestamps, closes = _fetch_yahoo(symbol)
-            if timestamps is None:
-                raise ValueError("모든 fetch 방법 실패")
-            prices = []
-            for ts, c in zip(timestamps, closes):
-                if c is None:
-                    continue
-                d = datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d")
-                prices.append({"date": d, "close": round(c, 2)})
-            prices.sort(key=lambda x: x["date"])
+            prices = _fetch_stooq(symbol)
+            source = "stooq"
+        except Exception as e:
+            print(f"  [{symbol}] stooq 실패: {e}")
+
+        if not prices:
+            prices = _fetch_yahoo(symbol)
+            if prices:
+                source = "yahoo"
+
+        if not prices:
+            prices = _fetch_yfinance(symbol)
+            if prices:
+                source = "yfinance"
+
+        if prices and len(prices) >= 20:
             out = {"symbol": symbol, "fetched": date_str, "prices": prices}
             path = DATA / f"us_price_{symbol}.json"
             path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-            print(f"[US가격] {symbol} 저장: {len(prices)}일 (최신: {prices[-1]['date']})")
+            print(f"[US가격] {symbol} 저장: {len(prices)}일 (최신: {prices[-1]['date']}) [{source}]")
             result[symbol] = True
-            _t.sleep(1)
-        except Exception as e:
-            print(f"[US가격] {symbol} 최종 실패: {e}")
+        else:
+            print(f"[US가격] {symbol} 모든 소스 실패")
             result[symbol] = False
+        _t.sleep(1)
+
     return any(result.values())
 
 
