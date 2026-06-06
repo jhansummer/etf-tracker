@@ -4,7 +4,7 @@
 
 set -e
 
-REPO_DIR="/Users/hanjin/Desktop/etf-tracker"
+REPO_DIR="/Users/hanjin/etf-tracker"
 LOG="$REPO_DIR/scripts/fetch_prices.log"
 DATE=$(TZ=Asia/Seoul date +%F)
 PYTHON="/opt/homebrew/bin/python3"
