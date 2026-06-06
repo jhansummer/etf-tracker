@@ -1,1 +1,23 @@
 [2026-06-06 15:04:32] 가격 fetch 시작
+=== ETF 크롤링 시작 (2026-06-06) ===
+
+  fetch 실패 (attempt 1/2): HTTP Error 429: Too Many Requests → 5s 후 재시도
+  [SPY] Yahoo /finance/chart/SPY?interval=1d&range=3mo 실패: HTTP Error 429: Too Many Requests
+  fetch 실패 (attempt 1/2): HTTP Error 429: Too Many Requests → 5s 후 재시도
+  [SPY] Yahoo /finance/chart/SPY?interval=1d&range=3mo 실패: HTTP Error 429: Too Many Requests
+  [SPY] yfinance 실패: No module named 'yfinance'
+[US가격] SPY 모든 소스 실패
+  fetch 실패 (attempt 1/2): HTTP Error 429: Too Many Requests → 5s 후 재시도
+  [QQQ] Yahoo /finance/chart/QQQ?interval=1d&range=3mo 실패: HTTP Error 429: Too Many Requests
+  fetch 실패 (attempt 1/2): HTTP Error 429: Too Many Requests → 5s 후 재시도
+  [QQQ] Yahoo /finance/chart/QQQ?interval=1d&range=3mo 실패: HTTP Error 429: Too Many Requests
+  [QQQ] yfinance 실패: No module named 'yfinance'
+[US가격] QQQ 모든 소스 실패
+  fetch 실패 (attempt 1/2): HTTP Error 429: Too Many Requests → 5s 후 재시도
+  [SOXX] Yahoo finance/chart/SOXX?interval=1d&range=3mo 실패: HTTP Error 429: Too Many Requests
+  fetch 실패 (attempt 1/2): HTTP Error 429: Too Many Requests → 5s 후 재시도
+  [SOXX] Yahoo finance/chart/SOXX?interval=1d&range=3mo 실패: HTTP Error 429: Too Many Requests
+  [SOXX] yfinance 실패: No module named 'yfinance'
+[US가격] SOXX 모든 소스 실패
+
+모든 크롤링 실패. 빌드 건너뜀.
