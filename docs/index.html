@@ -167,7 +167,7 @@ a{color:var(--accent2);text-decoration:none}
 <script>
 /* ── Data & State ── */
 var DATA = null;
-var activeTab = "nasdaq";      // nasdaq | kosdaq_market | ark_market | investors | compare | signals | history
+var activeTab = "ma_alert";    // ma_alert | nasdaq | kosdaq_market | ark_market | compare | signals | history
 var activeInvestor = "berkshire"; // berkshire | pershing | scion | duquesne
 var activeEtf = "time";        // time|koact / time_kosdaq|koact / arkk|arkq|arkw|arkg
 var ETF_TABS = ["nasdaq", "kosdaq_market", "ark_market"];
@@ -296,10 +296,6 @@ function updateUIVisibility(){
     wb.style.display = "flex";
     es.style.display = "none";
     st.style.display = "none";
-  } else if (activeTab === "investors") {
-    wb.style.display = "none";
-    es.style.display = "none";
-    st.style.display = "none";
   } else if (isETF) {
     wb.style.display = "flex";
     es.style.display = "flex";
@@ -331,7 +327,6 @@ function render(){
   var el = document.getElementById("content");
   if (!DATA) return;
   if (ETF_TABS.indexOf(activeTab) !== -1) renderETF(el, activeEtfKey());
-  else if (activeTab === "investors") renderInvestors(el);
   else if (activeTab === "compare") renderCompare(el);
   else if (activeTab === "signals") renderSignals(el);
   else if (activeTab === "history") renderHistory(el);
