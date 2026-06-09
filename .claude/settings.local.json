@@ -3,7 +3,8 @@
     "allow": [
       "Read(//Users/hanjin/Desktop/**)",
       "Bash(python reservation.py)",
-      "Bash(xargs ls *)"
+      "Bash(xargs ls *)",
+      "Bash(find /Users/hanjin -name \"*backtest*\" -o -name \"*vix*\" 2>/dev/null | grep -v node_modules | head -20)"
     ]
   }
 }
