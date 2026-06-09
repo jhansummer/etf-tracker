@@ -1261,30 +1261,81 @@ function drawArkHistoryChart(ticker){
 var maAlertCharts = {};
 // ── MA Alert 라이브 fetch 헬퍼 ──
 function buildMAPriceData(rawPrices) {
-  var MA_WIN = 20;
-  var ALERT_THR = -5.0;
+  var MA_WIN          = 20;
+  var MA200_WIN       = 200;
+  var MA200_SLOPE_WIN = 20;
+  var W52_WIN         = 252;
+  var ALERT_THR       = -5.0;
   rawPrices.sort(function(a,b){ return a.date < b.date ? -1 : 1; });
   var closes = rawPrices.map(function(p){ return p.close; });
-  // MA20 series
+  var n = closes.length;
+
+  // ── MA20 series ──
   var maSeries = closes.map(function(_,i){
     if (i < MA_WIN-1) return null;
     var s = 0; for (var j=i-MA_WIN+1;j<=i;j++) s+=closes[j];
     return Math.round(s/MA_WIN*100)/100;
   });
-  var current  = closes[closes.length-1];
-  var ma20     = maSeries[maSeries.length-1];
-  var pctDiff  = Math.round((current-ma20)/ma20*10000)/100;
-  var chart60  = rawPrices.slice(-60);
-  var ma60     = maSeries.slice(-60);
+
+  // ── MA200 series ──
+  var ma200Series = closes.map(function(_,i){
+    if (i < MA200_WIN-1) return null;
+    var s = 0; for (var j=i-MA200_WIN+1;j<=i;j++) s+=closes[j];
+    return s/MA200_WIN;
+  });
+
+  var current = closes[n-1];
+  var ma20    = maSeries[n-1];
+  var pctDiff = Math.round((current-ma20)/ma20*10000)/100;
+
+  // ── MA200 current value + pct diff ──
+  var ma200      = ma200Series[n-1];
+  var ma200PctDiff = null;
+  if (ma200) ma200PctDiff = Math.round((current-ma200)/ma200*10000)/100;
+
+  // ── MA200 slope (20-day rate of change) ──
+  var ma200Slope    = null;
+  var ma200SlopePct = null;
+  if (n >= MA200_WIN + MA200_SLOPE_WIN) {
+    var ma200Prev = ma200Series[n - MA200_SLOPE_WIN - 1];
+    if (ma200 && ma200Prev) {
+      ma200SlopePct = Math.round((ma200 - ma200Prev) / ma200Prev * 1e6) / 1e4;
+      ma200Slope = ma200SlopePct > 0 ? "rising" : "falling";
+    }
+  }
+
+  // ── 52-week high & drawdown ──
+  var w52High     = null;
+  var w52Drawdown = null;
+  var w52Window   = Math.min(n, W52_WIN);
+  if (w52Window > 0) {
+    var slice = closes.slice(n - w52Window);
+    w52High = slice.reduce(function(m,v){ return v>m?v:m; }, slice[0]);
+    w52Drawdown = Math.round((current - w52High) / w52High * 10000) / 100;
+  }
+
+  var chart60   = rawPrices.slice(-60);
+  var ma60      = maSeries.slice(-60);
+  var ma200_60  = ma200Series.slice(-60);
+
   return {
-    current:  current,
-    ma20:     ma20,
-    pct_diff: pctDiff,
-    alert:    pctDiff <= ALERT_THR,
-    date:     rawPrices[rawPrices.length-1].date,
-    prices:   chart60.map(function(p){ return p.close; }),
-    dates:    chart60.map(function(p){ return p.date; }),
-    ma_line:  ma60
+    current:          current,
+    ma20:             ma20,
+    pct_diff:         pctDiff,
+    alert:            pctDiff <= ALERT_THR,
+    date:             rawPrices[n-1].date,
+    prices:           chart60.map(function(p){ return p.close; }),
+    dates:            chart60.map(function(p){ return p.date; }),
+    ma_line:          ma60,
+    // MA200
+    ma200:            ma200 ? Math.round(ma200*100)/100 : null,
+    ma200_pct_diff:   ma200PctDiff,
+    ma200_slope:      ma200Slope,
+    ma200_slope_pct:  ma200SlopePct,
+    ma200_line:       ma200_60,
+    // 52-week
+    w52_high:         w52High ? Math.round(w52High*100)/100 : null,
+    w52_drawdown:     w52Drawdown
   };
 }
 
@@ -1293,8 +1344,9 @@ async function fetchLivePrices() {
   var result  = {};
   var PROXY   = "https://corsproxy.io/?";
 
-  async function fetchChart(yahooSym) {
-    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" + yahooSym + "?interval=1d&range=3mo";
+  async function fetchChart(yahooSym, range) {
+    var r   = range || "2y";
+    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" + yahooSym + "?interval=1d&range=" + r;
     try {
       var resp = await fetch(url, {headers:{"Accept":"application/json"}});
       if (!resp.ok) throw new Error("status " + resp.status);
@@ -1329,7 +1381,7 @@ async function fetchLivePrices() {
 
   // VIX 실시간
   try {
-    var vdata = await fetchChart("%5EVIX");
+    var vdata = await fetchChart("%5EVIX", "3mo");
     var vraw  = parseChart(vdata);
     if (vraw.length > 0) {
       var cur = vraw[vraw.length-1].close;
@@ -1340,6 +1392,30 @@ async function fetchLivePrices() {
         dates: vraw.slice(-60).map(function(p){return p.date;})};
     }
   } catch(e) { console.warn("VIX fetch 실패:", e); }
+
+  // VIX3M 실시간 (기간구조 스프레드)
+  try {
+    var v3data = await fetchChart("%5EVIX3M", "3mo");
+    var v3raw  = parseChart(v3data);
+    if (v3raw.length > 0) {
+      var cur3m = v3raw[v3raw.length-1].close;
+      result["__vix3m"] = {current: cur3m, date: v3raw[v3raw.length-1].date,
+        prices: v3raw.slice(-60).map(function(p){return p.close;}),
+        dates:  v3raw.slice(-60).map(function(p){return p.date;})};
+      // 스프레드 계산 후 __vix에 주입
+      if (result["__vix"] && result["__vix"].current != null) {
+        var spread = Math.round((result["__vix"].current - cur3m)*100)/100;
+        result["__vix"].vix3m = cur3m;
+        result["__vix"].vix3m_date = v3raw[v3raw.length-1].date;
+        result["__vix"].vix_vix3m_spread = spread;
+        result["__vix"].backwardation = spread > 0;
+        result["__vix"].vix3m_prices = result["__vix3m"].prices;
+        result["__vix"].vix3m_dates  = result["__vix3m"].dates;
+        if (result["__vix"].current >= 20)
+          result["__vix"].rec_lev_term = spread > 0 ? 3.0 : 2.0;
+      }
+    }
+  } catch(e) { console.warn("VIX3M fetch 실패:", e); }
 
   return result;
 }
