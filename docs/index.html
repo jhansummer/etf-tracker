@@ -1292,47 +1292,55 @@ async function fetchLivePrices() {
   var symbols = ["SPY","QQQ","SOXX"];
   var result  = {};
   var PROXY   = "https://corsproxy.io/?";
-  for (var i=0; i<symbols.length; i++) {
-    var sym = symbols[i];
-    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" + sym + "?interval=1d&range=3mo";
+
+  async function fetchChart(yahooSym) {
+    var url = "https://query1.finance.yahoo.com/v8/finance/chart/" + yahooSym + "?interval=1d&range=3mo";
     try {
-      // 직접 시도
       var resp = await fetch(url, {headers:{"Accept":"application/json"}});
       if (!resp.ok) throw new Error("status " + resp.status);
-      var data = await resp.json();
-      var res  = data.chart.result[0];
-      var ts   = res.timestamp;
-      var cls  = res.indicators.quote[0].close;
-      var raw  = [];
-      for (var j=0; j<ts.length; j++) {
-        if (cls[j] == null) continue;
-        var d = new Date(ts[j]*1000);
-        var ds = d.getUTCFullYear()+"-"+String(d.getUTCMonth()+1).padStart(2,"0")+"-"+String(d.getUTCDate()).padStart(2,"0");
-        raw.push({date:ds, close:Math.round(cls[j]*100)/100});
-      }
-      result[sym] = buildMAPriceData(raw);
+      return await resp.json();
     } catch(e1) {
-      // CORS 프록시 fallback
-      try {
-        var resp2 = await fetch(PROXY + encodeURIComponent(url));
-        if (!resp2.ok) throw new Error("proxy " + resp2.status);
-        var data2 = await resp2.json();
-        var res2  = data2.chart.result[0];
-        var ts2   = res2.timestamp;
-        var cls2  = res2.indicators.quote[0].close;
-        var raw2  = [];
-        for (var k=0; k<ts2.length; k++) {
-          if (cls2[k] == null) continue;
-          var d2 = new Date(ts2[k]*1000);
-          var ds2 = d2.getUTCFullYear()+"-"+String(d2.getUTCMonth()+1).padStart(2,"0")+"-"+String(d2.getUTCDate()).padStart(2,"0");
-          raw2.push({date:ds2, close:Math.round(cls2[k]*100)/100});
-        }
-        result[sym] = buildMAPriceData(raw2);
-      } catch(e2) {
-        console.warn(sym + " fetch 실패:", e1, e2);
-      }
+      var resp2 = await fetch(PROXY + encodeURIComponent(url));
+      if (!resp2.ok) throw new Error("proxy " + resp2.status);
+      return await resp2.json();
     }
   }
+
+  function parseChart(data) {
+    var res = data.chart.result[0];
+    var ts = res.timestamp; var cls = res.indicators.quote[0].close;
+    var raw = [];
+    for (var j=0; j<ts.length; j++) {
+      if (cls[j]==null) continue;
+      var d = new Date(ts[j]*1000);
+      raw.push({date:d.getUTCFullYear()+"-"+String(d.getUTCMonth()+1).padStart(2,"0")+"-"+String(d.getUTCDate()).padStart(2,"0"), close:Math.round(cls[j]*100)/100});
+    }
+    return raw;
+  }
+
+  // ETF 가격
+  for (var i=0; i<symbols.length; i++) {
+    var sym = symbols[i];
+    try {
+      var data = await fetchChart(sym);
+      result[sym] = buildMAPriceData(parseChart(data));
+    } catch(e) { console.warn(sym+" fetch 실패:", e); }
+  }
+
+  // VIX 실시간
+  try {
+    var vdata = await fetchChart("%5EVIX");
+    var vraw  = parseChart(vdata);
+    if (vraw.length > 0) {
+      var cur = vraw[vraw.length-1].close;
+      var bucket = cur<20?"VIX<20":cur<30?"VIX20~30":cur<40?"VIX30~40":"VIX>40";
+      var recLev = cur<20?null:cur<30?2.0:cur<40?2.5:3.0;
+      result["__vix"] = {current:cur, date:vraw[vraw.length-1].date, bucket:bucket, rec_lev:recLev,
+        prices:vraw.slice(-60).map(function(p){return p.close;}),
+        dates: vraw.slice(-60).map(function(p){return p.date;})};
+    }
+  } catch(e) { console.warn("VIX fetch 실패:", e); }
+
   return result;
 }
 
