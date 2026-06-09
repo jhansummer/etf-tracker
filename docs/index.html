@@ -1344,63 +1344,141 @@ async function fetchLivePrices() {
   return result;
 }
 
+function vixStyle(bucket) {
+  // {bg, border, text, emoji}
+  if (bucket === "VIX<20")    return {bg:"rgba(34,197,94,0.08)",  border:"rgba(34,197,94,0.3)",  text:"#22c55e", emoji:"🟢"};
+  if (bucket === "VIX20~30")  return {bg:"rgba(245,158,11,0.08)", border:"rgba(245,158,11,0.3)", text:"#f59e0b", emoji:"🟡"};
+  if (bucket === "VIX30~40")  return {bg:"rgba(239,68,68,0.08)",  border:"rgba(239,68,68,0.3)",  text:"#ef4444", emoji:"🔴"};
+  /* VIX>40 */                return {bg:"rgba(167,139,250,0.12)",border:"rgba(167,139,250,0.5)",text:"#a78bfa", emoji:"🚨"};
+}
+
+function buildVIXBanner(vix, isLive) {
+  if (!vix || !vix.current) return '';
+  var st   = vixStyle(vix.bucket);
+  var lev  = vix.rec_lev;
+  var levTxt = lev ? lev + "× 레버리지 진입 권고" : "신호 무시 (저변동)";
+  var levColor = lev ? (lev >= 3 ? "#a78bfa" : lev >= 2.5 ? "#ef4444" : "#f59e0b") : "#8b8fa3";
+
+  var bucketDesc = {
+    "VIX<20":   "저변동 — MA 신호 발생해도 진입 스킵. 기본 보유 유지",
+    "VIX20~30": "일반 조정 — MA 신호 시 2× 진입 (QLD/USD)",
+    "VIX30~40": "공포 구간 — MA 신호 시 2.5× 블렌드 (2×+3× 반반)",
+    "VIX>40":   "극공포 — 역사적 100% 승률 구간. 3× 풀레버 진입 (TQQQ/SOXL)",
+  }[vix.bucket] || "";
+
+  return '<div style="background:'+st.bg+';border:1px solid '+st.border+';border-radius:12px;padding:16px 20px;margin-bottom:20px">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--muted)">'+st.emoji+' VIX 공포지수 <span style="font-size:10px;color:var(--muted);font-weight:400">· ' + vix.date + (isLive?' · 실시간':'') + '</span></div>'
+    + '<div style="font-size:32px;font-weight:900;color:'+st.text+';letter-spacing:-1px">'+vix.current.toFixed(1)+'</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+    + '<div style="font-size:12px;font-weight:700;color:'+st.text+';background:'+st.bg+';border:1px solid '+st.border+';border-radius:20px;padding:3px 12px">'+vix.bucket+'</div>'
+    + '<div style="font-size:12px;font-weight:700;color:'+levColor+'">→ '+levTxt+'</div>'
+    + '</div>'
+    + '<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">'+bucketDesc+'</div>'
+    // 구간별 레버 매트릭스
+    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px">'
+    + ['VIX<20','VIX20~30','VIX30~40','VIX>40'].map(function(b){
+        var s2 = vixStyle(b);
+        var lv = b==='VIX<20'?'스킵':b==='VIX20~30'?'2×':b==='VIX30~40'?'2.5×':'3×';
+        var active = (b === vix.bucket);
+        return '<div style="background:'+(active?s2.bg:'var(--surface2)')+';border:1px solid '+(active?s2.border:'var(--border)')+';border-radius:8px;padding:8px 4px;text-align:center">'
+          + '<div style="font-size:9px;color:var(--muted);margin-bottom:3px">'+b+'</div>'
+          + '<div style="font-size:14px;font-weight:800;color:'+(active?s2.text:'var(--muted)')+'">'+lv+'</div>'
+          + '</div>';
+      }).join('')
+    + '</div></div>';
+}
+
 function renderMAAlertCards(el, prices, isLive) {
-  var symbols = ["SPY","QQQ","SOXX"];
-  var names = {SPY:"S&P 500 ETF", QQQ:"나스닥 100 ETF", SOXX:"반도체 ETF"};
-  var anyAlert = symbols.some(function(s){ return prices[s] && prices[s].alert; });
+  var symbols = ["QQQ","SOXX","SPY"];
+  var names   = {SPY:"S&P 500",QQQ:"나스닥100",SOXX:"반도체"};
+  // 전략별 기본 보유 레버리지
+  var baseLev = {QQQ:1.5, SOXX:1.0, SPY:1.5};
+  // 레버리지 ETF 이름
+  var levEtfs  = {QQQ:{2:"QLD",2.5:"QLD+TQQQ",3:"TQQQ"}, SOXX:{2:"USD",2.5:"USD+SOXL",3:"SOXL"}, SPY:{2:"SSO",2.5:"SSO+UPRO",3:"UPRO"}};
 
-  var html = '<div style="margin-bottom:20px">';
-  html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">';
-  html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em">📡 미국 ETF 20일 이동평균 매수 알림</div>';
-  if (isLive) {
-    html += '<div style="font-size:10px;color:#22c55e;font-weight:600">● 실시간</div>';
-  } else {
-    html += '<div id="ma-live-spinner" style="font-size:10px;color:var(--muted)">⟳ 로딩중...</div>';
+  var vix     = prices["__vix"] || (DATA.vix && Object.keys(DATA.vix).length ? DATA.vix : null);
+  var anyAlert= symbols.some(function(s){ return prices[s] && prices[s].alert; });
+
+  var html = '<div>';
+  // 헤더
+  html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em">📡 미국 ETF 20일 MA 매수 알림</div>'
+    + (isLive
+        ? '<div style="font-size:10px;color:#22c55e;font-weight:600">● 실시간</div>'
+        : '<div id="ma-live-spinner" style="font-size:10px;color:var(--muted)">⟳ 로딩중...</div>')
+    + '</div>';
+
+  // VIX 배너
+  html += buildVIXBanner(vix, isLive);
+
+  // MA 신호 배너
+  if (anyAlert) {
+    html += '<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#ef4444;font-weight:700">'
+      + '🚨 매수 신호 발생 — MA20 -5% 이하 종목 있음</div>';
   }
-  html += '</div>';
 
-  if (anyAlert){
-    html += '<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#ef4444;font-weight:700">'
-      + '🚨 매수 신호 발생 — 20일 이동평균 대비 -5% 이하 종목 있음</div>';
-  }
-
+  // ETF 카드
   symbols.forEach(function(sym){
     var d = prices[sym];
     if (!d){
-      html += '<div class="chart-card" style="margin-bottom:16px;opacity:.5"><div style="padding:16px;color:var(--muted)">' + sym + ' — 데이터 없음</div></div>';
+      html += '<div class="chart-card" style="margin-bottom:16px;opacity:.5"><div style="color:var(--muted)">' + sym + ' — 데이터 없음</div></div>';
       return;
     }
     var pct = d.pct_diff;
     var alertColor = d.alert ? "#ef4444" : (pct >= 0 ? "#22c55e" : "#f59e0b");
     var pctStr = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
-    html += '<div class="chart-card" style="margin-bottom:16px;'+(d.alert?"border-color:rgba(239,68,68,0.5)":"")+'">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">';
+
+    // 추천 액션 계산
+    var recLev = vix ? vix.rec_lev : null;
+    var action = "";
+    var actionColor = "var(--muted)";
+    if (!d.alert) {
+      var bl = baseLev[sym];
+      action = "보유 유지 (" + (bl===1.5?"1.5× 혼합":"1×") + ")";
+      actionColor = "var(--muted)";
+    } else if (!recLev) {
+      action = "신호 있음 — VIX<20, 스킵";
+      actionColor = "#8b8fa3";
+    } else {
+      var etfName = (levEtfs[sym] && levEtfs[sym][recLev]) ? levEtfs[sym][recLev] : (recLev+"×");
+      action = "⚡ " + recLev + "× 진입 권고 → " + etfName;
+      actionColor = recLev >= 3 ? "#a78bfa" : recLev >= 2.5 ? "#ef4444" : "#f59e0b";
+    }
+
+    var cardBorder = d.alert ? "border-color:rgba(239,68,68,0.5);" : "";
+    html += '<div class="chart-card" style="margin-bottom:14px;'+cardBorder+'">';
+    // 종목 헤더
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">';
     html += '<div>'
       + '<div style="font-size:16px;font-weight:800;color:var(--ink)">' + sym
-      + (d.alert ? ' <span style="font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(239,68,68,0.2);color:#ef4444;vertical-align:middle">매수 신호</span>' : '')
-      + '</div>'
-      + '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + names[sym] + ' · ' + d.date + '</div>'
+      + (d.alert ? ' <span style="font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(239,68,68,0.2);color:#ef4444;vertical-align:middle">신호</span>' : '')
+      + ' <span style="font-size:11px;font-weight:400;color:var(--muted)">' + names[sym] + '</span></div>'
+      + '<div style="font-size:10px;color:var(--muted);margin-top:2px">' + d.date + '</div>'
       + '</div>';
     html += '<div style="text-align:right">'
-      + '<div style="font-size:22px;font-weight:800;color:var(--ink)">$' + d.current.toFixed(2) + '</div>'
+      + '<div style="font-size:20px;font-weight:800;color:var(--ink)">$' + d.current.toFixed(2) + '</div>'
       + '<div style="font-size:13px;font-weight:700;color:' + alertColor + '">' + pctStr + ' vs MA20</div>'
       + '</div></div>';
-    html += '<div style="display:flex;gap:12px;margin-bottom:14px">';
-    html += '<div style="flex:1;background:var(--surface2);border-radius:8px;padding:10px 14px">'
-      + '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">20일 이동평균</div>'
-      + '<div style="font-size:16px;font-weight:700;color:var(--ink)">$' + d.ma20.toFixed(2) + '</div></div>';
-    html += '<div style="flex:1;background:var(--surface2);border-radius:8px;padding:10px 14px">'
-      + '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">현재가 차이</div>'
-      + '<div style="font-size:16px;font-weight:700;color:' + alertColor + '">' + pctStr + '</div></div>';
-    html += '<div style="flex:1;background:var(--surface2);border-radius:8px;padding:10px 14px">'
-      + '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">알림 기준</div>'
-      + '<div style="font-size:16px;font-weight:700;color:var(--muted)">-5.0%</div></div>';
-    html += '</div>';
-    html += '<canvas id="ma-chart-' + sym + '" height="120"></canvas>';
+    // 수치 행
+    html += '<div style="display:flex;gap:8px;margin-bottom:12px">'
+      + '<div style="flex:1;background:var(--surface2);border-radius:7px;padding:8px 12px">'
+      + '<div style="font-size:9px;color:var(--muted);margin-bottom:3px">MA20</div>'
+      + '<div style="font-size:14px;font-weight:700;color:var(--ink)">$' + d.ma20.toFixed(2) + '</div></div>'
+      + '<div style="flex:1;background:var(--surface2);border-radius:7px;padding:8px 12px">'
+      + '<div style="font-size:9px;color:var(--muted);margin-bottom:3px">MA 대비</div>'
+      + '<div style="font-size:14px;font-weight:700;color:' + alertColor + '">' + pctStr + '</div></div>'
+      + '<div style="flex:1.5;background:'+(d.alert?'rgba(239,68,68,0.08)':'var(--surface2)')+';border-radius:7px;padding:8px 12px;border:1px solid '+(d.alert?'rgba(239,68,68,0.3)':'var(--border)')+';">'
+      + '<div style="font-size:9px;color:var(--muted);margin-bottom:3px">추천 액션</div>'
+      + '<div style="font-size:12px;font-weight:700;color:' + actionColor + '">' + action + '</div></div>'
+      + '</div>';
+    html += '<canvas id="ma-chart-' + sym + '" height="100"></canvas>';
     html += '</div>';
   });
 
-  html += '<div style="font-size:11px;color:var(--muted);margin-top:8px">데이터: Yahoo Finance' + (isLive ? ' · 방금 업데이트' : ' · 캐시 데이터') + '</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-top:4px">데이터: Yahoo Finance' + (isLive ? ' · 실시간' : ' · 캐시') + ' · VIX 포함</div>';
+  html += '</div>';
   return html;
 }
 
@@ -1442,7 +1520,7 @@ function renderMACharts(prices) {
 function buildStrategySection() {
   var html = '';
   html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:14px">📋 백테스트 기반 레버리지 단기 전략 원칙</div>';
-  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">10년(2016–2026) 실데이터 백테스트 · 평소 1.5x 혼합 보유 + 신호 시 레버리지 전환 전략 · 변동성 손실(decay) 반영 · 운용 보수 미반영</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">17년(2009–2026) 실데이터 백테스트 · QQQ/SPY: 평소 1.5× 혼합 보유 / SOXX: 평소 1× 보유 · 신호 시 VIX 동적 레버리지 전환 · decay 반영</div>';
 
   var rules = [
     {
@@ -1459,7 +1537,7 @@ function buildStrategySection() {
       bh:"51.9%",
       lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"84.5%", wr:"80%", trades:"49회/10년" },
       lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"93.8%", wr:"82%", trades:"61회/10년" },
-      note:"평소 1.5x 혼합(SOXX 50% + USD 50%) 보유 → 신호 시 SOXL 전환. 3x 상시보유(115.4%) 보다 MDD -15%p 낮으면서 CAGR 93.8%. 손절은 -30%로 넓게 설정(타이트하면 반등 놓침)."
+      note:"평소 SOXX 1× 보유 → 신호+VIX≥20 시 레버리지 전환. VIX 동적 레버리지 적용 시 CAGR 66.6%(17년). 반도체는 저변동 조정이 많아 VIX<20 스킵 효과 큼 (52회 스킵). VIX>40 구간 진입 시 역사적 100% 승률."
     },
     {
       sym: "SPY",
@@ -1497,10 +1575,12 @@ function buildStrategySection() {
 
   html += '<div style="font-size:11px;color:var(--muted);margin-top:4px;padding:10px 14px;background:var(--surface2);border-radius:8px;line-height:1.7">'
     + '📌 <strong style="color:var(--ink)">전략 구조</strong><br>'
-    + '• 평소: 1x ETF 50% + 2x ETF 50% 혼합 보유 (실효 1.5x)<br>'
-    + '• 신호 발생 시(종가 < MA20 × 0.95): 전량 매도 → 3x 레버리지 ETF(TQQQ/SOXL/UPRO) 매수<br>'
-    + '• 청산 조건 충족 시(익실현 or MA20 복귀 or 손절): 레버리지 매도 → 1.5x 혼합 재매수<br>'
-    + '• 백테스트는 이 교체 전략을 10년 전체에 걸쳐 계산한 결과입니다<br><br>'
+    + '• QQQ/SPY 평소: 1× ETF 50% + 2× ETF 50% 혼합 보유 (실효 1.5×)<br>'
+    + '• SOXX 평소: SOXX 1× 단순 보유<br>'
+    + '• 신호 발생 시(종가 < MA20 × 0.95) + VIX≥20: 레버리지 ETF 전환<br>'
+    + '&nbsp;&nbsp;&nbsp;— VIX 20~30: 2× / VIX 30~40: 2.5× 블렌드 / VIX≥40: 3× 풀레버<br>'
+    + '• VIX<20 시 신호 발생해도 진입 스킵 (소형 조정 회피)<br>'
+    + '• 청산: +8% 익실현 or MA20 복귀 or -15% 손절 or 60일 컷<br><br>'
     + '⚠️ <strong style="color:var(--ink)">주의사항</strong><br>'
     + '• 운용 보수 미반영(TQQQ 0.88%/년, SOXL 0.75%/년) — 단기 보유(1~3일) 시 영향 미미<br>'
     + '• 과거 수익이 미래를 보장하지 않으며, 개인 투자 판단 하에 사용하세요'
@@ -1510,9 +1590,10 @@ function buildStrategySection() {
 }
 
 function renderMAAlert(el){
-  var cachedPrices = DATA.us_prices || {};
+  // 캐시: us_prices에 __vix 삽입 (build.py가 DATA.vix 넣어줌)
+  var cachedPrices = Object.assign({}, DATA.us_prices || {});
+  if (DATA.vix && DATA.vix.current) cachedPrices["__vix"] = DATA.vix;
 
-  // 캐시 데이터로 즉시 렌더
   var wrapper = document.createElement("div");
   wrapper.innerHTML = '<div id="ma-cards-zone">' + renderMAAlertCards(el, cachedPrices, false) + '</div>'
     + '<div style="margin-top:28px">' + buildStrategySection() + '</div>';
@@ -1520,11 +1601,12 @@ function renderMAAlert(el){
   el.appendChild(wrapper);
   renderMACharts(cachedPrices);
 
-  // 라이브 fetch → 카드 영역만 교체
+  // 라이브 fetch → 카드 + VIX 교체
   fetchLivePrices().then(function(livePrices) {
     var zone = document.getElementById("ma-cards-zone");
     if (!zone) return;
-    var hasData = Object.keys(livePrices).length > 0;
+    var etfKeys = ["SPY","QQQ","SOXX"];
+    var hasData = etfKeys.some(function(s){ return livePrices[s]; });
     if (!hasData) {
       var sp = document.getElementById("ma-live-spinner");
       if (sp) sp.textContent = "⚠ 실시간 로드 실패 (캐시 표시)";
