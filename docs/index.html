@@ -1770,72 +1770,79 @@ function buildBacktestSummaryTable() {
 
   // 전략 한글 이름
   var stratNames = {
-    A: "A 베이스라인", B: "B MA200 상한", C: "C MA200 기울기",
-    D: "D 52주 상한", E: "E VIX기간구조", F50: "F50 포지션50%",
-    F70: "F70 포지션70%", G: "G TP제거",
-    "C+F70": "C+F70 조합", "D+G": "D+G 조합", "B+G": "B+G 조합"
+    A: "A 기본", B: "B MA200상한", C: "C MA200기울기",
+    D: "D 52주상한", E: "E 기간구조", F50: "F50 50%포지션",
+    F70: "F70 70%포지션", G: "G TP제거",
+    "C+F70": "C+F70", "D+G": "D+G", "B+G": "B+G"
   };
-
-  // 자산별로 그룹
-  var byAsset = {};
-  var strategies = [];
-  bt.summary.forEach(function(row) {
-    if (!byAsset[row.asset]) byAsset[row.asset] = {};
-    byAsset[row.asset][row.strategy] = row;
-    if (strategies.indexOf(row.strategy) < 0) strategies.push(row.strategy);
-  });
-
-  var assets = Object.keys(byAsset);
-  if (!assets.length) return '';
-
+  var assets = ["QQQ","SPY","SOXX"];
   var bestStrat = bt.best_strategy || '';
+
+  // summary 구조: [{strategy, assets:{QQQ:{cagr,mdd,calmar,win_rate,n_trades,early_cagr,early_mdd}, ...}}, ...]
+  // 전략 순서 그대로 유지
+  var strategies = bt.summary.map(function(r){ return r.strategy; });
+
+  // 인덱스: strategy → assets dict
+  var byStrat = {};
+  bt.summary.forEach(function(r){ byStrat[r.strategy] = r.assets || {}; });
+
   var html = '<div class="chart-card" style="margin-top:32px">';
   html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:4px">📊 백테스트 전략 비교 ('
-    + (bt.mode === 'demo' ? '합성 데모 데이터' : '실데이터 1999–2026')
-    + ')</div>';
-  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:12px">최고 칼마 전략: <span style="color:var(--accent2);font-weight:700">'
-    + bestStrat + ' (' + (stratNames[bestStrat]||bestStrat) + ')</span>'
-    + (bt.best_calmar ? ' · 칼마비율 ' + bt.best_calmar.toFixed(2) : '') + '</div>';
+    + (bt.mode === 'demo' ? '합성 데모 데이터' : '실데이터 1999–2026') + ')</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:14px">'
+    + '최고 칼마 전략: <span style="color:var(--accent2);font-weight:700">' + bestStrat
+    + ' (' + (stratNames[bestStrat]||bestStrat) + ')</span>'
+    + (bt.best_calmar != null ? ' · 칼마 ' + bt.best_calmar.toFixed(2) : '')
+    + (bt.mode === 'demo' ? ' <span style="color:var(--muted)">(⚠ 데모 수치, 실데이터 실행 후 갱신)</span>' : '')
+    + '</div>';
 
-  // 자산별 테이블
+  // 자산별 테이블 (QQQ, SPY, SOXX)
   assets.forEach(function(asset) {
-    var rows = byAsset[asset];
-    html += '<div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:6px;margin-top:12px">' + asset + '</div>';
-    html += '<div style="overflow-x:auto"><table class="tbl" style="font-size:10px;min-width:520px">';
+    html += '<div style="font-size:11px;font-weight:700;color:var(--ink);margin:14px 0 6px">' + asset + '</div>';
+    html += '<div style="overflow-x:auto"><table class="tbl" style="font-size:10px;min-width:480px">';
     html += '<thead><tr>'
-      + '<th style="text-align:left;padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">전략</th>'
-      + '<th style="padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">CAGR%</th>'
-      + '<th style="padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">MDD%</th>'
-      + '<th style="padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">칼마</th>'
-      + '<th style="padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">승률%</th>'
-      + '<th style="padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">거래수</th>'
-      + '<th style="padding:5px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">99–09 CAGR</th>'
+      + '<th style="text-align:left;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">전략</th>'
+      + '<th style="text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">CAGR%</th>'
+      + '<th style="text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">MDD%</th>'
+      + '<th style="text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">칼마</th>'
+      + '<th style="text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">승률%</th>'
+      + '<th style="text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">거래수</th>'
+      + '<th style="text-align:right;padding:4px 8px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)">99–09 CAGR</th>'
       + '</tr></thead><tbody>';
+
     strategies.forEach(function(strat) {
-      var r = rows[strat];
-      if (!r) return;
+      var assetData = byStrat[strat] || {};
+      var m = assetData[asset];
+      if (!m) return;
       var isBest = (strat === bestStrat);
-      var rowStyle = isBest
-        ? 'background:rgba(99,102,241,0.08);'
-        : '';
-      var cagrClr = r.cagr_pct > 0 ? 'color:#22c55e' : 'color:#ef4444';
-      var mddClr  = r.mdd_pct < -50 ? 'color:#ef4444' : r.mdd_pct < -30 ? 'color:#f59e0b' : 'color:var(--muted)';
-      var calmarClr = r.calmar > 1 ? 'color:#22c55e' : r.calmar > 0.5 ? 'color:#f59e0b' : 'color:var(--muted)';
-      html += '<tr style="' + rowStyle + 'border-bottom:1px solid var(--border)">'
-        + '<td style="padding:5px 8px;font-weight:' + (isBest?'700':'400') + ';color:' + (isBest?'var(--accent2)':'var(--ink)') + '">'
+      var rowBg  = isBest ? 'background:rgba(99,102,241,0.1);' : '';
+      var cagrClr   = m.cagr  > 0 ? '#22c55e' : '#ef4444';
+      var mddClr    = m.mdd   < -50 ? '#ef4444' : m.mdd < -30 ? '#f59e0b' : 'var(--muted)';
+      var calmarClr = m.calmar > 1   ? '#22c55e' : m.calmar > 0.3 ? '#f59e0b' : 'var(--muted)';
+      html += '<tr style="' + rowBg + 'border-bottom:1px solid var(--border)">'
+        + '<td style="padding:4px 8px;font-weight:' + (isBest?'700':'400') + ';color:' + (isBest?'var(--accent2)':'var(--ink)') + '">'
         + (stratNames[strat]||strat) + (isBest?' ★':'') + '</td>'
-        + '<td style="text-align:right;padding:5px 8px;'+cagrClr+';font-weight:700">' + (r.cagr_pct != null ? r.cagr_pct.toFixed(1) : '—') + '</td>'
-        + '<td style="text-align:right;padding:5px 8px;'+mddClr+'">' + (r.mdd_pct != null ? r.mdd_pct.toFixed(1) : '—') + '</td>'
-        + '<td style="text-align:right;padding:5px 8px;'+calmarClr+';font-weight:700">' + (r.calmar != null ? r.calmar.toFixed(2) : '—') + '</td>'
-        + '<td style="text-align:right;padding:5px 8px;color:var(--ink)">' + (r.win_rate_pct != null ? r.win_rate_pct.toFixed(0) : '—') + '</td>'
-        + '<td style="text-align:right;padding:5px 8px;color:var(--muted)">' + (r.trade_count != null ? r.trade_count : '—') + '</td>'
-        + '<td style="text-align:right;padding:5px 8px;color:var(--muted)">' + (r.sub_cagr_pct != null ? r.sub_cagr_pct.toFixed(1) + '%' : '—') + '</td>'
+        + '<td style="text-align:right;padding:4px 8px;color:'+cagrClr+';font-weight:700">'
+        + (m.cagr != null ? (m.cagr > 0 ? '+' : '') + m.cagr.toFixed(1) : '—') + '</td>'
+        + '<td style="text-align:right;padding:4px 8px;color:'+mddClr+'">'
+        + (m.mdd  != null ? m.mdd.toFixed(1) : '—') + '</td>'
+        + '<td style="text-align:right;padding:4px 8px;color:'+calmarClr+';font-weight:700">'
+        + (m.calmar != null ? m.calmar.toFixed(2) : '—') + '</td>'
+        + '<td style="text-align:right;padding:4px 8px;color:var(--ink)">'
+        + (m.win_rate != null ? m.win_rate.toFixed(0) : '—') + '</td>'
+        + '<td style="text-align:right;padding:4px 8px;color:var(--muted)">'
+        + (m.n_trades != null ? m.n_trades : '—') + '</td>'
+        + '<td style="text-align:right;padding:4px 8px;color:var(--muted)">'
+        + (m.early_cagr != null ? (m.early_cagr > 0 ? '+' : '') + m.early_cagr.toFixed(1) + '%' : '—') + '</td>'
         + '</tr>';
     });
     html += '</tbody></table></div>';
   });
 
-  html += '<div style="font-size:10px;color:var(--muted);margin-top:8px">★ = 최고 칼마 전략 · CAGR/MDD/칼마는 연평균/최대낙폭/칼마비율 · 99–09: 1999–2009 서브기간</div>';
+  html += '<div style="font-size:10px;color:var(--muted);margin-top:10px;line-height:1.6">'
+    + '★ = 최고 칼마 전략 · CAGR = 연평균수익률(%) · MDD = 최대낙폭 · 칼마 = CAGR/|MDD| · 99–09: 1999–2009 서브기간 CAGR'
+    + (bt.mode === 'demo' ? '<br>⚠ 현재 합성 데모 데이터 기반입니다. <code>python backtest/run_backtest.py</code> 실행 후 빌드 시 실데이터로 갱신됩니다.' : '')
+    + '</div>';
   html += '</div>';
   return html;
 }
