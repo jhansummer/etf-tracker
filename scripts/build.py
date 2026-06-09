@@ -322,10 +322,62 @@ def main():
         except Exception as e:
             print(f"VIX 빌드 실패: {e}")
 
-    # ── 미국 ETF 가격 / 20일 MA 신호 ──
+    # ── VIX3M 기간구조 스프레드 ──
+    vix3m_file = DATA / "us_price_VIX3M.json"
+    if vix3m_file.exists():
+        try:
+            raw_vix3m = json.loads(vix3m_file.read_text(encoding="utf-8"))
+            vix3m_prices = raw_vix3m.get("prices", [])
+            if vix3m_prices and vix_data.get("current") is not None:
+                current_vix3m = vix3m_prices[-1]["close"]
+                vix3m_date    = vix3m_prices[-1]["date"]
+                spread = round(vix_data["current"] - current_vix3m, 2)
+                # 백워데이션: VIX > VIX3M (단기 공포 > 중기 공포 = 급성 위기)
+                backwardation = spread > 0
+                # 차트용: 최근 60일 VIX3M
+                chart60_vix3m = vix3m_prices[-60:]
+                vix_data["vix3m"] = current_vix3m
+                vix_data["vix3m_date"] = vix3m_date
+                vix_data["vix_vix3m_spread"] = spread
+                vix_data["backwardation"] = backwardation
+                vix_data["vix3m_prices"] = [p["close"] for p in chart60_vix3m]
+                vix_data["vix3m_dates"]  = [p["date"]  for p in chart60_vix3m]
+                term_str = f"백워데이션(VIX>VIX3M) 🚨" if backwardation else "콘탱고(VIX<VIX3M)"
+                print(f"VIX3M: {current_vix3m:.1f}  스프레드: {spread:+.2f}  {term_str}")
+                # VIX term structure 기반 레버 보조 수치
+                if vix_data.get("current", 0) >= 20:
+                    vix_data["rec_lev_term"] = 3.0 if backwardation else 2.0
+                else:
+                    vix_data["rec_lev_term"] = None
+        except Exception as e:
+            print(f"VIX3M 빌드 실패: {e}")
+
+    # ── 미국 ETF 가격 / 기술적 지표 계산 ──
     us_prices = {}
-    MA_WINDOW = 20
+    MA_WINDOW       = 20
+    MA200_WINDOW    = 200
+    MA200_SLOPE_WIN = 20    # MA200 기울기 측정 창
+    W52_WIN         = 252   # 52주 고점 창
     ALERT_THRESHOLD = -5.0
+
+    def _rolling_ma(closes_list, win):
+        result = []
+        for i in range(len(closes_list)):
+            if i < win - 1:
+                result.append(None)
+            else:
+                result.append(round(sum(closes_list[i - win + 1: i + 1]) / win, 4))
+        return result
+
+    def _rolling_max(closes_list, win):
+        result = []
+        for i in range(len(closes_list)):
+            if i < win - 1:
+                result.append(None)
+            else:
+                result.append(max(closes_list[i - win + 1: i + 1]))
+        return result
+
     for symbol in ["SPY", "QQQ", "SOXX"]:
         price_file = DATA / f"us_price_{symbol}.json"
         if not price_file.exists():
@@ -336,34 +388,85 @@ def main():
             if len(prices) < MA_WINDOW:
                 continue
             closes = [p["close"] for p in prices]
+            n = len(closes)
+
+            # ── MA20 ──
             ma20 = round(sum(closes[-MA_WINDOW:]) / MA_WINDOW, 2)
             current = closes[-1]
             pct_diff = round((current - ma20) / ma20 * 100, 2)
+
+            # ── MA200 + 기울기 ──
+            ma200_series = _rolling_ma(closes, MA200_WINDOW)
+            ma200 = ma200_series[-1]  # None if <200일 데이터
+            ma200_pct_diff = None
+            if ma200 and ma200 > 0:
+                ma200_pct_diff = round((current - ma200) / ma200 * 100, 2)
+
+            # MA200 기울기: 20일 전 MA200 대비 변화율
+            ma200_slope = None
+            ma200_slope_pct = None
+            if n >= MA200_WINDOW + MA200_SLOPE_WIN:
+                ma200_prev = ma200_series[-(MA200_SLOPE_WIN + 1)]
+                if ma200 is not None and ma200_prev is not None and ma200_prev > 0:
+                    ma200_slope_pct = round((ma200 - ma200_prev) / ma200_prev * 100, 4)
+                    ma200_slope = "rising" if ma200_slope_pct > 0 else "falling"
+
+            # ── 52주 고점 낙폭 ──
+            w52_series = _rolling_max(closes, W52_WIN)
+            w52_high = w52_series[-1]
+            w52_drawdown = None
+            if w52_high and w52_high > 0:
+                w52_drawdown = round((current - w52_high) / w52_high * 100, 2)
+
             # 차트용: 최근 60일
             chart_prices = prices[-60:]
-            # 각 날짜의 20일 MA (rolling)
-            ma_series = []
-            for i in range(len(prices)):
-                if i < MA_WINDOW - 1:
-                    ma_series.append(None)
-                else:
-                    w = prices[i - MA_WINDOW + 1 : i + 1]
-                    ma_series.append(round(sum(p["close"] for p in w) / MA_WINDOW, 2))
-            chart_ma = ma_series[-60:]
+            # rolling MA20 시리즈 (전체 데이터 기반)
+            ma_series_full = _rolling_ma(closes, MA_WINDOW)
+            chart_ma = ma_series_full[-60:]
+            # rolling MA200 시리즈 (차트용)
+            chart_ma200 = ma200_series[-60:]
+
             us_prices[symbol] = {
-                "symbol":   symbol,
-                "current":  current,
-                "ma20":     ma20,
-                "pct_diff": pct_diff,
-                "alert":    pct_diff <= ALERT_THRESHOLD,
-                "date":     prices[-1]["date"],
-                "prices":   [p["close"] for p in chart_prices],
-                "dates":    [p["date"]  for p in chart_prices],
-                "ma_line":  chart_ma,
+                "symbol":         symbol,
+                "current":        current,
+                "ma20":           ma20,
+                "pct_diff":       pct_diff,
+                "alert":          pct_diff <= ALERT_THRESHOLD,
+                "date":           prices[-1]["date"],
+                "prices":         [p["close"] for p in chart_prices],
+                "dates":          [p["date"]  for p in chart_prices],
+                "ma_line":        chart_ma,
+                # MA200
+                "ma200":          ma200,
+                "ma200_pct_diff": ma200_pct_diff,
+                "ma200_slope":    ma200_slope,        # "rising" | "falling" | None
+                "ma200_slope_pct": ma200_slope_pct,   # % 변화율 (20일)
+                "ma200_line":     chart_ma200,
+                # 52주 고점
+                "w52_high":       w52_high,
+                "w52_drawdown":   w52_drawdown,       # 음수 (%)
             }
-            print(f"{symbol}: 현재 {current} / MA20 {ma20} / {pct_diff:+.2f}% {'🚨' if pct_diff <= ALERT_THRESHOLD else ''}")
+            ma200_str = f"MA200={ma200} ({ma200_pct_diff:+.1f}%) {ma200_slope or 'N/A'}" if ma200 else "MA200=N/A"
+            w52_str   = f"52w낙폭={w52_drawdown:+.1f}%" if w52_drawdown is not None else ""
+            print(f"{symbol}: 현재 {current} / MA20 {ma20} / {pct_diff:+.2f}% / {ma200_str} / {w52_str} {'🚨' if pct_diff <= ALERT_THRESHOLD else ''}")
         except Exception as e:
             print(f"{symbol} 가격 빌드 실패: {e}")
+
+    # ── 백테스트 요약 로드 (backtest/results.json) ──
+    backtest_summary = None
+    bt_file = ROOT / "backtest" / "results.json"
+    if bt_file.exists():
+        try:
+            bt_raw = json.loads(bt_file.read_text(encoding="utf-8"))
+            backtest_summary = {
+                "generated":     bt_raw.get("generated"),
+                "mode":          bt_raw.get("mode"),
+                "best_strategy": bt_raw.get("best_strategy"),
+                "best_calmar":   bt_raw.get("best_strategy_calmar"),
+                "summary":       bt_raw.get("summary", []),
+            }
+        except Exception as e:
+            print(f"backtest/results.json 로드 실패: {e}")
 
     combined = {
         "generated": max(dates) if dates else "",
