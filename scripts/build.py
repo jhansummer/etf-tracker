@@ -480,6 +480,8 @@ def main():
     combined["investors_13f"] = investors_combined
     combined["us_prices"] = us_prices
     combined["vix"] = vix_data
+    if backtest_summary is not None:
+        combined["backtest_summary"] = backtest_summary
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
