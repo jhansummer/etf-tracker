@@ -657,6 +657,7 @@ def crawl_ark(date_str, key="arkk"):
 # ══════════════════════════════════════════════
 
 US_PRICE_SYMBOLS = ["SPY", "QQQ", "SOXX"]
+US_VIX_SYMBOL   = "VIX"   # ^VIX — 공포지수
 
 def crawl_us_prices(date_str):
     """SPY/QQQ/SOXX 일별 종가 fetch
@@ -669,7 +670,7 @@ def crawl_us_prices(date_str):
     result = {}
 
     # stooq 심볼 매핑 (소문자.us)
-    STOOQ_MAP = {"SPY": "spy.us", "QQQ": "qqq.us", "SOXX": "soxx.us"}
+    STOOQ_MAP = {"SPY": "spy.us", "QQQ": "qqq.us", "SOXX": "soxx.us", "VIX": "vix.us"}
 
     def _fetch_stooq(symbol):
         """stooq.com CSV → (dates, closes)"""
@@ -775,6 +776,44 @@ def crawl_us_prices(date_str):
             print(f"[US가격] {symbol} 모든 소스 실패")
             result[symbol] = False
         _t.sleep(1)
+
+    # ── VIX 별도 크롤 (^VIX / vix.us) ──
+    vix_prices = None
+    try:
+        vix_prices = _fetch_stooq("VIX")   # stooq: vix.us → STOOQ_MAP 없으면 vix.us 자동
+        if not vix_prices:
+            raise ValueError("stooq VIX 빈 결과")
+        print(f"[VIX] stooq 로드: {len(vix_prices)}일 (최신: {vix_prices[-1]['date']})")
+    except Exception as e:
+        print(f"[VIX] stooq 실패: {e}, Yahoo 시도...")
+        try:
+            raw = fetch_url(
+                "https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=3mo",
+                extra_headers={"Accept": "application/json",
+                               "Referer": "https://finance.yahoo.com/"},
+                retries=2, timeout=30,
+            )
+            data = json.loads(raw)
+            res = data["chart"]["result"][0]
+            vix_prices = []
+            for ts, c in zip(res["timestamp"], res["indicators"]["quote"][0]["close"]):
+                if c is None: continue
+                vix_prices.append({"date": datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d"),
+                                   "close": round(c, 2)})
+            vix_prices.sort(key=lambda x: x["date"])
+            print(f"[VIX] Yahoo 로드: {len(vix_prices)}일")
+        except Exception as e2:
+            print(f"[VIX] Yahoo 실패: {e2}")
+
+    if vix_prices and len(vix_prices) >= 5:
+        out = {"symbol": "VIX", "fetched": date_str, "prices": vix_prices}
+        (DATA / "us_price_VIX.json").write_text(
+            json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        result["VIX"] = True
+    else:
+        print("[VIX] 저장 실패 — 데이터 부족")
+        result["VIX"] = False
 
     return any(result.values())
 

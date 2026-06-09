@@ -291,6 +291,37 @@ def main():
             for h in q["holdings"]: sigs[h.get("signal","hold")] += 1
             print(f"{INVESTOR_13F_LABELS[inv_key]} ({q['filing_date']}): {len(quarters)}분기, {dict(sigs)}")
 
+    # ── VIX 공포지수 ──
+    vix_data = {}
+    vix_file = DATA / "us_price_VIX.json"
+    if vix_file.exists():
+        try:
+            raw_vix = json.loads(vix_file.read_text(encoding="utf-8"))
+            vix_prices = raw_vix.get("prices", [])
+            if vix_prices:
+                current_vix = vix_prices[-1]["close"]
+                vix_date    = vix_prices[-1]["date"]
+                if current_vix < 20:   bucket = "VIX<20"
+                elif current_vix < 30: bucket = "VIX20~30"
+                elif current_vix < 40: bucket = "VIX30~40"
+                else:                  bucket = "VIX>40"
+                if current_vix < 20:   rec_lev = None
+                elif current_vix < 30: rec_lev = 2.0
+                elif current_vix < 40: rec_lev = 2.5
+                else:                  rec_lev = 3.0
+                chart60 = vix_prices[-60:]
+                vix_data = {
+                    "current":  current_vix,
+                    "date":     vix_date,
+                    "bucket":   bucket,
+                    "rec_lev":  rec_lev,
+                    "prices":   [p["close"] for p in chart60],
+                    "dates":    [p["date"]  for p in chart60],
+                }
+                print(f"VIX: {current_vix:.1f} ({bucket}) 추천레버={rec_lev}×")
+        except Exception as e:
+            print(f"VIX 빌드 실패: {e}")
+
     # ── 미국 ETF 가격 / 20일 MA 신호 ──
     us_prices = {}
     MA_WINDOW = 20
@@ -345,6 +376,7 @@ def main():
     combined["overlap_time_kosdaq_pair"] = overlap_time_kosdaq_pair
     combined["investors_13f"] = investors_combined
     combined["us_prices"] = us_prices
+    combined["vix"] = vix_data
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(combined, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
