@@ -39,6 +39,15 @@ jobs:
               && echo "$SYMBOL OK" || echo "$SYMBOL curl 실패"
             sleep 1
           done
+          # VIX 별도 fetch (%5EVIX = ^VIX URL 인코딩)
+          echo "Fetching VIX..."
+          curl -s --max-time 30 --retry 3 \
+            "https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=3mo" \
+            -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+            -H "Accept: application/json" \
+            -H "Referer: https://finance.yahoo.com/" \
+            -o "data/us_price_VIX_raw.json" \
+            && echo "VIX OK" || echo "VIX curl 실패"
           # raw json → us_price_{symbol}.json 변환
           python3 - <<'EOF'
           import json, os
@@ -46,7 +55,7 @@ jobs:
           from pathlib import Path
           DATA = Path("data")
           DATE = os.environ.get("DATE", datetime.now().strftime("%Y-%m-%d"))
-          for symbol in ["SPY", "QQQ", "SOXX"]:
+          for symbol in ["SPY", "QQQ", "SOXX", "VIX"]:
               raw_path = DATA / f"us_price_{symbol}_raw.json"
               if not raw_path.exists():
                   print(f"{symbol}: raw 파일 없음")
