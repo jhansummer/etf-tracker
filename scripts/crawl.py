@@ -815,6 +815,44 @@ def crawl_us_prices(date_str):
         print("[VIX] 저장 실패 — 데이터 부족")
         result["VIX"] = False
 
+    # ── VIX3M 별도 크롤 (^VIX3M / 3개월 VIX) ──
+    vix3m_prices = None
+    try:
+        vix3m_prices = _fetch_stooq("%5evix3m")
+        if not vix3m_prices:
+            raise ValueError("stooq VIX3M 빈 결과")
+        print(f"[VIX3M] stooq 로드: {len(vix3m_prices)}일 (최신: {vix3m_prices[-1]['date']})")
+    except Exception as e:
+        print(f"[VIX3M] stooq 실패: {e}, Yahoo 시도...")
+        try:
+            raw = fetch_url(
+                "https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX3M?interval=1d&range=3mo",
+                extra_headers={"Accept": "application/json",
+                               "Referer": "https://finance.yahoo.com/"},
+                retries=2, timeout=30,
+            )
+            data = json.loads(raw)
+            res = data["chart"]["result"][0]
+            vix3m_prices = []
+            for ts, c in zip(res["timestamp"], res["indicators"]["quote"][0]["close"]):
+                if c is None: continue
+                vix3m_prices.append({"date": datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d"),
+                                     "close": round(c, 2)})
+            vix3m_prices.sort(key=lambda x: x["date"])
+            print(f"[VIX3M] Yahoo 로드: {len(vix3m_prices)}일")
+        except Exception as e2:
+            print(f"[VIX3M] Yahoo 실패: {e2}")
+
+    if vix3m_prices and len(vix3m_prices) >= 5:
+        out3m = {"symbol": "VIX3M", "fetched": date_str, "prices": vix3m_prices}
+        (DATA / "us_price_VIX3M.json").write_text(
+            json.dumps(out3m, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        result["VIX3M"] = True
+    else:
+        print("[VIX3M] 저장 실패 — 데이터 부족")
+        result["VIX3M"] = False
+
     return any(result.values())
 
 
