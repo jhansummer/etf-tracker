@@ -1442,6 +1442,30 @@ function buildVIXBanner(vix, isLive) {
     "VIX>40":   "극공포 — 역사적 100% 승률 구간. 3× 풀레버 진입 (TQQQ/SOXL)",
   }[vix.bucket] || "";
 
+  // VIX3M 기간구조 스프레드
+  var vix3mHtml = '';
+  if (vix.vix3m != null) {
+    var spread    = vix.vix_vix3m_spread;
+    var bw        = vix.backwardation;
+    var spreadClr = bw ? '#ef4444' : '#22c55e';
+    var spreadStr = (spread >= 0 ? '+' : '') + spread.toFixed(2);
+    var termStr   = bw
+      ? '🚨 <span style="color:#ef4444;font-weight:700">백워데이션 — 단기공포 급등 경보</span>'
+      : '<span style="color:#22c55e">콘탱고 — 정상 기간구조</span>';
+    // Term structure leverage hint
+    var termLevHint = '';
+    if (vix.rec_lev_term != null) {
+      termLevHint = ' · 기간구조 기준 <span style="font-weight:700;color:'+(bw?'#a78bfa':'#f59e0b')+'">'
+        + vix.rec_lev_term + '× 권고</span>';
+    }
+    vix3mHtml = '<div style="margin-top:8px;padding:8px 12px;background:'+(bw?'rgba(239,68,68,0.07)':'rgba(34,197,94,0.05)')+';border:1px solid '+(bw?'rgba(239,68,68,0.25)':'rgba(34,197,94,0.2)')+';border-radius:8px;font-size:11px">'
+      + 'VIX3M <span style="color:var(--muted)">(' + (vix.vix3m_date||'') + ')</span> '
+      + '<span style="font-weight:700;color:var(--ink)">' + vix.vix3m.toFixed(1) + '</span>'
+      + ' · 스프레드 <span style="font-weight:700;color:'+spreadClr+'">' + spreadStr + '</span>'
+      + ' · ' + termStr + termLevHint
+      + '</div>';
+  }
+
   return '<div style="background:'+st.bg+';border:1px solid '+st.border+';border-radius:12px;padding:16px 20px;margin-bottom:20px">'
     + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
     + '<div style="font-size:13px;font-weight:700;color:var(--muted)">'+st.emoji+' VIX 공포지수 <span style="font-size:10px;color:var(--muted);font-weight:400">· ' + vix.date + (isLive?' · 실시간':'') + '</span></div>'
@@ -1452,6 +1476,7 @@ function buildVIXBanner(vix, isLive) {
     + '<div style="font-size:12px;font-weight:700;color:'+levColor+'">→ '+levTxt+'</div>'
     + '</div>'
     + '<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">'+bucketDesc+'</div>'
+    + vix3mHtml
     // 구간별 레버 매트릭스
     + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px">'
     + ['VIX<20','VIX20~30','VIX30~40','VIX>40'].map(function(b){
