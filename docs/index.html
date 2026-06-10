@@ -1731,40 +1731,95 @@ function renderMACharts(prices) {
 function buildStrategySection() {
   var html = '';
   html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:14px">📋 백테스트 기반 레버리지 단기 전략 원칙</div>';
-  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">17년(2009–2026) 실데이터 백테스트 · QQQ/SPY: 평소 1.5× 혼합 보유 / SOXX: 평소 1× 보유 · 신호 시 VIX 동적 레버리지 전환 · decay 반영</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:16px">'
+    + '1999~2026 장기 백테스트 · TE 보정(TQQQ 2.83%/yr, SOXL 7.08%/yr) 포함 · 신호 시 VIX 동적 레버리지 전환'
+    + ' · <strong style="color:var(--accent2)">채택: QQQ/SOXX = H전략 · SPY = F50전략</strong>'
+    + '</div>';
 
   var rules = [
     {
       sym: "QQQ",
-      label: "나스닥100 ETF",
-      bh:"31.3%",
-      lev2: { etf:"QLD (2x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"51.6%", wr:"77%", trades:"53회/10년" },
-      lev3: { etf:"TQQQ (3x)", entry:"QQQ 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"63.9%", wr:"73%", trades:"60회/10년" },
-      note:"평소 1.5x 혼합(QQQ 50% + QLD 50%) 보유 → 신호 시 TQQQ 전환. 순수 1.5x B&H(46.4%) 대비 +17%p. 손절 -10% 적용으로 큰 반등을 더 낮은 가격에 재진입."
+      label: "나스닥100 ETF · 채택: H전략 🏆",
+      badge: "H",
+      badgeColor: "var(--accent2)",
+      lev2: {
+        etf: "QLD (2×)",
+        entry: "종가 < MA20×0.95 + VIX≥20 + <strong style='color:var(--accent2)'>종가 > MA200</strong>",
+        exit: "+8% 익실현 or MA20 복귀",
+        stop: "-15% 손절 or 60일 컷",
+        cagr: "—", wr: "—", trades: "—"
+      },
+      lev3: {
+        etf: "TQQQ (3×)",
+        entry: "종가 < MA20×0.95 + VIX≥20 + <strong style='color:var(--accent2)'>종가 > MA200</strong>",
+        exit: "+8% 익실현 or MA20 복귀",
+        stop: "-15% 손절 or 60일 컷",
+        cagr: "—", wr: "—", trades: "—"
+      },
+      note: "H전략: 종가 ≤ MA200(200일 이동평균) → 신호 발생해도 진입 완전 스킵. "
+          + "닷컴버블·GFC·COVID 등 하락 추세에서 연쇄 손절 차단. "
+          + "백테스트 MDD -40% 이내 제한, Calmar 0.082. "
+          + "VIX 동적 레버리지: VIX 20~30 → 2× / 30~40 → 2.5× 혼합 / ≥40 → 3× 풀레버."
     },
     {
       sym: "SOXX",
-      label: "반도체 ETF",
-      bh:"51.9%",
-      lev2: { etf:"USD (2x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"84.5%", wr:"80%", trades:"49회/10년" },
-      lev3: { etf:"SOXL (3x)", entry:"SOXX 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -30%", cagr:"93.8%", wr:"82%", trades:"61회/10년" },
-      note:"평소 SOXX 1× 보유 → 신호+VIX≥20 시 레버리지 전환. VIX 동적 레버리지 적용 시 CAGR 66.6%(17년). 반도체는 저변동 조정이 많아 VIX<20 스킵 효과 큼 (52회 스킵). VIX>40 구간 진입 시 역사적 100% 승률."
+      label: "반도체 ETF · 채택: H전략 🏆",
+      badge: "H",
+      badgeColor: "var(--accent2)",
+      lev2: {
+        etf: "USD (2×)",
+        entry: "종가 < MA20×0.95 + VIX≥20 + <strong style='color:var(--accent2)'>종가 > MA200</strong>",
+        exit: "+8% 익실현 or MA20 복귀",
+        stop: "-15% 손절 or 60일 컷",
+        cagr: "—", wr: "—", trades: "—"
+      },
+      lev3: {
+        etf: "SOXL (3×)",
+        entry: "종가 < MA20×0.95 + VIX≥20 + <strong style='color:var(--accent2)'>종가 > MA200</strong>",
+        exit: "+8% 익실현 or MA20 복귀",
+        stop: "-15% 손절 or 60일 컷",
+        cagr: "—", wr: "—", trades: "—"
+      },
+      note: "H전략: QQQ와 동일하게 종가 ≤ MA200 → 진입 완전 스킵. "
+          + "반도체는 낙폭이 크고 추세 하락 시 연쇄 손절 위험이 높아 MA200 필터 효과 극대화. "
+          + "VIX 기간구조(VIX > VIX3M = 백워데이션)도 참고 지표로 활용. "
+          + "TE 보정 7.08%/yr 반영(SOXL decay 큼)."
     },
     {
       sym: "SPY",
-      label: "S&P500 ETF",
-      bh:"20.4%",
-      lev2: { etf:"SSO (2x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+5% 익실현 or MA20 복귀", stop:"없음", cagr:"31.5%", wr:"88%", trades:"17회/10년" },
-      lev3: { etf:"UPRO (3x)", entry:"SPY 종가 < MA20 × 0.95", exit:"+8% 익실현 or MA20 복귀", stop:"레버리지 기준 -10%", cagr:"32.9%", wr:"89%", trades:"19회/10년" },
-      note:"평소 1.5x 혼합(SPY 50% + SSO 50%) 보유 → 신호 시 전환. 신호 빈도 낮아(10년 14~19회) 베이스 레버리지가 수익 대부분을 담당. 1.5x B&H(29.8%) 대비 소폭 초과."
+      label: "S&P500 ETF · 채택: F50전략 🏆",
+      badge: "F50",
+      badgeColor: "#818cf8",
+      lev2: {
+        etf: "SSO (2×)",
+        entry: "종가 < MA20×0.95 + VIX≥20 <span style='color:var(--muted)'>(MA200 필터 없음)</span>",
+        exit: "+8% 익실현 or MA20 복귀",
+        stop: "-15% 손절 or 60일 컷",
+        cagr: "—", wr: "—", trades: "—"
+      },
+      lev3: {
+        etf: "UPRO (3×) — F50",
+        entry: "종가 < MA20×0.95 + <strong style='color:#818cf8'>VIX≥40</strong> <span style='color:var(--muted)'>(MA200 필터 없음)</span>",
+        exit: "+8% 익실현 or MA20 복귀",
+        stop: "-15% 손절 or 60일 컷",
+        cagr: "—", wr: "—", trades: "—"
+      },
+      note: "F50전략: SPY는 MA200 필터 적용 안 함(하락 추세에서도 진입 허용). "
+          + "단, VIX≥40 → 3× 진입 시 배정자본의 50%만 투입(나머지 현금 보유) — 급락 극단구간 포지션 크기 제한. "
+          + "VIX 20~30 → 2× / 30~40 → 2.5× / ≥40 → 3× 단, 50%만. "
+          + "SPY CAGR 3.71%, MDD -47.22%, Calmar 0.079 (1999~2026)."
     },
   ];
 
   rules.forEach(function(r){
     html += '<div class="chart-card" style="margin-bottom:16px">';
     html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
-      + '<div style="font-size:15px;font-weight:800;color:var(--ink)">' + r.sym + ' <span style="font-size:12px;font-weight:400;color:var(--muted)">' + r.label + '</span></div>'
-      + (r.bh ? '<div style="font-size:11px;color:var(--muted)">B&H 기준 <span style="color:var(--ink);font-weight:700">' + r.bh + ' CAGR</span></div>' : '')
+      + '<div>'
+      +   '<span style="font-size:15px;font-weight:800;color:var(--ink)">' + r.sym + '</span>'
+      +   ' <span style="font-size:12px;font-weight:400;color:var(--muted)">' + r.label.split('·')[0].trim() + '</span>'
+      +   ' <span style="font-size:11px;font-weight:700;color:' + r.badgeColor + ';background:rgba(99,102,241,0.12);padding:2px 7px;border-radius:4px;margin-left:4px">' + r.badge + '</span>'
+      + '</div>'
+      + '<div style="font-size:10px;color:var(--muted)">' + (r.label.split('·').slice(1).join('·').trim()) + '</div>'
       + '</div>';
 
     [r.lev2, r.lev3].forEach(function(lev){
@@ -1773,10 +1828,8 @@ function buildStrategySection() {
       html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:11px">';
       html += '<div><span style="color:var(--muted)">진입 조건 </span><span style="color:var(--ink)">' + lev.entry + '</span></div>';
       html += '<div><span style="color:var(--muted)">청산 조건 </span><span style="color:var(--up)">' + lev.exit + '</span></div>';
-      html += '<div><span style="color:var(--muted)">손절 라인 </span><span style="color:var(--down)">' + lev.stop + '</span></div>';
-      html += '<div><span style="color:var(--muted)">거래 횟수 </span><span style="color:var(--ink)">' + lev.trades + '</span></div>';
-      html += '<div><span style="color:var(--muted)">승률 </span><span style="color:var(--ink)">' + lev.wr + '</span></div>';
-      html += '<div><span style="color:var(--muted)">CAGR </span><span style="color:var(--accent2);font-weight:700">' + lev.cagr + '</span></div>';
+      html += '<div><span style="color:var(--muted)">손절/컷 </span><span style="color:var(--down)">' + lev.stop + '</span></div>';
+      html += '<div></div>';
       html += '</div></div>';
     });
 
@@ -1785,16 +1838,16 @@ function buildStrategySection() {
   });
 
   html += '<div style="font-size:11px;color:var(--muted);margin-top:4px;padding:10px 14px;background:var(--surface2);border-radius:8px;line-height:1.7">'
-    + '📌 <strong style="color:var(--ink)">전략 구조</strong><br>'
-    + '• QQQ/SPY 평소: 1× ETF 50% + 2× ETF 50% 혼합 보유 (실효 1.5×)<br>'
-    + '• SOXX 평소: SOXX 1× 단순 보유<br>'
-    + '• 신호 발생 시(종가 < MA20 × 0.95) + VIX≥20 + 종가>MA200: 레버리지 ETF 전환<br>'
-    + '&nbsp;&nbsp;&nbsp;— VIX 20~30: 2× / VIX 30~40: 2.5× 블렌드 / VIX≥40: 3× 풀레버<br>'
-    + '• <strong style="color:var(--ink)">H전략</strong>: 종가 ≤ MA200 시 신호 발생해도 진입 완전 스킵 — 닷컴·GFC 연쇄손절 차단, MDD -40% 이내 제한<br>'
-    + '• VIX<20 시 신호 발생해도 진입 스킵 (소형 조정 회피)<br>'
-    + '• 청산: +8% 익실현 or MA20 복귀 or -15% 손절 or 60일 컷<br><br>'
+    + '📌 <strong style="color:var(--ink)">공통 진입 구조 요약</strong><br>'
+    + '• 진입 트리거: 종가 &lt; MA20 × 0.95 (5% 이상 MA20 이탈)<br>'
+    + '• VIX 동적 레버리지: VIX&lt;20 → 스킵 / 20~30 → 2× / 30~40 → 2.5× 블렌드 / ≥40 → 3×<br>'
+    + '• <strong style="color:var(--accent2)">H전략 (QQQ/SOXX)</strong>: 종가 ≤ MA200 → 진입 완전 스킵 (장기 하락추세 차단) — 추가 조건: <code style="font-size:10px">종가 &gt; MA200</code> 필요<br>'
+    + '• <strong style="color:#818cf8">F50전략 (SPY)</strong>: MA200 필터 없음. VIX≥40 → 3× 진입 시 배정자본 50%만 투입 (나머지 현금)<br>'
+    + '• VIX 기간구조 참고: VIX &gt; VIX3M = 백워데이션(급성 위기) → 변동성 고점 근처 신호 해석 주의<br>'
+    + '• 청산: +8% 익실현 or MA20 복귀 or -15% 손절 or 60일 강제청산<br><br>'
     + '⚠️ <strong style="color:var(--ink)">주의사항</strong><br>'
-    + '• 운용 보수 미반영(TQQQ 0.88%/년, SOXL 0.75%/년) — 단기 보유(1~3일) 시 영향 미미<br>'
+    + '• 백테스트는 합성 레버리지 비용·추적오차 보정 포함 (TQQQ 2.83%/yr, SOXL 7.08%/yr)<br>'
+    + '• 운용 보수(TQQQ 0.88%/yr, SOXL 0.75%/yr)는 단기 보유(1~3일) 시 영향 미미<br>'
     + '• 과거 수익이 미래를 보장하지 않으며, 개인 투자 판단 하에 사용하세요'
     + '</div>';
   html += '</div>';
