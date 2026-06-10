@@ -1531,29 +1531,19 @@ function renderMAAlertCards(el, prices, isLive) {
     var alertColor = d.alert ? "#ef4444" : (pct >= 0 ? "#22c55e" : "#f59e0b");
     var pctStr = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
 
-    // ── 추천 액션 계산 (필터 B/C/D 적용) ──
-    var recLev     = vix ? vix.rec_lev : null;
-    var appliedLev = recLev;
-    var downgrades = [];
-    var action     = "";
+    // ── 추천 액션 계산 (H전략: MA200 완전 스킵) ──
+    var recLev      = vix ? vix.rec_lev : null;
+    var appliedLev  = recLev;
+    var ma200Skip   = false;   // H전략 스킵 여부
+    var downgrades  = [];
+    var action      = "";
     var actionColor = "var(--muted)";
 
     if (d.alert && recLev) {
-      // B필터: close < MA200 → 최대 2×
-      if (d.ma200 && d.current < d.ma200 && recLev > 2) {
-        appliedLev = 2.0;
-        downgrades.push("MA200 하방 → " + recLev + "×→2× (B)");
-      }
-      // C필터: MA200 기울기 하락 → 3× 차단
-      if (d.ma200_slope === "falling" && (appliedLev||recLev) >= 3) {
-        appliedLev = Math.min(appliedLev||recLev, 2.0);
-        if (!downgrades.length || downgrades[0].indexOf("(B)") < 0)
-          downgrades.push("MA200 기울기↓ → 3×→2× (C)");
-      }
-      // D필터: 52주 낙폭 ≤ -35% → 최대 2×
-      if (d.w52_drawdown != null && d.w52_drawdown <= -35 && (appliedLev||recLev) > 2) {
-        appliedLev = Math.min(appliedLev||recLev, 2.0);
-        downgrades.push("52주낙폭 " + d.w52_drawdown.toFixed(1) + "% → 2× (D)");
+      // H전략: 종가 ≤ MA200 → 완전 진입 스킵 (백테스트 MDD -40% 제한 근거)
+      if (d.ma200 && d.current <= d.ma200) {
+        ma200Skip  = true;
+        appliedLev = null;
       }
     }
 
@@ -1564,16 +1554,14 @@ function renderMAAlertCards(el, prices, isLive) {
     } else if (!recLev) {
       action = "신호 있음 — VIX<20, 스킵";
       actionColor = "#8b8fa3";
+    } else if (ma200Skip) {
+      action = "⛔ MA200 이하 — 진입 스킵";
+      actionColor = "#8b8fa3";
     } else {
-      var al = appliedLev || recLev;
+      var al = appliedLev;
       var etfName = (levEtfs[sym] && levEtfs[sym][al]) ? levEtfs[sym][al] : (al+"×");
-      if (downgrades.length) {
-        action = "⚡ " + recLev + "×→" + al + "× 하향 → " + etfName;
-        actionColor = "#f59e0b";
-      } else {
-        action = "⚡ " + al + "× 진입 권고 → " + etfName;
-        actionColor = al >= 3 ? "#a78bfa" : al >= 2.5 ? "#ef4444" : "#f59e0b";
-      }
+      action = "⚡ " + al + "× 진입 권고 → " + etfName;
+      actionColor = al >= 3 ? "#a78bfa" : al >= 2.5 ? "#ef4444" : "#f59e0b";
     }
 
     // ── MA200 slope 표시 문자열 ──
@@ -1603,9 +1591,14 @@ function renderMAAlertCards(el, prices, isLive) {
         + (d.w52_drawdown >= 0 ? '+' : '') + d.w52_drawdown.toFixed(1) + '%</div>';
     }
 
-    // ── 하향 경고 배지 ──
+    // ── MA200 스킵 / 하향 경고 배지 ──
     var downgradeHtml = '';
-    if (downgrades.length) {
+    if (ma200Skip) {
+      var ma200SkipPct = (d.ma200_pct_diff != null) ? ' (' + (d.ma200_pct_diff >= 0 ? '+' : '') + d.ma200_pct_diff.toFixed(1) + '%)' : '';
+      downgradeHtml = '<div style="margin-top:8px;padding:6px 10px;background:rgba(139,143,163,0.08);border:1px solid rgba(139,143,163,0.3);border-radius:7px;font-size:10px;color:#8b8fa3">'
+        + '⛔ 종가 ≤ MA200' + ma200SkipPct + ' — H전략 진입 없음 (백테스트: MDD -40% 이내)'
+        + '</div>';
+    } else if (downgrades.length) {
       downgradeHtml = '<div style="margin-top:8px;padding:6px 10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:7px;font-size:10px;color:#f59e0b">'
         + '⚠ 레버리지 하향 적용: ' + downgrades.join(' / ')
         + '</div>';
@@ -1752,8 +1745,9 @@ function buildStrategySection() {
     + '📌 <strong style="color:var(--ink)">전략 구조</strong><br>'
     + '• QQQ/SPY 평소: 1× ETF 50% + 2× ETF 50% 혼합 보유 (실효 1.5×)<br>'
     + '• SOXX 평소: SOXX 1× 단순 보유<br>'
-    + '• 신호 발생 시(종가 < MA20 × 0.95) + VIX≥20: 레버리지 ETF 전환<br>'
+    + '• 신호 발생 시(종가 < MA20 × 0.95) + VIX≥20 + 종가>MA200: 레버리지 ETF 전환<br>'
     + '&nbsp;&nbsp;&nbsp;— VIX 20~30: 2× / VIX 30~40: 2.5× 블렌드 / VIX≥40: 3× 풀레버<br>'
+    + '• <strong style="color:var(--ink)">H전략</strong>: 종가 ≤ MA200 시 신호 발생해도 진입 완전 스킵 — 닷컴·GFC 연쇄손절 차단, MDD -40% 이내 제한<br>'
     + '• VIX<20 시 신호 발생해도 진입 스킵 (소형 조정 회피)<br>'
     + '• 청산: +8% 익실현 or MA20 복귀 or -15% 손절 or 60일 컷<br><br>'
     + '⚠️ <strong style="color:var(--ink)">주의사항</strong><br>'
@@ -1773,7 +1767,8 @@ function buildBacktestSummaryTable() {
     A: "A 기본", B: "B MA200상한", C: "C MA200기울기",
     D: "D 52주상한", E: "E 기간구조", F50: "F50 50%포지션",
     F70: "F70 70%포지션", G: "G TP제거",
-    "C+F70": "C+F70", "D+G": "D+G", "B+G": "B+G"
+    "C+F70": "C+F70", "D+G": "D+G", "B+G": "B+G",
+    H: "H MA200스킵", "H+F50": "H+F50"
   };
   var assets = ["QQQ","SPY","SOXX"];
   var bestStrat = bt.best_strategy || '';
