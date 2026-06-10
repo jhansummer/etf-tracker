@@ -332,8 +332,9 @@ def main():
                 current_vix3m = vix3m_prices[-1]["close"]
                 vix3m_date    = vix3m_prices[-1]["date"]
                 spread = round(vix_data["current"] - current_vix3m, 2)
-                # 백워데이션: VIX > VIX3M (단기 공포 > 중기 공포 = 급성 위기)
-                backwardation = spread > 0
+                # 백워데이션: VIX - VIX3M > 1.0 (노이즈 필터, JS와 동일 임계값)
+                BW_THRESHOLD = 1.0
+                backwardation = spread > BW_THRESHOLD
                 # 차트용: 최근 60일 VIX3M
                 chart60_vix3m = vix3m_prices[-60:]
                 vix_data["vix3m"] = current_vix3m
