@@ -398,7 +398,11 @@ def backtest(
                     raw_lev = lev  # 필터 전 원래 레버
 
                     # 2. 전략별 레버 조정/차단
-                    if strategy in ("B", "B+G") and ma200_s[i] is not None:
+                    if strategy in ("H", "H+F50") and ma200_s[i] is not None:
+                        if c <= ma200_s[i]:
+                            lev = None   # MA200 아래면 완전 스킵
+
+                    elif strategy in ("B", "B+G") and ma200_s[i] is not None:
                         if c <= ma200_s[i]:
                             lev = min(lev, 2.0)  # MA200 아래면 최대 2x
 
@@ -412,7 +416,9 @@ def backtest(
 
                     # 3. 부분 투입 비율
                     invest_frac = 1.0
-                    if strategy in ("F50", "C+F70") and raw_lev >= 3.0 and lev >= 3.0:
+                    if strategy == "H+F50" and lev is not None and lev >= 3.0:
+                        invest_frac = 0.5
+                    elif strategy in ("F50", "C+F70") and raw_lev >= 3.0 and lev >= 3.0:
                         invest_frac = 0.5 if strategy == "F50" else 0.7
                     elif strategy == "F70" and raw_lev >= 3.0:
                         invest_frac = 0.7
@@ -616,7 +622,7 @@ def make_demo_data() -> dict:
 # ══════════════════════════════════════════════
 #  전체 실행
 # ══════════════════════════════════════════════
-STRATEGIES = ["A","B","C","D","E","F50","F70","G","C+F70","D+G","B+G"]
+STRATEGIES = ["A","B","C","D","E","F50","F70","G","C+F70","D+G","B+G","H","H+F50"]
 ASSETS     = ["QQQ","SPY","SOXX"]
 
 def run_all(demo=False, force_dl=False):
