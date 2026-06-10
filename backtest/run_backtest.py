@@ -675,7 +675,7 @@ def run_all(demo=False, force_dl=False):
         # 합성 레버리지 검증
         print("\n[합성 레버리지 추적오차 검증 (2010~)]")
         val_results = []
-        for real_name, (base_name, lev) in [("TQQQ","QQQ"), ("SOXL","SOXX"), ("UPRO","SPY")]:
+        for real_name, base_name, lev in [("TQQQ","QQQ",3), ("SOXL","SOXX",3), ("UPRO","SPY",3)]:
             lev_mult = 3.0
             real = load_series(real_name, force_dl)
             base = prices.get(base_name, [])
