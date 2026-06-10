@@ -455,6 +455,88 @@
           "early_mdd": -89.67
         }
       }
+    },
+    {
+      "strategy": "H",
+      "assets": {
+        "QQQ": {
+          "cagr": 3.32,
+          "mdd": -40.53,
+          "calmar": 0.082,
+          "win_rate": 88.0,
+          "n_trades": 25,
+          "avg_hold": 7.6,
+          "max_consec_stops": 1,
+          "chain_stop_events": 0,
+          "early_cagr": 2.72,
+          "early_mdd": -40.53
+        },
+        "SPY": {
+          "cagr": 0.37,
+          "mdd": -39.03,
+          "calmar": 0.009,
+          "win_rate": 87.5,
+          "n_trades": 8,
+          "avg_hold": 7.4,
+          "max_consec_stops": 1,
+          "chain_stop_events": 0,
+          "early_cagr": 2.04,
+          "early_mdd": 0.0
+        },
+        "SOXX": {
+          "cagr": 7.48,
+          "mdd": -39.56,
+          "calmar": 0.189,
+          "win_rate": 86.8,
+          "n_trades": 38,
+          "avg_hold": 6.9,
+          "max_consec_stops": 1,
+          "chain_stop_events": 0,
+          "early_cagr": 9.92,
+          "early_mdd": -39.56
+        }
+      }
+    },
+    {
+      "strategy": "H+F50",
+      "assets": {
+        "QQQ": {
+          "cagr": 3.16,
+          "mdd": -40.53,
+          "calmar": 0.078,
+          "win_rate": 88.0,
+          "n_trades": 25,
+          "avg_hold": 7.6,
+          "max_consec_stops": 1,
+          "chain_stop_events": 0,
+          "early_cagr": 2.72,
+          "early_mdd": -40.53
+        },
+        "SPY": {
+          "cagr": 0.37,
+          "mdd": -39.03,
+          "calmar": 0.009,
+          "win_rate": 87.5,
+          "n_trades": 8,
+          "avg_hold": 7.4,
+          "max_consec_stops": 1,
+          "chain_stop_events": 0,
+          "early_cagr": 2.04,
+          "early_mdd": 0.0
+        },
+        "SOXX": {
+          "cagr": 7.29,
+          "mdd": -39.56,
+          "calmar": 0.184,
+          "win_rate": 86.8,
+          "n_trades": 38,
+          "avg_hold": 6.9,
+          "max_consec_stops": 1,
+          "chain_stop_events": 0,
+          "early_cagr": 9.92,
+          "early_mdd": -39.56
+        }
+      }
     }
   ],
   "detail": {
@@ -985,6 +1067,102 @@
       "final_equity": 26.3135,
       "max_consec_stops": 2,
       "chain_stop_events": 4
+    },
+    "H_QQQ": {
+      "asset": "QQQ",
+      "strategy": "H",
+      "start": "1999-01-01",
+      "end": "2026-06-10",
+      "gap_scenario": false,
+      "cagr": 3.32,
+      "mdd": -40.53,
+      "calmar": 0.082,
+      "win_rate": 88.0,
+      "n_trades": 25,
+      "avg_hold_days": 7.6,
+      "final_equity": 2.4501,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H_SPY": {
+      "asset": "SPY",
+      "strategy": "H",
+      "start": "1999-01-01",
+      "end": "2026-06-10",
+      "gap_scenario": false,
+      "cagr": 0.37,
+      "mdd": -39.03,
+      "calmar": 0.009,
+      "win_rate": 87.5,
+      "n_trades": 8,
+      "avg_hold_days": 7.4,
+      "final_equity": 1.1066,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H_SOXX": {
+      "asset": "SOXX",
+      "strategy": "H",
+      "start": "1999-01-01",
+      "end": "2026-06-10",
+      "gap_scenario": false,
+      "cagr": 7.48,
+      "mdd": -39.56,
+      "calmar": 0.189,
+      "win_rate": 86.8,
+      "n_trades": 38,
+      "avg_hold_days": 6.9,
+      "final_equity": 7.2334,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H+F50_QQQ": {
+      "asset": "QQQ",
+      "strategy": "H+F50",
+      "start": "1999-01-01",
+      "end": "2026-06-10",
+      "gap_scenario": false,
+      "cagr": 3.16,
+      "mdd": -40.53,
+      "calmar": 0.078,
+      "win_rate": 88.0,
+      "n_trades": 25,
+      "avg_hold_days": 7.6,
+      "final_equity": 2.3489,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H+F50_SPY": {
+      "asset": "SPY",
+      "strategy": "H+F50",
+      "start": "1999-01-01",
+      "end": "2026-06-10",
+      "gap_scenario": false,
+      "cagr": 0.37,
+      "mdd": -39.03,
+      "calmar": 0.009,
+      "win_rate": 87.5,
+      "n_trades": 8,
+      "avg_hold_days": 7.4,
+      "final_equity": 1.1066,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H+F50_SOXX": {
+      "asset": "SOXX",
+      "strategy": "H+F50",
+      "start": "1999-01-01",
+      "end": "2026-06-10",
+      "gap_scenario": false,
+      "cagr": 7.29,
+      "mdd": -39.56,
+      "calmar": 0.184,
+      "win_rate": 86.8,
+      "n_trades": 38,
+      "avg_hold_days": 6.9,
+      "final_equity": 6.8958,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
     }
   },
   "early_detail": {
@@ -1515,6 +1693,102 @@
       "final_equity": 0.8798,
       "max_consec_stops": 2,
       "chain_stop_events": 4
+    },
+    "H_QQQ": {
+      "asset": "QQQ",
+      "strategy": "H",
+      "start": "1999-01-01",
+      "end": "2009-01-01",
+      "gap_scenario": false,
+      "cagr": 2.72,
+      "mdd": -40.53,
+      "calmar": 0.067,
+      "win_rate": 85.7,
+      "n_trades": 7,
+      "avg_hold_days": 5.0,
+      "final_equity": 1.3083,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H_SPY": {
+      "asset": "SPY",
+      "strategy": "H",
+      "start": "1999-01-01",
+      "end": "2009-01-01",
+      "gap_scenario": false,
+      "cagr": 2.04,
+      "mdd": 0.0,
+      "calmar": 0,
+      "win_rate": 100.0,
+      "n_trades": 2,
+      "avg_hold_days": 4.5,
+      "final_equity": 1.2234,
+      "max_consec_stops": 0,
+      "chain_stop_events": 0
+    },
+    "H_SOXX": {
+      "asset": "SOXX",
+      "strategy": "H",
+      "start": "1999-01-01",
+      "end": "2009-01-01",
+      "gap_scenario": false,
+      "cagr": 9.92,
+      "mdd": -39.56,
+      "calmar": 0.251,
+      "win_rate": 92.9,
+      "n_trades": 14,
+      "avg_hold_days": 5.3,
+      "final_equity": 2.5757,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H+F50_QQQ": {
+      "asset": "QQQ",
+      "strategy": "H+F50",
+      "start": "1999-01-01",
+      "end": "2009-01-01",
+      "gap_scenario": false,
+      "cagr": 2.72,
+      "mdd": -40.53,
+      "calmar": 0.067,
+      "win_rate": 85.7,
+      "n_trades": 7,
+      "avg_hold_days": 5.0,
+      "final_equity": 1.3083,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
+    },
+    "H+F50_SPY": {
+      "asset": "SPY",
+      "strategy": "H+F50",
+      "start": "1999-01-01",
+      "end": "2009-01-01",
+      "gap_scenario": false,
+      "cagr": 2.04,
+      "mdd": 0.0,
+      "calmar": 0,
+      "win_rate": 100.0,
+      "n_trades": 2,
+      "avg_hold_days": 4.5,
+      "final_equity": 1.2234,
+      "max_consec_stops": 0,
+      "chain_stop_events": 0
+    },
+    "H+F50_SOXX": {
+      "asset": "SOXX",
+      "strategy": "H+F50",
+      "start": "1999-01-01",
+      "end": "2009-01-01",
+      "gap_scenario": false,
+      "cagr": 9.92,
+      "mdd": -39.56,
+      "calmar": 0.251,
+      "win_rate": 92.9,
+      "n_trades": 14,
+      "avg_hold_days": 5.3,
+      "final_equity": 2.5757,
+      "max_consec_stops": 1,
+      "chain_stop_events": 0
     }
   }
 }
