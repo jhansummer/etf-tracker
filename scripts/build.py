@@ -340,6 +340,7 @@ def main():
                 vix_data["vix3m_date"] = vix3m_date
                 vix_data["vix_vix3m_spread"] = spread
                 vix_data["backwardation"] = backwardation
+                vix_data["term_structure"] = "backwardation" if backwardation else "contango"
                 vix_data["vix3m_prices"] = [p["close"] for p in chart60_vix3m]
                 vix_data["vix3m_dates"]  = [p["date"]  for p in chart60_vix3m]
                 term_str = f"백워데이션(VIX>VIX3M) 🚨" if backwardation else "콘탱고(VIX<VIX3M)"
@@ -467,6 +468,44 @@ def main():
             }
         except Exception as e:
             print(f"backtest/results.json 로드 실패: {e}")
+
+    # ── skipped_signals.json 누적 기록 (H전략: QQQ/SOXX MA200 이하 스킵) ──
+    # SPY는 F50 전략으로 MA200 필터 없음
+    H_STRATEGY_SYMBOLS = ["QQQ", "SOXX"]
+    skipped_today = []
+    for sym in H_STRATEGY_SYMBOLS:
+        d = us_prices.get(sym, {})
+        if not d:
+            continue
+        # alert(종가<MA20×0.95) + VIX≥20 신호가 있고, 종가가 MA200 이하인 경우
+        if d.get("alert") and vix_data.get("rec_lev") and d.get("ma200") and d.get("current") and d["current"] <= d["ma200"]:
+            skipped_today.append({
+                "date":            d.get("date", ""),
+                "symbol":          sym,
+                "close":           d["current"],
+                "ma200":           round(d["ma200"], 2),
+                "pct_below_ma200": round(d.get("ma200_pct_diff", 0), 2),
+                "vix":             vix_data.get("current", 0),
+                "would_have_lev":  vix_data.get("rec_lev"),
+                "reason":          "MA200_below",
+            })
+
+    if skipped_today:
+        skip_file = ROOT / "backtest" / "skipped_signals.json"
+        existing = []
+        if skip_file.exists():
+            try:
+                existing = json.loads(skip_file.read_text(encoding="utf-8"))
+            except Exception:
+                existing = []
+        # 같은 날짜+심볼 중복 제거 후 append
+        today_key = set((s["date"], s["symbol"]) for s in skipped_today)
+        existing = [e for e in existing if (e.get("date"), e.get("symbol")) not in today_key]
+        existing.extend(skipped_today)
+        skip_file.parent.mkdir(parents=True, exist_ok=True)
+        skip_file.write_text(json.dumps(existing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        for s in skipped_today:
+            print(f"[스킵 기록] {s['symbol']} {s['date']} MA200 {s['pct_below_ma200']:+.2f}% VIX {s['vix']:.1f}")
 
     combined = {
         "generated": max(dates) if dates else "",
