@@ -1402,26 +1402,31 @@ async function fetchLivePrices() {
       result["__vix3m"] = {current: cur3m, date: v3raw[v3raw.length-1].date,
         prices: v3raw.slice(-60).map(function(p){return p.close;}),
         dates:  v3raw.slice(-60).map(function(p){return p.date;})};
-      // 스프레드 계산 후 __vix에 주입
+      // 스프레드 계산: 두 시리즈의 최신 공통 날짜로 정렬 후 __vix에 주입
       if (result["__vix"] && result["__vix"].current != null) {
-        var vixDate  = result["__vix"].date;
-        var vix3mDate = v3raw[v3raw.length-1].date;
-        var dateMismatch = vixDate !== vix3mDate;
-        var spread = Math.round((result["__vix"].current - cur3m)*100)/100;
-        // 백워데이션 판정: VIX - VIX3M > 1.0 (노이즈 필터 — 소폭 역전은 무시)
-        // 날짜 불일치 시: 비교 신뢰도 낮음, 경보 억제
-        var BW_THRESHOLD = 1.0;
-        var backwardation = !dateMismatch && spread > BW_THRESHOLD;
-        result["__vix"].vix3m = cur3m;
-        result["__vix"].vix3m_date = vix3mDate;
-        result["__vix"].vix3m_date_mismatch = dateMismatch;
-        result["__vix"].vix_vix3m_spread = spread;
-        result["__vix"].backwardation = backwardation;
-        result["__vix"].vix3m_prices = result["__vix3m"].prices;
-        result["__vix"].vix3m_dates  = result["__vix3m"].dates;
-        // rec_lev_term: 진입 신호 발생 시 참고 티어 (VIX≥20일 때만 의미있음)
-        if (result["__vix"].current >= 20)
-          result["__vix"].rec_lev_term = backwardation ? 3.0 : 2.0;
+        // 날짜→종가 맵 구성
+        var vixMap = {}, v3mMap = {};
+        for (var _i=0; _i<vraw.length;  _i++) vixMap[vraw[_i].date]  = vraw[_i].close;
+        for (var _i=0; _i<v3raw.length; _i++) v3mMap[v3raw[_i].date] = v3raw[_i].close;
+        var commonDates = Object.keys(vixMap).filter(function(d){ return v3mMap[d] != null; }).sort();
+        if (commonDates.length > 0) {
+          var alignedDate   = commonDates[commonDates.length - 1];
+          var vixAligned    = vixMap[alignedDate];
+          var vix3mAligned  = v3mMap[alignedDate];
+          var spread = Math.round((vixAligned - vix3mAligned) * 100) / 100;
+          var BW_THRESHOLD  = 1.0;
+          var backwardation = spread > BW_THRESHOLD;
+          result["__vix"].vix3m              = vix3mAligned;
+          result["__vix"].vix3m_date         = alignedDate;
+          result["__vix"].vix3m_date_mismatch = false;   // 정렬됨 — 불일치 없음
+          result["__vix"].vix_vix3m_spread   = spread;
+          result["__vix"].backwardation      = backwardation;
+          result["__vix"].vix3m_prices       = result["__vix3m"].prices;
+          result["__vix"].vix3m_dates        = result["__vix3m"].dates;
+          // rec_lev_term: 진입 신호 발생 시 참고 티어 (VIX≥20일 때만 의미있음)
+          if (result["__vix"].current >= 20)
+            result["__vix"].rec_lev_term = backwardation ? 3.0 : 2.0;
+        }
       }
     }
   } catch(e) { console.warn("VIX3M fetch 실패:", e); }
@@ -1461,10 +1466,7 @@ function buildVIXBanner(vix, isLive) {
     var spreadClr    = bw ? '#ef4444' : (spread < -1.0 ? '#22c55e' : '#f59e0b');
     var spreadStr    = (spread >= 0 ? '+' : '') + spread.toFixed(2);
     var termStr;
-    if (dateMismatch) {
-      // 날짜 불일치: 비교 신뢰 불가
-      termStr = '<span style="color:#f59e0b">⚠ 데이터 시점 불일치 (VIX: ' + vix.date + ' / VIX3M: ' + vix.vix3m_date + ') — 비교 보류</span>';
-    } else if (bw) {
+    if (bw) {
       termStr = '🚨 <span style="color:#ef4444;font-weight:700">백워데이션 (VIX>VIX3M+1.0) — 단기 공포 급등</span>';
     } else if (spread > 0) {
       // 소폭 역전 (+0~+1.0): 노이즈 구간
@@ -1474,11 +1476,11 @@ function buildVIXBanner(vix, isLive) {
     }
     // 참고 티어: 진입 신호 발생 시 적용 레버리지 힌트 (단독으로 진입 권고 아님)
     var termLevHint = '';
-    if (vix.rec_lev_term != null && !dateMismatch) {
+    if (vix.rec_lev_term != null) {
       termLevHint = ' · 신호 발생 시 참고 티어: <span style="font-weight:700;color:'+(bw?'#a78bfa':'#f59e0b')+'">'
         + vix.rec_lev_term + '×</span>';
     }
-    vix3mHtml = '<div style="margin-top:8px;padding:8px 12px;background:'+(bw?'rgba(239,68,68,0.07)':'rgba(34,197,94,0.05)')+';border:1px solid '+(bw?'rgba(239,68,68,0.25)':(dateMismatch?'rgba(245,158,11,0.3)':'rgba(34,197,94,0.2)'))+';border-radius:8px;font-size:11px">'
+    vix3mHtml = '<div style="margin-top:8px;padding:8px 12px;background:'+(bw?'rgba(239,68,68,0.07)':'rgba(34,197,94,0.05)')+';border:1px solid '+(bw?'rgba(239,68,68,0.25)':'rgba(34,197,94,0.2)')+';border-radius:8px;font-size:11px">'
       + 'VIX3M <span style="color:var(--muted)">(' + (vix.vix3m_date||'') + ')</span> '
       + '<span style="font-weight:700;color:var(--ink)">' + vix.vix3m.toFixed(1) + '</span>'
       + ' · 스프레드 <span style="font-weight:700;color:'+spreadClr+'">' + spreadStr + '</span>'

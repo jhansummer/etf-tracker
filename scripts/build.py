@@ -329,28 +329,37 @@ def main():
             raw_vix3m = json.loads(vix3m_file.read_text(encoding="utf-8"))
             vix3m_prices = raw_vix3m.get("prices", [])
             if vix3m_prices and vix_data.get("current") is not None:
-                current_vix3m = vix3m_prices[-1]["close"]
-                vix3m_date    = vix3m_prices[-1]["date"]
-                spread = round(vix_data["current"] - current_vix3m, 2)
-                # 백워데이션: VIX - VIX3M > 1.0 (노이즈 필터, JS와 동일 임계값)
-                BW_THRESHOLD = 1.0
-                backwardation = spread > BW_THRESHOLD
-                # 차트용: 최근 60일 VIX3M
-                chart60_vix3m = vix3m_prices[-60:]
-                vix_data["vix3m"] = current_vix3m
-                vix_data["vix3m_date"] = vix3m_date
-                vix_data["vix_vix3m_spread"] = spread
-                vix_data["backwardation"] = backwardation
-                vix_data["term_structure"] = "backwardation" if backwardation else "contango"
-                vix_data["vix3m_prices"] = [p["close"] for p in chart60_vix3m]
-                vix_data["vix3m_dates"]  = [p["date"]  for p in chart60_vix3m]
-                term_str = f"백워데이션(VIX>VIX3M) 🚨" if backwardation else "콘탱고(VIX<VIX3M)"
-                print(f"VIX3M: {current_vix3m:.1f}  스프레드: {spread:+.2f}  {term_str}")
-                # VIX term structure 기반 레버 보조 수치
-                if vix_data.get("current", 0) >= 20:
-                    vix_data["rec_lev_term"] = 3.0 if backwardation else 2.0
+                # ── 날짜 정렬: 두 시리즈의 최신 공통 날짜로 spread 계산 ──
+                vix_dict   = {p["date"]: p["close"] for p in vix_prices}
+                vix3m_dict = {p["date"]: p["close"] for p in vix3m_prices}
+                common_dates = sorted(set(vix_dict.keys()) & set(vix3m_dict.keys()))
+                if not common_dates:
+                    print("VIX3M: VIX와 공통 날짜 없음 — 기간구조 계산 생략")
                 else:
-                    vix_data["rec_lev_term"] = None
+                    aligned_date  = common_dates[-1]
+                    vix_aligned   = vix_dict[aligned_date]
+                    current_vix3m = vix3m_dict[aligned_date]
+                    vix3m_date    = aligned_date
+                    spread = round(vix_aligned - current_vix3m, 2)
+                    # 백워데이션: VIX - VIX3M > 1.0 (노이즈 필터, JS와 동일 임계값)
+                    BW_THRESHOLD = 1.0
+                    backwardation = spread > BW_THRESHOLD
+                    # 차트용: 최근 60일 VIX3M
+                    chart60_vix3m = vix3m_prices[-60:]
+                    vix_data["vix3m"] = current_vix3m
+                    vix_data["vix3m_date"] = vix3m_date
+                    vix_data["vix_vix3m_spread"] = spread
+                    vix_data["backwardation"] = backwardation
+                    vix_data["term_structure"] = "backwardation" if backwardation else "contango"
+                    vix_data["vix3m_prices"] = [p["close"] for p in chart60_vix3m]
+                    vix_data["vix3m_dates"]  = [p["date"]  for p in chart60_vix3m]
+                    term_str = f"백워데이션(VIX>VIX3M) 🚨" if backwardation else "콘탱고(VIX<VIX3M)"
+                    print(f"VIX3M: {current_vix3m:.1f}  스프레드: {spread:+.2f}  (공통날짜: {aligned_date})  {term_str}")
+                    # VIX term structure 기반 레버 보조 수치
+                    if vix_data.get("current", 0) >= 20:
+                        vix_data["rec_lev_term"] = 3.0 if backwardation else 2.0
+                    else:
+                        vix_data["rec_lev_term"] = None
         except Exception as e:
             print(f"VIX3M 빌드 실패: {e}")
 
