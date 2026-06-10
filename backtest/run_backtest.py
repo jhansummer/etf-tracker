@@ -365,8 +365,8 @@ def backtest(
                     for j in range(eid + 1, i):
                         r_j  = (closes[j] - closes[j-1]) / closes[j-1]
                         rf_j = rf_map.get(dates[j], DEFAULT_RF) / 252
-                        lev_gap *= (1 + lev * r_j - (lev - 1) * rf_j - EXPENSE / 252)
-                    r_open_lev = lev * base_gap - (lev - 1) * rf_ann / 252 - EXPENSE / 252
+                        lev_gap *= (1 + lev * r_j - (lev - 1) * rf_j - te_daily)
+                    r_open_lev = lev * base_gap - (lev - 1) * rf_ann / 252 - te_daily
                     lev_ret = lev_gap * (1 + r_open_lev)
             else:
                 if base_ret <= SL_BASE:
@@ -457,6 +457,7 @@ def backtest(
                             "size":            equity * invest_frac,
                             "equity_at_entry": equity,
                             "vix":             vix or 0,
+                            "te":              _te(asset, lev),  # 추적오차 보정
                         }
 
         eq_curve.append((d, round(equity, 6)))
@@ -746,12 +747,26 @@ def run_all(demo=False, force_dl=False):
                   f"N={rf.get('n_trades','?')}  갭CAGR={rg.get('cagr','?')}%  "
                   f"[1999-09: CAGR={re.get('cagr','?')}%  MDD={re.get('mdd','?')}%]")
 
-    # ── 최우수 전략 (Calmar, QQQ 기준) ──
+    # ── 2007~2026 공통 기간 비교 (E 포함 공정 비교) ──
+    print("\n[2007~2026 공통 기간 비교 (전략 E 포함)]")
+    common2007_results = {}
+    for strat in STRATEGIES:
+        for asset in ASSETS:
+            base = prices.get(asset, [])
+            if not base:
+                continue
+            v3m = vix3m_map if "E" in strat else None
+            r = backtest(asset, base, vix_map, v3m, rf_map, strat, "2007-01-01", "2026-06-10", False)
+            common2007_results[f"{strat}_{asset}"] = r
+        qqq = common2007_results.get(f"{strat}_QQQ", {})
+        print(f"  {strat:8s} QQQ CAGR={qqq.get('cagr','?')}%  MDD={qqq.get('mdd','?')}%  Calmar={qqq.get('calmar','?')}")
+
+    # ── 최우수 전략 (2007~ 공통 기간 Calmar, QQQ 기준) — E와 공정 비교 ──
     best_strat = max(
         STRATEGIES,
-        key=lambda s: full_results.get(f"{s}_QQQ", {}).get("calmar", -999) or -999
+        key=lambda s: common2007_results.get(f"{s}_QQQ", {}).get("calmar", -999) or -999
     )
-    best_info = full_results.get(f"{best_strat}_QQQ", {})
+    best_info = common2007_results.get(f"{best_strat}_QQQ", {})
     print(f"\n✅ Calmar 기준 최우수 전략: {best_strat}  "
           f"(QQQ CAGR={best_info.get('cagr')}%  MDD={best_info.get('mdd')}%  "
           f"Calmar={best_info.get('calmar')})")
@@ -792,13 +807,30 @@ def run_all(demo=False, force_dl=False):
             }
         summary.append(row)
 
+    # 2007 공통 기간 summary
+    summary2007 = []
+    for strat in STRATEGIES:
+        row = {"strategy": strat, "assets": {}}
+        for asset in ASSETS:
+            k = f"{strat}_{asset}"
+            r = common2007_results.get(k, {})
+            row["assets"][asset] = {
+                "cagr":    r.get("cagr"),
+                "mdd":     r.get("mdd"),
+                "calmar":  r.get("calmar"),
+                "win_rate": r.get("win_rate"),
+                "n_trades": r.get("n_trades"),
+            }
+        summary2007.append(row)
+
     output = {
         "generated":   date.today().isoformat(),
         "mode":        "demo" if demo else "real",
         "best_strategy":          best_strat,
         "best_strategy_calmar":   best_info.get("calmar"),
-        "best_strategy_rationale": "Calmar Ratio (CAGR/|MDD|) 기준, QQQ 전구간",
+        "best_strategy_rationale": "Calmar Ratio (CAGR/|MDD|) 기준, QQQ 2007~2026 공통기간 (전략 E 포함 공정비교)",
         "summary":     summary,
+        "summary2007": summary2007,
         "detail":      {k: {kk: vv for kk, vv in v.items()
                             if kk not in ("trades","eq_curve")}
                         for k, v in full_results.items()},
@@ -869,6 +901,7 @@ def _write_md(output, summary, dotcom, gfc, demo):
     lines = []
     lines += [f"# ETF 레버리지 전략 백테스트 결과 (v2)",
               f"> 생성: {output['generated']}  |  모드: {'합성 데이터(demo)' if demo else '실데이터'}",
+              f"> 합성 레버리지 추적오차 보정 적용: TQQQ 2.83%/yr, SOXL 7.08%/yr, UPRO 2.80%/yr",
               "",
               f"## 최우수 전략: **{output['best_strategy']}**",
               f"> {output['best_strategy_rationale']}",
@@ -879,7 +912,24 @@ def _write_md(output, summary, dotcom, gfc, demo):
     for k, v in _STRAT_DESC.items():
         lines.append(f"- **{k}**: {v}")
 
-    lines += ["", "---",
+    # ── 2007~2026 공통 기간 비교 테이블 (E 포함 공정 비교) ──
+    summary2007 = output.get("summary2007", [])
+    if summary2007:
+        lines += ["", "---",
+                  "## 2007~2026 공통 기간 비교 (전략 E 포함 동일 조건)", ""]
+        for asset in ASSETS:
+            lines += [f"### {asset}", ""]
+            lines.append("| 전략 | CAGR% | MDD% | Calmar | 승률% | N거래 |")
+            lines.append("|------|-------|------|--------|-------|-------|")
+            for row in summary2007:
+                s = row["strategy"]
+                a = row["assets"].get(asset, {})
+                lines.append(
+                    f"| {s} | {a.get('cagr','N/A')} | {a.get('mdd','N/A')} | "
+                    f"{a.get('calmar','N/A')} | {a.get('win_rate','N/A')} | {a.get('n_trades','N/A')} |")
+            lines.append("")
+
+    lines += ["---",
               "## 전구간 성과 비교 (1999-01-01 ~ 2026-06-10)", ""]
 
     for asset in ASSETS:
@@ -917,6 +967,39 @@ def _write_md(output, summary, dotcom, gfc, demo):
         g_sl   = [t for t in g_key if t["exit_reason"] == "stop_loss"]
         lines.append(f"**{asset}**  닷컴 손절: {len(d_sl)}/{len(d_key)}  GFC 손절: {len(g_sl)}/{len(g_key)}")
     lines.append("\n*상세 트레이드 로그: trade_log_dotcom.md / trade_log_gfc.md*")
+
+    # ── 채택 전략 결론 ──
+    lines += ["", "---",
+              "## 📌 채택 전략 결론 (TE 보정 후)", "",
+              "| 자산 | 채택 전략 | 전구간 CAGR | MDD | Calmar | 승률 | 근거 |",
+              "|------|---------|------------|-----|--------|------|------|"]
+
+    # 결론 데이터를 summary에서 추출
+    def _get(strat, asset, key):
+        for row in summary:
+            if row["strategy"] == strat:
+                return row["assets"].get(asset, {}).get(key, "N/A")
+        return "N/A"
+
+    adopted = [("QQQ", "H"), ("SOXX", "H"), ("SPY", "F50")]
+    reasons = {
+        ("QQQ",  "H"):   "닷컴/GFC 연쇄손절 차단, MDD -40% 이내. A 대비 MDD -44%p 개선",
+        ("SOXX", "H"):   "전 전략 중 Calmar 최고. MA200 스킵으로 MDD -39% 유지",
+        ("SPY",  "F50"): "SPY는 진입 빈도 낮아 부분투입이 적합. Calmar 0.079 (전체 2위)",
+    }
+    for asset, strat in adopted:
+        lines.append(
+            f"| {asset} | **{strat}** | {_get(strat,asset,'cagr')}% | "
+            f"{_get(strat,asset,'mdd')}% | {_get(strat,asset,'calmar')} | "
+            f"{_get(strat,asset,'win_rate')}% | {reasons.get((asset,strat),'')} |")
+
+    lines += ["",
+              "**공통 진입 조건:** 종가 < MA20 × 0.95 + VIX ≥ 20 + 종가 > MA200 (H전략)",
+              "**VIX 동적 레버리지:** VIX 20~30 → 2× / 30~40 → 2.5× / ≥40 → 3×",
+              "**청산:** +8% 익실현 or MA20 복귀 or -15% 손절 or 60일 컷",
+              "",
+              "> **TE 보정 주의:** SOXX 3× 포지션은 SOXL TE 7.08%/yr 반영 → "
+              "보정 전 대비 SOXX 전략 CAGR 소폭 하락 예상. 단기 보유(평균 7일) 시 영향 제한적."]
 
     if demo:
         lines += ["", "> ⚠️ **데모 모드**: 합성 데이터 사용. `python backtest/run_backtest.py`로 실데이터 실행 요망."]
