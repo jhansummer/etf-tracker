@@ -414,26 +414,30 @@ def backtest(
                         if w52_high[i] > 0 and (c / w52_high[i] - 1) <= W52_CAP_THR:
                             lev = min(lev, 2.0)  # 52주 -35% → 최대 2x
 
-                    # 3. 부분 투입 비율
-                    invest_frac = 1.0
-                    if strategy == "H+F50" and lev is not None and lev >= 3.0:
-                        invest_frac = 0.5
-                    elif strategy in ("F50", "C+F70") and raw_lev >= 3.0 and lev >= 3.0:
-                        invest_frac = 0.5 if strategy == "F50" else 0.7
-                    elif strategy == "F70" and raw_lev >= 3.0:
-                        invest_frac = 0.7
+                    # H 전략이 필터에서 lev=None으로 바꿨으면 진입 스킵
+                    if lev is None:
+                        pass
+                    else:
+                        # 3. 부분 투입 비율
+                        invest_frac = 1.0
+                        if strategy == "H+F50" and lev >= 3.0:
+                            invest_frac = 0.5
+                        elif strategy in ("F50", "C+F70") and raw_lev >= 3.0 and lev >= 3.0:
+                            invest_frac = 0.5 if strategy == "F50" else 0.7
+                        elif strategy == "F70" and raw_lev >= 3.0:
+                            invest_frac = 0.7
 
-                    position = {
-                        "entry_date":      d,
-                        "entry_idx":       i,
-                        "entry_close":     c,
-                        "lev":             lev,
-                        "raw_lev":         raw_lev,
-                        "invest_frac":     invest_frac,
-                        "size":            equity * invest_frac,
-                        "equity_at_entry": equity,
-                        "vix":             vix or 0,
-                    }
+                        position = {
+                            "entry_date":      d,
+                            "entry_idx":       i,
+                            "entry_close":     c,
+                            "lev":             lev,
+                            "raw_lev":         raw_lev,
+                            "invest_frac":     invest_frac,
+                            "size":            equity * invest_frac,
+                            "equity_at_entry": equity,
+                            "vix":             vix or 0,
+                        }
 
         eq_curve.append((d, round(equity, 6)))
         if equity > peak_eq:
