@@ -1811,30 +1811,84 @@ function buildBacktestSummaryTable() {
     D: "D 52주상한", E: "E 기간구조", F50: "F50 50%포지션",
     F70: "F70 70%포지션", G: "G TP제거",
     "C+F70": "C+F70", "D+G": "D+G", "B+G": "B+G",
-    H: "H MA200스킵", "H+F50": "H+F50"
+    H: "H MA200스킵 🏆", "H+F50": "H+F50 🏆"
   };
   var assets = ["QQQ","SPY","SOXX"];
-  var bestStrat = bt.best_strategy || '';
-
-  // summary 구조: [{strategy, assets:{QQQ:{cagr,mdd,calmar,win_rate,n_trades,early_cagr,early_mdd}, ...}}, ...]
-  // 전략 순서 그대로 유지
-  var strategies = bt.summary.map(function(r){ return r.strategy; });
 
   // 인덱스: strategy → assets dict
   var byStrat = {};
   bt.summary.forEach(function(r){ byStrat[r.strategy] = r.assets || {}; });
 
+  // ── 채택 전략 비교 테이블 (H / F50 / A) ──
   var html = '<div class="chart-card" style="margin-top:32px">';
-  html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:4px">📊 백테스트 전략 비교 ('
-    + (bt.mode === 'demo' ? '합성 데모 데이터' : '실데이터 1999–2026') + ')</div>';
-  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:14px">'
-    + '최고 칼마 전략: <span style="color:var(--accent2);font-weight:700">' + bestStrat
-    + ' (' + (stratNames[bestStrat]||bestStrat) + ')</span>'
-    + (bt.best_calmar != null ? ' · 칼마 ' + bt.best_calmar.toFixed(2) : '')
-    + (bt.mode === 'demo' ? ' <span style="color:var(--muted)">(⚠ 데모 수치, 실데이터 실행 후 갱신)</span>' : '')
+  html += '<div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;margin-bottom:4px">📊 채택 전략 vs 기준선 비교 ('
+    + (bt.mode === 'demo' ? '합성 데모' : '실데이터 1999–2026') + ')</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:12px">'
+    + '🏆 채택: <strong style="color:var(--accent2)">QQQ/SOXX = H전략 (MA200 완전스킵)</strong> · <strong style="color:#818cf8">SPY = F50 (부분투입 50%)</strong>'
     + '</div>';
 
-  // 자산별 테이블 (QQQ, SPY, SOXX)
+  // 가로 비교 테이블: 전략 | QQQ(CAGR/MDD/Calmar) | SOXX(CAGR/MDD/Calmar) | SPY(CAGR/MDD/Calmar)
+  var cmpStrats = ["A", "H", "F50", "H+F50"];
+  html += '<div style="overflow-x:auto"><table class="tbl" style="font-size:10px;min-width:680px">';
+  html += '<thead><tr>'
+    + '<th style="text-align:left;padding:5px 8px;border-bottom:2px solid var(--border)">전략</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border);color:#22c55e">QQQ CAGR</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border)">QQQ MDD</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border)">QQQ 칼마</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border);color:#22c55e">SOXX CAGR</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border)">SOXX MDD</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border)">SOXX 칼마</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border);color:#22c55e">SPY CAGR</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border)">SPY MDD</th>'
+    + '<th style="text-align:right;padding:5px 6px;border-bottom:2px solid var(--border)">SPY 칼마</th>'
+    + '</tr></thead><tbody>';
+
+  cmpStrats.forEach(function(strat) {
+    var ad = byStrat[strat];
+    if (!ad) return;
+    var isAdopted = (strat === "H" || strat === "F50" || strat === "H+F50");
+    var rowBg = isAdopted ? 'background:rgba(99,102,241,0.10);' : '';
+    var nameColor = isAdopted ? 'var(--accent2)' : 'var(--ink)';
+    var badge = (strat === "H" || strat === "F50" || strat === "H+F50") ? ' 🏆' : '';
+
+    function cell(asset, field) {
+      var m = ad[asset];
+      if (!m || m[field] == null) return '<td style="text-align:right;padding:4px 6px;color:var(--muted)">—</td>';
+      var v = m[field];
+      var clr = 'var(--muted)';
+      if (field === 'cagr')   clr = v > 0 ? '#22c55e' : '#ef4444';
+      if (field === 'mdd')    clr = v < -50 ? '#ef4444' : v < -30 ? '#f59e0b' : 'var(--muted)';
+      if (field === 'calmar') clr = v > 0.1 ? '#22c55e' : v > 0 ? '#f59e0b' : '#ef4444';
+      var txt = field === 'cagr' ? ((v>0?'+':'')+v.toFixed(1)+'%')
+              : field === 'mdd'  ? v.toFixed(1)+'%'
+              :                    v.toFixed(3);
+      var fw = (field === 'calmar') ? 'font-weight:700;' : '';
+      return '<td style="text-align:right;padding:4px 6px;color:'+clr+';'+fw+'">' + txt + '</td>';
+    }
+    html += '<tr style="'+rowBg+'border-bottom:1px solid var(--border)">'
+      + '<td style="padding:5px 8px;font-weight:700;color:'+nameColor+'">' + (stratNames[strat]||strat) + badge + '</td>'
+      + cell('QQQ','cagr') + cell('QQQ','mdd') + cell('QQQ','calmar')
+      + cell('SOXX','cagr') + cell('SOXX','mdd') + cell('SOXX','calmar')
+      + cell('SPY','cagr') + cell('SPY','mdd') + cell('SPY','calmar')
+      + '</tr>';
+  });
+  html += '</tbody></table></div>';
+  html += '<div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6">'
+    + '* 1999~2026, 합성 레버리지 비용·추적오차 보정(TQQQ 2.83%/yr, SOXL 7.08%/yr) 포함 · CAGR/MDD/칼마(CAGR÷|MDD|)'
+    + '</div>';
+  html += '</div>';
+
+  // ── 전체 전략 비교 테이블 (자산별 펼쳐보기) ──
+  var strategies = bt.summary.map(function(r){ return r.strategy; });
+  var bestStrat  = bt.best_strategy || '';
+
+  html += '<div class="chart-card" style="margin-top:16px">';
+  html += '<div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">📋 전체 전략 비교 (자산별)</div>';
+  html += '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'
+    + '최고 Calmar: <span style="color:var(--accent2);font-weight:700">' + bestStrat + ' (' + (stratNames[bestStrat]||bestStrat) + ')</span>'
+    + (bt.best_calmar != null ? ' · Calmar ' + bt.best_calmar.toFixed(2) : '')
+    + '</div>';
+
   assets.forEach(function(asset) {
     html += '<div style="font-size:11px;font-weight:700;color:var(--ink);margin:14px 0 6px">' + asset + '</div>';
     html += '<div style="overflow-x:auto"><table class="tbl" style="font-size:10px;min-width:480px">';
@@ -1853,19 +1907,21 @@ function buildBacktestSummaryTable() {
       var m = assetData[asset];
       if (!m) return;
       var isBest = (strat === bestStrat);
-      var rowBg  = isBest ? 'background:rgba(99,102,241,0.1);' : '';
+      var isAdopted2 = (strat === 'H' || strat === 'F50' || strat === 'H+F50');
+      var rowBg  = isBest ? 'background:rgba(99,102,241,0.1);' : isAdopted2 ? 'background:rgba(99,102,241,0.05);' : '';
       var cagrClr   = m.cagr  > 0 ? '#22c55e' : '#ef4444';
       var mddClr    = m.mdd   < -50 ? '#ef4444' : m.mdd < -30 ? '#f59e0b' : 'var(--muted)';
-      var calmarClr = m.calmar > 1   ? '#22c55e' : m.calmar > 0.3 ? '#f59e0b' : 'var(--muted)';
+      var calmarClr = m.calmar > 0.1 ? '#22c55e' : m.calmar > 0 ? '#f59e0b' : '#ef4444';
+      var nameDisp  = (stratNames[strat]||strat);
       html += '<tr style="' + rowBg + 'border-bottom:1px solid var(--border)">'
-        + '<td style="padding:4px 8px;font-weight:' + (isBest?'700':'400') + ';color:' + (isBest?'var(--accent2)':'var(--ink)') + '">'
-        + (stratNames[strat]||strat) + (isBest?' ★':'') + '</td>'
+        + '<td style="padding:4px 8px;font-weight:' + ((isBest||isAdopted2)?'700':'400') + ';color:' + ((isBest||isAdopted2)?'var(--accent2)':'var(--ink)') + '">'
+        + nameDisp + '</td>'
         + '<td style="text-align:right;padding:4px 8px;color:'+cagrClr+';font-weight:700">'
         + (m.cagr != null ? (m.cagr > 0 ? '+' : '') + m.cagr.toFixed(1) : '—') + '</td>'
         + '<td style="text-align:right;padding:4px 8px;color:'+mddClr+'">'
         + (m.mdd  != null ? m.mdd.toFixed(1) : '—') + '</td>'
         + '<td style="text-align:right;padding:4px 8px;color:'+calmarClr+';font-weight:700">'
-        + (m.calmar != null ? m.calmar.toFixed(2) : '—') + '</td>'
+        + (m.calmar != null ? m.calmar.toFixed(3) : '—') + '</td>'
         + '<td style="text-align:right;padding:4px 8px;color:var(--ink)">'
         + (m.win_rate != null ? m.win_rate.toFixed(0) : '—') + '</td>'
         + '<td style="text-align:right;padding:4px 8px;color:var(--muted)">'
@@ -1878,8 +1934,8 @@ function buildBacktestSummaryTable() {
   });
 
   html += '<div style="font-size:10px;color:var(--muted);margin-top:10px;line-height:1.6">'
-    + '★ = 최고 칼마 전략 · CAGR = 연평균수익률(%) · MDD = 최대낙폭 · 칼마 = CAGR/|MDD| · 99–09: 1999–2009 서브기간 CAGR'
-    + (bt.mode === 'demo' ? '<br>⚠ 현재 합성 데모 데이터 기반입니다. <code>python backtest/run_backtest.py</code> 실행 후 빌드 시 실데이터로 갱신됩니다.' : '')
+    + '🏆 = 채택 전략 · CAGR = 연평균수익률 · MDD = 최대낙폭 · 칼마 = CAGR/|MDD| · 99–09: 1999–2009 서브기간 CAGR'
+    + (bt.mode === 'demo' ? '<br>⚠ 현재 합성 데모 데이터 기반입니다.' : '')
     + '</div>';
   html += '</div>';
   return html;
