@@ -57,6 +57,25 @@ W52_CAP_THR    = -0.35     # -35% → 52주 낙폭 캡 발동
 
 DEFAULT_RF     = 0.03      # FRED 없을 때 고정 무위험금리 3%
 
+# 합성 레버리지 추적오차 (2010~ 실ETF vs 합성 비교 실측)
+# TQQQ=2.83%/yr, SOXL=7.08%/yr, UPRO=2.80%/yr
+# 2x ETF(QLD/USD/SSO): 추정값 (decay 적고 운용보수 낮음)
+SYNTH_TE: dict[tuple, float] = {
+    ("QQQ",  3.0): 0.02826,   # TQQQ 실측
+    ("SOXX", 3.0): 0.07076,   # SOXL 실측 (높은 섹터 변동성)
+    ("SPY",  3.0): 0.02800,   # UPRO 실측
+    ("QQQ",  2.0): 0.01200,   # QLD 추정 (운용보수 0.95% + 소폭 decay)
+    ("SOXX", 2.0): 0.01500,   # USD 추정
+    ("SPY",  2.0): 0.01200,   # SSO 추정
+    ("QQQ",  2.5): 0.02000,   # 보간
+    ("SOXX", 2.5): 0.03500,   # 보간
+    ("SPY",  2.5): 0.02000,   # 보간
+}
+
+def _te(asset: str, lev: float) -> float:
+    """포지션 레버리지에 맞는 연간 추적오차(비용 포함) 반환"""
+    return SYNTH_TE.get((asset, round(lev * 2) / 2), EXPENSE)
+
 
 def vix_to_lev_base(vix: float) -> float | None:
     """VIX 수준 → 레버리지 배수 (기본)"""
@@ -322,11 +341,12 @@ def backtest(
             hold   = i - eid
 
             # 레버리지 누적 수익 계산 (진입 이후 매일 복리)
+            te_daily = position["te"] / 252   # 연간 TE → 일별
             lev_ret = 1.0
             for j in range(eid + 1, i + 1):
                 r_j  = (closes[j] - closes[j-1]) / closes[j-1]
                 rf_j = rf_map.get(dates[j], DEFAULT_RF) / 252
-                lev_ret *= (1 + lev * r_j - (lev - 1) * rf_j - EXPENSE / 252)
+                lev_ret *= (1 + lev * r_j - (lev - 1) * rf_j - te_daily)
 
             # 기초자산 누적 수익 (손절 판단)
             base_ret = c / e_c - 1
