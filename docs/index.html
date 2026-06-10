@@ -1404,15 +1404,24 @@ async function fetchLivePrices() {
         dates:  v3raw.slice(-60).map(function(p){return p.date;})};
       // 스프레드 계산 후 __vix에 주입
       if (result["__vix"] && result["__vix"].current != null) {
+        var vixDate  = result["__vix"].date;
+        var vix3mDate = v3raw[v3raw.length-1].date;
+        var dateMismatch = vixDate !== vix3mDate;
         var spread = Math.round((result["__vix"].current - cur3m)*100)/100;
+        // 백워데이션 판정: VIX - VIX3M > 1.0 (노이즈 필터 — 소폭 역전은 무시)
+        // 날짜 불일치 시: 비교 신뢰도 낮음, 경보 억제
+        var BW_THRESHOLD = 1.0;
+        var backwardation = !dateMismatch && spread > BW_THRESHOLD;
         result["__vix"].vix3m = cur3m;
-        result["__vix"].vix3m_date = v3raw[v3raw.length-1].date;
+        result["__vix"].vix3m_date = vix3mDate;
+        result["__vix"].vix3m_date_mismatch = dateMismatch;
         result["__vix"].vix_vix3m_spread = spread;
-        result["__vix"].backwardation = spread > 0;
+        result["__vix"].backwardation = backwardation;
         result["__vix"].vix3m_prices = result["__vix3m"].prices;
         result["__vix"].vix3m_dates  = result["__vix3m"].dates;
+        // rec_lev_term: 진입 신호 발생 시 참고 티어 (VIX≥20일 때만 의미있음)
         if (result["__vix"].current >= 20)
-          result["__vix"].rec_lev_term = spread > 0 ? 3.0 : 2.0;
+          result["__vix"].rec_lev_term = backwardation ? 3.0 : 2.0;
       }
     }
   } catch(e) { console.warn("VIX3M fetch 실패:", e); }
@@ -1432,7 +1441,8 @@ function buildVIXBanner(vix, isLive) {
   if (!vix || !vix.current) return '';
   var st   = vixStyle(vix.bucket);
   var lev  = vix.rec_lev;
-  var levTxt = lev ? lev + "× 레버리지 진입 권고" : "신호 무시 (저변동)";
+  // "진입 권고"가 아니라 "신호 발생 시 적용 티어" — VIX 단독으로 진입 트리거가 아님
+  var levTxt = lev ? "신호 발생 시 " + lev + "× 적용" : "신호 발생해도 스킵 (저변동)";
   var levColor = lev ? (lev >= 3 ? "#a78bfa" : lev >= 2.5 ? "#ef4444" : "#f59e0b") : "#8b8fa3";
 
   var bucketDesc = {
@@ -1445,20 +1455,30 @@ function buildVIXBanner(vix, isLive) {
   // VIX3M 기간구조 스프레드
   var vix3mHtml = '';
   if (vix.vix3m != null) {
-    var spread    = vix.vix_vix3m_spread;
-    var bw        = vix.backwardation;
-    var spreadClr = bw ? '#ef4444' : '#22c55e';
-    var spreadStr = (spread >= 0 ? '+' : '') + spread.toFixed(2);
-    var termStr   = bw
-      ? '🚨 <span style="color:#ef4444;font-weight:700">백워데이션 — 단기공포 급등 경보</span>'
-      : '<span style="color:#22c55e">콘탱고 — 정상 기간구조</span>';
-    // Term structure leverage hint
-    var termLevHint = '';
-    if (vix.rec_lev_term != null) {
-      termLevHint = ' · 기간구조 기준 <span style="font-weight:700;color:'+(bw?'#a78bfa':'#f59e0b')+'">'
-        + vix.rec_lev_term + '× 권고</span>';
+    var spread       = vix.vix_vix3m_spread;
+    var bw           = vix.backwardation;
+    var dateMismatch = vix.vix3m_date_mismatch;
+    var spreadClr    = bw ? '#ef4444' : (spread < -1.0 ? '#22c55e' : '#f59e0b');
+    var spreadStr    = (spread >= 0 ? '+' : '') + spread.toFixed(2);
+    var termStr;
+    if (dateMismatch) {
+      // 날짜 불일치: 비교 신뢰 불가
+      termStr = '<span style="color:#f59e0b">⚠ 데이터 시점 불일치 (VIX: ' + vix.date + ' / VIX3M: ' + vix.vix3m_date + ') — 비교 보류</span>';
+    } else if (bw) {
+      termStr = '🚨 <span style="color:#ef4444;font-weight:700">백워데이션 (VIX>VIX3M+1.0) — 단기 공포 급등</span>';
+    } else if (spread > 0) {
+      // 소폭 역전 (+0~+1.0): 노이즈 구간
+      termStr = '<span style="color:#f59e0b">소폭 역전 (±' + Math.abs(spread).toFixed(2) + ', 임계값 미만) — 콘탱고로 처리</span>';
+    } else {
+      termStr = '<span style="color:#22c55e">콘탱고 — 정상 기간구조 (VIX &lt; VIX3M)</span>';
     }
-    vix3mHtml = '<div style="margin-top:8px;padding:8px 12px;background:'+(bw?'rgba(239,68,68,0.07)':'rgba(34,197,94,0.05)')+';border:1px solid '+(bw?'rgba(239,68,68,0.25)':'rgba(34,197,94,0.2)')+';border-radius:8px;font-size:11px">'
+    // 참고 티어: 진입 신호 발생 시 적용 레버리지 힌트 (단독으로 진입 권고 아님)
+    var termLevHint = '';
+    if (vix.rec_lev_term != null && !dateMismatch) {
+      termLevHint = ' · 신호 발생 시 참고 티어: <span style="font-weight:700;color:'+(bw?'#a78bfa':'#f59e0b')+'">'
+        + vix.rec_lev_term + '×</span>';
+    }
+    vix3mHtml = '<div style="margin-top:8px;padding:8px 12px;background:'+(bw?'rgba(239,68,68,0.07)':'rgba(34,197,94,0.05)')+';border:1px solid '+(bw?'rgba(239,68,68,0.25)':(dateMismatch?'rgba(245,158,11,0.3)':'rgba(34,197,94,0.2)'))+';border-radius:8px;font-size:11px">'
       + 'VIX3M <span style="color:var(--muted)">(' + (vix.vix3m_date||'') + ')</span> '
       + '<span style="font-weight:700;color:var(--ink)">' + vix.vix3m.toFixed(1) + '</span>'
       + ' · 스프레드 <span style="font-weight:700;color:'+spreadClr+'">' + spreadStr + '</span>'
