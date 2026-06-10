@@ -1531,20 +1531,26 @@ function renderMAAlertCards(el, prices, isLive) {
     var alertColor = d.alert ? "#ef4444" : (pct >= 0 ? "#22c55e" : "#f59e0b");
     var pctStr = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
 
-    // ── 추천 액션 계산 (H전략: MA200 완전 스킵) ──
+    // ── 추천 액션 계산 ──
+    // QQQ/SOXX: H전략 (MA200 완전 스킵) | SPY: F50 전략 (MA200 필터 없음, VIX≥40 3× 시 50% 부분투입)
     var recLev      = vix ? vix.rec_lev : null;
     var appliedLev  = recLev;
-    var ma200Skip   = false;   // H전략 스킵 여부
+    var ma200Skip   = false;   // H전략 스킵 여부 (QQQ/SOXX만 적용)
+    var spyF50Half  = false;   // SPY F50: VIX≥40 3× 시 50% 부분투입
     var downgrades  = [];
     var action      = "";
     var actionColor = "var(--muted)";
 
-    if (d.alert && recLev) {
-      // H전략: 종가 ≤ MA200 → 완전 진입 스킵 (백테스트 MDD -40% 제한 근거)
+    if (sym !== "SPY" && d.alert && recLev) {
+      // H전략 (QQQ/SOXX): 종가 ≤ MA200 → 완전 진입 스킵
       if (d.ma200 && d.current <= d.ma200) {
         ma200Skip  = true;
         appliedLev = null;
       }
+    }
+    // SPY F50: MA200 필터 없음. VIX≥40 → 3× 진입 시 배정자본 50%만 투입
+    if (sym === "SPY" && d.alert && recLev && recLev >= 3) {
+      spyF50Half = true;
     }
 
     if (!d.alert) {
@@ -1555,12 +1561,13 @@ function renderMAAlertCards(el, prices, isLive) {
       action = "신호 있음 — VIX<20, 스킵";
       actionColor = "#8b8fa3";
     } else if (ma200Skip) {
-      action = "⛔ MA200 이하 — 진입 스킵";
+      action = "⛔ MA200 이하 — 진입 스킵 (H전략)";
       actionColor = "#8b8fa3";
     } else {
       var al = appliedLev;
       var etfName = (levEtfs[sym] && levEtfs[sym][al]) ? levEtfs[sym][al] : (al+"×");
       action = "⚡ " + al + "× 진입 권고 → " + etfName;
+      if (spyF50Half) action += " [F50: 50%만]";
       actionColor = al >= 3 ? "#a78bfa" : al >= 2.5 ? "#ef4444" : "#f59e0b";
     }
 
@@ -1591,12 +1598,17 @@ function renderMAAlertCards(el, prices, isLive) {
         + (d.w52_drawdown >= 0 ? '+' : '') + d.w52_drawdown.toFixed(1) + '%</div>';
     }
 
-    // ── MA200 스킵 / 하향 경고 배지 ──
+    // ── MA200 스킵 / SPY F50 / 하향 경고 배지 ──
     var downgradeHtml = '';
     if (ma200Skip) {
-      var ma200SkipPct = (d.ma200_pct_diff != null) ? ' (' + (d.ma200_pct_diff >= 0 ? '+' : '') + d.ma200_pct_diff.toFixed(1) + '%)' : '';
-      downgradeHtml = '<div style="margin-top:8px;padding:6px 10px;background:rgba(139,143,163,0.08);border:1px solid rgba(139,143,163,0.3);border-radius:7px;font-size:10px;color:#8b8fa3">'
-        + '⛔ 종가 ≤ MA200' + ma200SkipPct + ' — H전략 진입 없음 (백테스트: MDD -40% 이내)'
+      var skpPct = (d.ma200_pct_diff != null) ? ((d.ma200_pct_diff >= 0 ? '+' : '') + d.ma200_pct_diff.toFixed(1) + '%') : '?';
+      downgradeHtml = '<div style="margin-top:8px;padding:8px 12px;background:rgba(100,116,139,0.10);border:1px solid rgba(100,116,139,0.35);border-radius:8px">'
+        + '<div style="font-size:11px;color:#8b8fa3;font-weight:700;margin-bottom:3px">📵 신호 발생, MA200 필터로 스킵 <span style="text-decoration:line-through;font-weight:400">(종가 MA200 대비 ' + skpPct + ')</span></div>'
+        + '<div style="font-size:10px;color:var(--muted)">H전략: 종가 ≤ MA200 → 진입 없음 · 백테스트 MDD -40% 이내 제한</div>'
+        + '</div>';
+    } else if (spyF50Half) {
+      downgradeHtml = '<div style="margin-top:8px;padding:7px 12px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.3);border-radius:8px;font-size:10px;color:#818cf8">'
+        + '📊 SPY F50: VIX≥40 3× 진입 → 배정자본의 <strong>50%만</strong> 투입 (나머지 현금 보유)'
         + '</div>';
     } else if (downgrades.length) {
       downgradeHtml = '<div style="margin-top:8px;padding:6px 10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:7px;font-size:10px;color:#f59e0b">'
@@ -1641,6 +1653,37 @@ function renderMAAlertCards(el, prices, isLive) {
         + '</div>';
     }
     html += downgradeHtml;
+
+    // ── 한 줄 상태 요약 ──
+    var vixCurStr = vix ? vix.current.toFixed(1) : 'N/A';
+    var termStr2  = '';
+    if (vix && vix.vix3m != null) {
+      termStr2 = vix.backwardation ? ' 백워데이션' : ' 콘탱고';
+    }
+    var ma200AboveBelow = '';
+    if (d.ma200 && d.ma200_pct_diff != null) {
+      var pSign = d.ma200_pct_diff >= 0 ? '+' : '';
+      var maColor2 = d.ma200_pct_diff >= 0 ? '#22c55e' : '#ef4444';
+      ma200AboveBelow = '<span style="color:' + maColor2 + '">MA200 ' + (d.ma200_pct_diff >= 0 ? '위 ' : '아래 ') + pSign + d.ma200_pct_diff.toFixed(1) + '%</span>';
+    } else {
+      ma200AboveBelow = '<span style="color:var(--muted)">MA200 N/A</span>';
+    }
+    var sigSummary = '';
+    if (!d.alert) {
+      sigSummary = '<span style="color:var(--muted)">신호 없음</span>';
+    } else if (ma200Skip) {
+      sigSummary = '<span style="color:#8b8fa3">신호 발생→스킵(MA200)</span>';
+    } else if (!recLev) {
+      sigSummary = '<span style="color:#8b8fa3">신호→VIX&lt;20 스킵</span>';
+    } else {
+      sigSummary = '<span style="color:' + actionColor + '">🚨 신호 ' + appliedLev + '×' + (spyF50Half ? ' F50' : '') + '</span>';
+    }
+    html += '<div style="font-size:10px;color:var(--muted);margin:8px 0;padding:5px 8px;background:var(--surface2);border-radius:5px;line-height:1.6">'
+      + sym + ': ' + ma200AboveBelow
+      + ' / VIX ' + vixCurStr + termStr2
+      + ' / ' + sigSummary
+      + '</div>';
+
     html += '<canvas id="ma-chart-' + sym + '" height="90"></canvas>';
     html += '</div>';
   });
