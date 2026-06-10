@@ -70,7 +70,15 @@ jobs:
                   print(f"{symbol}: raw 파일 없음")
                   continue
               try:
-                  data = json.loads(raw_path.read_text())
+                  text = raw_path.read_text()
+                  # Yahoo가 429/HTML 반환하면 JSON 파싱 실패 → 스킵
+                  if not text.strip().startswith("{"):
+                      print(f"{symbol}: raw 파일이 JSON 아님 (Yahoo 차단 가능) — 스킵")
+                      continue
+                  data = json.loads(text)
+                  if data.get("chart", {}).get("error"):
+                      print(f"{symbol}: Yahoo 오류 응답 — 스킵")
+                      continue
                   res = data["chart"]["result"][0]
                   ts_arr = res["timestamp"]
                   closes = res["indicators"]["quote"][0]["close"]

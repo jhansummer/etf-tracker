@@ -670,7 +670,8 @@ def crawl_us_prices(date_str):
     result = {}
 
     # stooq 심볼 매핑 (소문자.us)
-    STOOQ_MAP = {"SPY": "spy.us", "QQQ": "qqq.us", "SOXX": "soxx.us", "VIX": "vix.us"}
+    STOOQ_MAP = {"SPY": "spy.us", "QQQ": "qqq.us", "SOXX": "soxx.us",
+                 "VIX": "vix.us", "VIX3M": "vix3m.us"}
 
     def _fetch_stooq(symbol):
         """stooq.com CSV → (dates, closes)"""
@@ -818,7 +819,7 @@ def crawl_us_prices(date_str):
     # ── VIX3M 별도 크롤 (^VIX3M / 3개월 VIX) ──
     vix3m_prices = None
     try:
-        vix3m_prices = _fetch_stooq("%5evix3m")
+        vix3m_prices = _fetch_stooq("VIX3M")   # stooq: vix3m.us
         if not vix3m_prices:
             raise ValueError("stooq VIX3M 빈 결과")
         print(f"[VIX3M] stooq 로드: {len(vix3m_prices)}일 (최신: {vix3m_prices[-1]['date']})")
