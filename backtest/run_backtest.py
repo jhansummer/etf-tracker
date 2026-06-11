@@ -92,6 +92,22 @@ def vix_to_lev_term(vix: float, vix3m: float | None) -> float | None:
         return vix_to_lev_base(vix)   # VIX3M 없으면 기본 사용
     return 3.0 if vix > vix3m else 2.0
 
+BW_THRESHOLD = 1.0   # ratio = VIX/VIX3M 백워데이션 임계값
+
+def ratio_to_lev_peak(peak: float | None, vix: float) -> float | None:
+    """직전 5일 peak ratio → 레버리지. peak < 1.0이면 VIX 버킷 폴백."""
+    if peak is None or peak < BW_THRESHOLD:
+        return vix_to_lev_base(vix)
+    if peak < 1.05: return 2.0
+    if peak < 1.10: return 2.5
+    return 3.0
+
+def downgrade_lev(lev: float) -> float:
+    """레버리지 한 단계 낮춤: 3→2.5, 2.5→2, 2→1"""
+    if lev >= 3.0: return 2.5
+    if lev >= 2.5: return 2.0
+    return 1.0
+
 # ══════════════════════════════════════════════
 #  데이터 다운로드 (stooq → yfinance fallback)
 # ══════════════════════════════════════════════
@@ -288,20 +304,24 @@ def backtest(
     start:     str = "1999-01-01",
     end:       str = "2026-06-10",
     gap:       bool = False,
+    ratio_map: dict[str, float] | None = None,
 ) -> dict:
     """
     strategy 코드:
-      A       베이스라인
-      B       레버캡 (종가<MA200 → max 2x)
-      C       MA200 기울기 (음수 → 3x 차단)
-      D       52주 낙폭캡 (-35% → max 2x)
-      E       VIX 기간구조 (VIX3M 필요, 2007~)
-      F50     부분투입 50%
-      F70     부분투입 70%
-      G       익절 제거
-      C+F70   MA200기울기 + 부분투입70%
-      D+G     52주낙폭캡 + 익절제거
-      B+G     레버캡 + 익절제거
+      A          베이스라인
+      B          레버캡 (종가<MA200 → max 2x)
+      C          MA200 기울기 (음수 → 3x 차단)
+      D          52주 낙폭캡 (-35% → max 2x)
+      E          VIX 기간구조 (VIX3M 필요, 2007~)
+      F50        부분투입 50%
+      F70        부분투입 70%
+      G          익절 제거
+      C+F70      MA200기울기 + 부분투입70%
+      D+G        52주낙폭캡 + 익절제거
+      B+G        레버캡 + 익절제거
+      RatioH     VIX/VIX3M peak ratio 레버 + MA200스킵 + 복귀신호N=3 다운그레이드
+      RatioFilter ratio 복귀신호(N=5) 진입조건 + MA200스킵 + peak ratio 레버
+      RatioF50   ratio peak 레버 + 50% 부분투입 (SPY용, MA200스킵 없음)
     """
     rows = [p for p in prices if start <= p["date"] <= end]
     if len(rows) < MA200_WIN + 20:
@@ -315,6 +335,26 @@ def backtest(
     ma200_s   = _ma(closes, MA200_WIN)
     slope_s   = _ma200_slope(ma200_s)
     w52_high  = _rolling_max(closes, W52_WIN)
+
+    # Ratio 전략용: VIX/VIX3M 시리즈 및 5일 피크 사전 계산
+    if ratio_map is not None and strategy.startswith("Ratio"):
+        _ratio_s = [ratio_map.get(d) for d in dates]
+        _RPEAK = 5
+        _peak_s = [None] * len(dates)
+        for _i in range(len(dates)):
+            _w = [r for r in _ratio_s[max(0, _i - _RPEAK + 1):_i + 1] if r is not None]
+            _peak_s[_i] = max(_w) if _w else None
+    else:
+        _ratio_s = [None] * len(dates)
+        _peak_s  = [None] * len(dates)
+
+    def _ratio_recovery(i: int, N: int) -> bool:
+        """직전 N일 내에 ratio > BW_THRESHOLD 이력 있고 당일 ratio < BW_THRESHOLD."""
+        today = _ratio_s[i]
+        if today is None or today >= BW_THRESHOLD:
+            return False
+        return any(r is not None and r > BW_THRESHOLD
+                   for r in _ratio_s[max(0, i - N):i])
 
     equity = 1.0
     peak_eq = 1.0
