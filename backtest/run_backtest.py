@@ -449,7 +449,10 @@ def backtest(
             signal = c < ma20_s[i] * SIGNAL_THR
             if signal:
                 # 1. 기본 VIX 레버 결정
-                if strategy == "E" or "E" in strategy:
+                if strategy.startswith("Ratio"):
+                    # Ratio 전략: peak ratio 기반 레버
+                    lev = ratio_to_lev_peak(_peak_s[i], vix or 0)
+                elif strategy == "E" or "E" in strategy:
                     lev = vix_to_lev_term(vix or 0, vix3m)
                 else:
                     lev = vix_to_lev_base(vix or 0)
@@ -458,7 +461,20 @@ def backtest(
                     raw_lev = lev  # 필터 전 원래 레버
 
                     # 2. 전략별 레버 조정/차단
-                    if strategy in ("H", "H+F50") and ma200_s[i] is not None:
+                    if strategy.startswith("Ratio"):
+                        # RatioH / RatioFilter: MA200 아래면 완전 스킵
+                        if strategy in ("RatioH", "RatioFilter") and ma200_s[i] is not None:
+                            if c <= ma200_s[i]:
+                                lev = None
+                        # RatioFilter: ratio 복귀 신호(N=5) 없으면 진입 거부
+                        if lev is not None and strategy == "RatioFilter":
+                            if not _ratio_recovery(i, 5):
+                                lev = None
+                        # 복귀 신호(N=3) 없으면 레버리지 한 단계 다운그레이드
+                        if lev is not None and not _ratio_recovery(i, 3):
+                            lev = downgrade_lev(lev)
+
+                    elif strategy in ("H", "H+F50") and ma200_s[i] is not None:
                         if c <= ma200_s[i]:
                             lev = None   # MA200 아래면 완전 스킵
 
@@ -474,13 +490,15 @@ def backtest(
                         if w52_high[i] > 0 and (c / w52_high[i] - 1) <= W52_CAP_THR:
                             lev = min(lev, 2.0)  # 52주 -35% → 최대 2x
 
-                    # H 전략이 필터에서 lev=None으로 바꿨으면 진입 스킵
+                    # 필터에서 lev=None으로 바꿨으면 진입 스킵
                     if lev is None:
                         pass
                     else:
                         # 3. 부분 투입 비율
                         invest_frac = 1.0
-                        if strategy == "H+F50" and lev >= 3.0:
+                        if strategy == "RatioF50" and lev >= 3.0:
+                            invest_frac = 0.5
+                        elif strategy == "H+F50" and lev >= 3.0:
                             invest_frac = 0.5
                         elif strategy in ("F50", "C+F70") and raw_lev >= 3.0 and lev >= 3.0:
                             invest_frac = 0.5 if strategy == "F50" else 0.7
@@ -690,6 +708,13 @@ def make_demo_data() -> dict:
 STRATEGIES = ["A","B","C","D","E","F50","F70","G","C+F70","D+G","B+G","H","H+F50"]
 ASSETS     = ["QQQ","SPY","SOXX"]
 
+RATIO_STRATEGIES = ["RatioH", "RatioFilter", "RatioF50"]
+RATIO_ASSETS = {
+    "RatioH":     ["QQQ", "SOXX"],
+    "RatioFilter":["QQQ", "SOXX"],
+    "RatioF50":   ["SPY"],
+}
+
 def run_all(demo=False, force_dl=False):
     print("\n=== ETF 레버리지 전략 백테스트 v2 ===\n")
 
@@ -801,6 +826,23 @@ def run_all(demo=False, force_dl=False):
         qqq = common2007_results.get(f"{strat}_QQQ", {})
         print(f"  {strat:8s} QQQ CAGR={qqq.get('cagr','?')}%  MDD={qqq.get('mdd','?')}%  Calmar={qqq.get('calmar','?')}")
 
+    # ── VIX Ratio 조합 전략 (2007~2026) ──
+    ratio_map = {d: vix_map[d] / vix3m_map[d]
+                 for d in vix_map
+                 if d in vix3m_map and vix3m_map.get(d, 0) > 0}
+    print(f"\n[VIX Ratio 조합 전략 (2007~2026, ratio_map: {len(ratio_map)}일)]")
+    ratio2007_results = {}
+    for strat in RATIO_STRATEGIES:
+        for asset in RATIO_ASSETS[strat]:
+            base = prices.get(asset, [])
+            if not base:
+                continue
+            r = backtest(asset, base, vix_map, vix3m_map, rf_map, strat,
+                         "2007-01-01", "2026-06-10", False, ratio_map)
+            ratio2007_results[f"{strat}_{asset}"] = r
+            print(f"  [{strat}/{asset}] CAGR={r.get('cagr','?')}%  MDD={r.get('mdd','?')}%  "
+                  f"Calmar={r.get('calmar','?')}  W={r.get('win_rate','?')}%  N={r.get('n_trades','?')}")
+
     # ── 최우수 전략 (2007~ 공통 기간 Calmar, QQQ 기준) — E와 공정 비교 ──
     best_strat = max(
         STRATEGIES,
@@ -883,7 +925,7 @@ def run_all(demo=False, force_dl=False):
     out_json.write_text(json.dumps(output, ensure_ascii=False, indent=2))
     print(f"\n저장: {out_json}")
 
-    _write_md(output, summary, dotcom, gfc, demo)
+    _write_md(output, summary, dotcom, gfc, demo, ratio2007_results)
     _write_trade_log_md(dotcom, "닷컴 붕괴(2000~02) 전략 A 트레이드 로그",
                         BACKTEST_DIR / "trade_log_dotcom.md")
     _write_trade_log_md(gfc,    "GFC(2007~09) 전략 A 트레이드 로그",
@@ -905,8 +947,11 @@ _STRAT_DESC = {
     "C+F70":"조합 C+F70: MA200기울기필터 + 3×진입 시 70% 부분투입",
     "D+G":  "조합 D+G: 52주낙폭캡 + 익절제거",
     "B+G":  "조합 B+G: 레버캡 + 익절제거",
-    "H":    "MA200 완전스킵: 종가<MA200이면 레버 신호 완전 무시 (진입 없음), MA200 위에서만 진입",
-    "H+F50":"조합 H+F50: MA200 완전스킵 + VIX≥40 3× 진입 시 50% 부분투입",
+    "H":         "MA200 완전스킵: 종가<MA200이면 레버 신호 완전 무시 (진입 없음), MA200 위에서만 진입",
+    "H+F50":     "조합 H+F50: MA200 완전스킵 + VIX≥40 3× 진입 시 50% 부분투입",
+    "RatioH":    "VIX Ratio H: MA200스킵 + 직전5일 peak ratio 기반 레버 + 복귀신호(N=3) 없으면 1단계 다운그레이드",
+    "RatioFilter":"VIX Ratio Filter: MA200스킵 + ratio 복귀신호(N=5) 진입조건 추가 + peak ratio 레버 + 복귀(N=3) 다운그레이드",
+    "RatioF50":  "VIX Ratio F50: peak ratio 레버 + 3× 진입 시 50% 부분투입 (SPY용, MA200스킵 없음)",
 }
 
 _CRISIS_NOTES = {
@@ -937,7 +982,7 @@ _CRISIS_NOTES = {
             "+8% 이상 수익 확보 가능. 결과는 장세에 따라 편차 큼."),
 }
 
-def _write_md(output, summary, dotcom, gfc, demo):
+def _write_md(output, summary, dotcom, gfc, demo, ratio2007_results=None):
     lines = []
     lines += [f"# ETF 레버리지 전략 백테스트 결과 (v2)",
               f"> 생성: {output['generated']}  |  모드: {'합성 데이터(demo)' if demo else '실데이터'}",
