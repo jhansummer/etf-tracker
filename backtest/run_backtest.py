@@ -1014,6 +1014,59 @@ def _write_md(output, summary, dotcom, gfc, demo, ratio2007_results=None):
                     f"{a.get('calmar','N/A')} | {a.get('win_rate','N/A')} | {a.get('n_trades','N/A')} |")
             lines.append("")
 
+    # ── VIX Ratio 조합 전략 비교 섹션 ──
+    if ratio2007_results:
+        lines += ["---",
+                  "## VIX Ratio 조합 전략 (2007~2026 비교)", "",
+                  "> ratio = VIX / VIX3M | 구간: <1.0 콘탱고, 1.0~1.05 경계, 1.05~1.10 공포, ≥1.10 패닉",
+                  "> 복귀신호: 직전 N일 내 ratio>1.0 이력 + 당일 ratio<1.0",
+                  ""]
+        summary2007 = output.get("summary2007", [])
+
+        def _get2007(strat, asset, key):
+            for row in summary2007:
+                if row["strategy"] == strat:
+                    return row["assets"].get(asset, {}).get(key, "N/A")
+            return "N/A"
+
+        def _getratio(strat, asset, key):
+            return ratio2007_results.get(f"{strat}_{asset}", {}).get(key, "N/A")
+
+        # QQQ: H, H+F50, E vs RatioH, RatioFilter
+        lines += ["### QQQ (기준 전략 vs RatioH / RatioFilter)", ""]
+        lines.append("| 전략 | CAGR% | MDD% | Calmar | 승률% | N거래 |")
+        lines.append("|------|-------|------|--------|-------|-------|")
+        for s in ["H", "H+F50", "E"]:
+            lines.append(f"| {s} | {_get2007(s,'QQQ','cagr')} | {_get2007(s,'QQQ','mdd')} | "
+                         f"{_get2007(s,'QQQ','calmar')} | {_get2007(s,'QQQ','win_rate')} | {_get2007(s,'QQQ','n_trades')} |")
+        for s in ["RatioH", "RatioFilter"]:
+            lines.append(f"| {s} | {_getratio(s,'QQQ','cagr')} | {_getratio(s,'QQQ','mdd')} | "
+                         f"{_getratio(s,'QQQ','calmar')} | {_getratio(s,'QQQ','win_rate')} | {_getratio(s,'QQQ','n_trades')} |")
+        lines.append("")
+
+        # SOXX: H, H+F50, E vs RatioH, RatioFilter
+        lines += ["### SOXX (기준 전략 vs RatioH / RatioFilter)", ""]
+        lines.append("| 전략 | CAGR% | MDD% | Calmar | 승률% | N거래 |")
+        lines.append("|------|-------|------|--------|-------|-------|")
+        for s in ["H", "H+F50", "E"]:
+            lines.append(f"| {s} | {_get2007(s,'SOXX','cagr')} | {_get2007(s,'SOXX','mdd')} | "
+                         f"{_get2007(s,'SOXX','calmar')} | {_get2007(s,'SOXX','win_rate')} | {_get2007(s,'SOXX','n_trades')} |")
+        for s in ["RatioH", "RatioFilter"]:
+            lines.append(f"| {s} | {_getratio(s,'SOXX','cagr')} | {_getratio(s,'SOXX','mdd')} | "
+                         f"{_getratio(s,'SOXX','calmar')} | {_getratio(s,'SOXX','win_rate')} | {_getratio(s,'SOXX','n_trades')} |")
+        lines.append("")
+
+        # SPY: F50, E vs RatioF50
+        lines += ["### SPY (기준 전략 vs RatioF50)", ""]
+        lines.append("| 전략 | CAGR% | MDD% | Calmar | 승률% | N거래 |")
+        lines.append("|------|-------|------|--------|-------|-------|")
+        for s in ["F50", "E"]:
+            lines.append(f"| {s} | {_get2007(s,'SPY','cagr')} | {_get2007(s,'SPY','mdd')} | "
+                         f"{_get2007(s,'SPY','calmar')} | {_get2007(s,'SPY','win_rate')} | {_get2007(s,'SPY','n_trades')} |")
+        lines.append(f"| RatioF50 | {_getratio('RatioF50','SPY','cagr')} | {_getratio('RatioF50','SPY','mdd')} | "
+                     f"{_getratio('RatioF50','SPY','calmar')} | {_getratio('RatioF50','SPY','win_rate')} | {_getratio('RatioF50','SPY','n_trades')} |")
+        lines.append("")
+
     lines += ["---",
               "## 전구간 성과 비교 (1999-01-01 ~ 2026-06-10)", ""]
 
