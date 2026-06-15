@@ -1,0 +1,360 @@
+{
+  "etf": "ARKQ",
+  "code": "ARKQ",
+  "date": "2026-06-15",
+  "nav": null,
+  "aum_billion": null,
+  "holdings": [
+    {
+      "ticker": "TSLA",
+      "name": "TESLA INC",
+      "shares": 876441,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 10.23,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "AMD",
+      "name": "ADVANCED MICRO DEVICES",
+      "shares": 541542,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 7.96,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "TER",
+      "name": "TERADYNE INC",
+      "shares": 547097,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 6.33,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "KTOS",
+      "name": "KRATOS DEFENSE & SECURITY",
+      "shares": 3281761,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 5.44,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "RKLB UQ",
+      "name": "ROCKET LAB",
+      "shares": 1706390,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 5.02,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GOOG",
+      "name": "ALPHABET INC-CL C",
+      "shares": 437517,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.5,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "DE",
+      "name": "DEERE & CO",
+      "shares": 236097,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.92,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES INC-A",
+      "shares": 930249,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.42,
+      "sector": "소프트웨어"
+    },
+    {
+      "ticker": "TSM",
+      "name": "TAIWAN SEMICONDUCTOR-SP ADR",
+      "shares": 259302,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.16,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "LHX",
+      "name": "L3HARRIS TECHNOLOGIES INC",
+      "shares": 330522,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.92,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AMZN",
+      "name": "AMAZON.COM INC",
+      "shares": 423223,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.9,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA CORP",
+      "shares": 469177,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.76,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "AVAV",
+      "name": "AEROVIRONMENT INC",
+      "shares": 511383,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.5,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CAT",
+      "name": "CATERPILLAR INC",
+      "shares": 88239,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.31,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "LUNR",
+      "name": "INTUITIVE MACHINES INC",
+      "shares": 2813958,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.15,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ACHR",
+      "name": "ARCHER AVIATION INC-A",
+      "shares": 14427333,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.1,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TRMB",
+      "name": "TRIMBLE INC",
+      "shares": 1202276,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.74,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "KMTUY",
+      "name": "KOMATSU LTD -SPONS ADR",
+      "shares": 1464229,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.73,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ESLT",
+      "name": "ELBIT SYSTEMS LTD",
+      "shares": 64569,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.58,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BWXT",
+      "name": "BWX TECHNOLOGIES INC",
+      "shares": 280619,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.56,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CCJ",
+      "name": "CAMECO CORP",
+      "shares": 535545,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.55,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AUR",
+      "name": "AURORA INNOVATION INC",
+      "shares": 8542278,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.5,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AVGO",
+      "name": "BROADCOM INC",
+      "shares": 134016,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.47,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "BIDU",
+      "name": "BAIDU INC - SPON ADR",
+      "shares": 432699,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.44,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "JOBY",
+      "name": "JOBY AVIATION INC",
+      "shares": 5466178,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.44,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SYM UQ",
+      "name": "SYMBOTIC INC",
+      "shares": 1082618,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.29,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ISRG",
+      "name": "INTUITIVE SURGICAL INC",
+      "shares": 98153,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.16,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "IRDM",
+      "name": "IRIDIUM COMMUNICATIONS INC",
+      "shares": 830222,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.12,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "DASH",
+      "name": "DOORDASH INC - A",
+      "shares": 234613,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.01,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TDY",
+      "name": "TELEDYNE TECHNOLOGIES INC",
+      "shares": 55905,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.01,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "OKLO",
+      "name": "OKLO INC",
+      "shares": 587259,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.97,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "WRD",
+      "name": "WERIDE INC-ADR",
+      "shares": 5482101,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.97,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "KDK",
+      "name": "KODIAK AI INC",
+      "shares": 5436201,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.96,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SNPS",
+      "name": "SYNOPSYS INC",
+      "shares": 71949,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.94,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BYDDY",
+      "name": "BYD CO LTD-UNSPONSORED ADR",
+      "shares": 2715865,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.86,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "XE",
+      "name": "X-ENERGY INC",
+      "shares": 1530440,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.82,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SRTA",
+      "name": "STRATA CRITICAL MEDICAL INC",
+      "shares": 5146732,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.8,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "PONY",
+      "name": "PONY AI INC",
+      "shares": 3252179,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.76,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "ALPHABET INC-CL A",
+      "shares": 25624,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.26,
+      "sector": "빅테크"
+    }
+  ]
+}
