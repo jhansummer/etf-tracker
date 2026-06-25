@@ -1,0 +1,378 @@
+{
+  "etf": "ARKW",
+  "code": "ARKW",
+  "date": "2026-06-25",
+  "nav": null,
+  "aum_billion": null,
+  "holdings": [
+    {
+      "ticker": "AMD",
+      "name": "ADVANCED MICRO DEVICES",
+      "shares": 271413,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 8.73,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "TSLA",
+      "name": "TESLA INC",
+      "shares": 339051,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 7.88,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "HOOD",
+      "name": "ROBINHOOD MARKETS INC - A",
+      "shares": 965762,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 5.81,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "SHOP",
+      "name": "SHOPIFY INC - CLASS A",
+      "shares": 654118,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 4.62,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GOOG",
+      "name": "ALPHABET INC-CL C",
+      "shares": 181598,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.88,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "AMZN",
+      "name": "AMAZON.COM INC",
+      "shares": 260305,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.78,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "CRWV",
+      "name": "COREWEAVE INC-CL A",
+      "shares": 587920,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.67,
+      "sector": "AI/클라우드"
+    },
+    {
+      "ticker": "COIN",
+      "name": "COINBASE GLOBAL INC -CLASS A",
+      "shares": 338040,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.14,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "SPCX",
+      "name": "SPACE EXPLORATION TECHN-CL A",
+      "shares": 324842,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.11,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CRCL",
+      "name": "CIRCLE INTERNET GROUP INC",
+      "shares": 699190,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.07,
+      "sector": "크립토"
+    },
+    {
+      "ticker": "RBLX",
+      "name": "ROBLOX CORP -CLASS A",
+      "shares": 1026435,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.05,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "XYZ",
+      "name": "BLOCK INC",
+      "shares": 642111,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 3.01,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS INC - A",
+      "shares": 61049,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.54,
+      "sector": "소프트웨어"
+    },
+    {
+      "ticker": "DDOG",
+      "name": "DATADOG INC - CLASS A",
+      "shares": 177784,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.45,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES INC-A",
+      "shares": 338514,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.38,
+      "sector": "소프트웨어"
+    },
+    {
+      "ticker": "TSM",
+      "name": "TAIWAN SEMICONDUCTOR-SP ADR",
+      "shares": 86412,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.36,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "AVGO",
+      "name": "BROADCOM INC",
+      "shares": 93044,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 2.2,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "NET",
+      "name": "CLOUDFLARE INC - CLASS A",
+      "shares": 143856,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.99,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "META",
+      "name": "META PLATFORMS INC-CLASS A",
+      "shares": 56568,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.95,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "ROKU",
+      "name": "ROKU INC",
+      "shares": 228177,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.92,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA CORP",
+      "shares": 126833,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.56,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "RBRK",
+      "name": "RUBRIK INC-A",
+      "shares": 328586,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.52,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "P",
+      "name": "EVERPURE INC-A",
+      "shares": 326359,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.47,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BLSH",
+      "name": "BULLISH",
+      "shares": 913522,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.33,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BMNR",
+      "name": "BITMINE IMMERSION TECHNOLOGI",
+      "shares": 1500973,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.3,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "CBRS",
+      "name": "CEREBRAS SYSTEMS INC - A",
+      "shares": 115552,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.3,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "FIG",
+      "name": "FIGMA INC-CL A",
+      "shares": 995321,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.15,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "TOST",
+      "name": "TOAST INC-CLASS A",
+      "shares": 708588,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.14,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GTLB",
+      "name": "GITLAB INC-CL A",
+      "shares": 623513,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.09,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GENI",
+      "name": "GENIUS SPORTS LTD",
+      "shares": 3092312,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.08,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SPOT",
+      "name": "SPOTIFY TECHNOLOGY SA",
+      "shares": 37429,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.05,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "DASH",
+      "name": "DOORDASH INC - A",
+      "shares": 93078,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.03,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "SNOW",
+      "name": "SNOWFLAKE INC",
+      "shares": 73713,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.03,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "NFLX",
+      "name": "NETFLIX INC",
+      "shares": 226817,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 1.01,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "DKNG UW",
+      "name": "DRAFTKINGS INC-CL A",
+      "shares": 652263,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.99,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "MELI",
+      "name": "MERCADOLIBRE INC",
+      "shares": 8616,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.89,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "BABA",
+      "name": "ALIBABA GROUP HOLDING-SP ADR",
+      "shares": 128623,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.79,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ABNB",
+      "name": "AIRBNB INC-CLASS A",
+      "shares": 63300,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.57,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "ETHQ/U",
+      "name": "3IQ ETHER STAKING ETF",
+      "shares": 791787,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.3,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "GOOGL",
+      "name": "ALPHABET INC-CL A",
+      "shares": 12145,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.26,
+      "sector": "빅테크"
+    },
+    {
+      "ticker": "SOLQ/U",
+      "name": "3IQ SOLANA STAKING ETF",
+      "shares": 423047,
+      "value_krw": null,
+      "value_usd": null,
+      "weight": 0.14,
+      "sector": "미분류"
+    }
+  ]
+}
