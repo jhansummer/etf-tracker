@@ -14,7 +14,8 @@
       "WebSearch",
       "WebFetch(domain:openapi.tossinvest.com)",
       "Bash(python tests/test_engine.py)",
-      "WebFetch(domain:api.telegram.org)"
+      "WebFetch(domain:api.telegram.org)",
+      "Bash(python *)"
     ]
   }
 }
