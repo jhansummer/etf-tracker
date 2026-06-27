@@ -11,7 +11,8 @@
       "Bash(python -c \"import backtest.run_backtest as bt; print\\('syntax OK'\\)\")",
       "WebFetch(domain:developers.tossinvest.com)",
       "Skill(deep-research)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:openapi.tossinvest.com)"
     ]
   }
 }
