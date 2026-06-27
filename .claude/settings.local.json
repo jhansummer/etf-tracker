@@ -12,7 +12,8 @@
       "WebFetch(domain:developers.tossinvest.com)",
       "Skill(deep-research)",
       "WebSearch",
-      "WebFetch(domain:openapi.tossinvest.com)"
+      "WebFetch(domain:openapi.tossinvest.com)",
+      "Bash(python tests/test_engine.py)"
     ]
   }
 }
