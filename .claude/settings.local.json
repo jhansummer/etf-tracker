@@ -8,7 +8,10 @@
       "Bash(python3 -c \"import json; data = json.load\\(open\\('/Users/hanjin/etf-tracker/docs/data/combined.json'\\)\\); print\\('Keys:', list\\(data.keys\\(\\)\\)\\); print\\('ETF keys:', data.get\\('etf_keys'\\)\\); print\\('Generated:', data.get\\('generated'\\)\\); t = data.get\\('time', {}\\); weeks = t.get\\('weeks', []\\); print\\(f'TIME weeks: {len\\(weeks\\)}'\\); print\\('Sample week structure:' if weeks else 'No weeks'\\); w = weeks[-1] if weeks else {}; print\\(json.dumps\\({k: type\\(v\\).__name__ if k != 'holdings' else f'list\\({len\\(v\\)} items\\)' for k, v in w.items\\(\\)}, indent=2\\)\\)\")",
       "Bash(cat)",
       "Read(//tmp/**)",
-      "Bash(python -c \"import backtest.run_backtest as bt; print\\('syntax OK'\\)\")"
+      "Bash(python -c \"import backtest.run_backtest as bt; print\\('syntax OK'\\)\")",
+      "WebFetch(domain:developers.tossinvest.com)",
+      "Skill(deep-research)",
+      "WebSearch"
     ]
   }
 }
