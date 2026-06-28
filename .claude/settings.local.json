@@ -15,7 +15,8 @@
       "WebFetch(domain:openapi.tossinvest.com)",
       "Bash(python tests/test_engine.py)",
       "WebFetch(domain:api.telegram.org)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)"
     ]
   }
 }
