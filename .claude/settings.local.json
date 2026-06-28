@@ -16,7 +16,8 @@
       "Bash(python tests/test_engine.py)",
       "WebFetch(domain:api.telegram.org)",
       "Bash(python *)",
-      "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)"
+      "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)",
+      "Bash(crontab *)"
     ]
   }
 }
