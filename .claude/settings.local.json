@@ -17,7 +17,8 @@
       "WebFetch(domain:api.telegram.org)",
       "Bash(python *)",
       "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)",
-      "Bash(crontab *)"
+      "Bash(crontab *)",
+      "Bash(bash /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)"
     ]
   }
 }
