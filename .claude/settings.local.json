@@ -18,7 +18,9 @@
       "Bash(python *)",
       "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)",
       "Bash(crontab *)",
-      "Bash(bash /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)"
+      "Bash(bash /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)",
+      "Bash(launchctl load *)",
+      "Bash(launchctl list *)"
     ]
   }
 }
