@@ -20,7 +20,8 @@
       "Bash(crontab *)",
       "Bash(bash /Users/hanjin/Desktop/Python/toss-infinite-notifier/run.sh)",
       "Bash(launchctl load *)",
-      "Bash(launchctl list *)"
+      "Bash(launchctl list *)",
+      "Bash(launchctl start *)"
     ]
   }
 }
