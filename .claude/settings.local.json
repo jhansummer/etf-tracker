@@ -23,7 +23,8 @@
       "Bash(launchctl list *)",
       "Bash(launchctl start *)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f'cash={d[\\\\\"cash\\\\\"]}, qty={d[\\\\\"quantity\\\\\"]}, avg={d[\\\\\"avg_price\\\\\"]}, T={d[\\\\\"T\\\\\"]}'\\)\")",
-      "Bash(grep -E '\\\\$[0-9]|⚠️ 별지점')"
+      "Bash(grep -E '\\\\$[0-9]|⚠️ 별지점')",
+      "Bash(python3 *)"
     ]
   }
 }
