@@ -26,7 +26,9 @@
       "Bash(grep -E '\\\\$[0-9]|⚠️ 별지점')",
       "Bash(python3 *)",
       "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/check_orders.sh)",
-      "Bash(launchctl unload *)"
+      "Bash(launchctl unload *)",
+      "Bash(cp \"/Users/hanjin/Library/Mobile Documents/com~apple~CloudDocs/무제 폴더 2/toss client.py\" /Users/hanjin/Desktop/Python/toss-infinite-notifier/executor/toss_client.py)",
+      "Bash(cp \"/Users/hanjin/Library/Mobile Documents/com~apple~CloudDocs/무제 폴더 2/executor.py\" /Users/hanjin/Desktop/Python/toss-infinite-notifier/executor/executor.py)"
     ]
   }
 }
