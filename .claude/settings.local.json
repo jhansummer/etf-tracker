@@ -32,7 +32,10 @@
       "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/executor/run_open.sh)",
       "Bash(chmod +x /Users/hanjin/Desktop/Python/toss-infinite-notifier/executor/run_close.sh)",
       "Bash(/Users/hanjin/venv/bin/python3 *)",
-      "Bash(defaults read *)"
+      "Bash(defaults read *)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
