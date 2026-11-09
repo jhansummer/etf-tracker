@@ -1,0 +1,489 @@
+{
+  "etf": "TIME 코스닥",
+  "code": "0162Y0",
+  "date": "2026-11-10",
+  "nav": 17727871391.0,
+  "aum_billion": 1657,
+  "holdings": [
+    {
+      "ticker": "196170",
+      "name": "알테오젠",
+      "shares": 84,
+      "value_krw": 16842000,
+      "weight": 6.84,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "222800",
+      "name": "심텍",
+      "shares": 150,
+      "value_krw": 14025000,
+      "weight": 5.7,
+      "sector": "반도체소재"
+    },
+    {
+      "ticker": "108490",
+      "name": "로보티즈",
+      "shares": 60,
+      "value_krw": 13320000,
+      "weight": 5.41,
+      "sector": "로봇"
+    },
+    {
+      "ticker": "086520",
+      "name": "에코프로",
+      "shares": 180,
+      "value_krw": 11916000,
+      "weight": 4.84,
+      "sector": "2차전지"
+    },
+    {
+      "ticker": "030530",
+      "name": "원익홀딩스",
+      "shares": 400,
+      "value_krw": 11320000,
+      "weight": 4.6,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "058610",
+      "name": "에스피지",
+      "shares": 120,
+      "value_krw": 8832000,
+      "weight": 3.59,
+      "sector": "산업재"
+    },
+    {
+      "ticker": "0158S0",
+      "name": "엘리스",
+      "shares": 113,
+      "value_krw": 7887400,
+      "weight": 3.2,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "247540",
+      "name": "에코프로비엠",
+      "shares": 90,
+      "value_krw": 7479000,
+      "weight": 3.04,
+      "sector": "2차전지"
+    },
+    {
+      "ticker": "059090",
+      "name": "미코",
+      "shares": 399,
+      "value_krw": 7421400,
+      "weight": 3.01,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "064290",
+      "name": "인텍플러스",
+      "shares": 199,
+      "value_krw": 7203800,
+      "weight": 2.93,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "277810",
+      "name": "레인보우로보틱스",
+      "shares": 19,
+      "value_krw": 6099000,
+      "weight": 2.48,
+      "sector": "로봇"
+    },
+    {
+      "ticker": "425420",
+      "name": "티에프이",
+      "shares": 99,
+      "value_krw": 6098400,
+      "weight": 2.48,
+      "sector": "전자부품"
+    },
+    {
+      "ticker": "420770",
+      "name": "기가비스",
+      "shares": 89,
+      "value_krw": 5553600,
+      "weight": 2.26,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "036930",
+      "name": "주성엔지니어링",
+      "shares": 40,
+      "value_krw": 5312000,
+      "weight": 2.16,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "119850",
+      "name": "지엔씨에너지",
+      "shares": 120,
+      "value_krw": 4236000,
+      "weight": 1.72,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "031980",
+      "name": "피에스케이홀딩스",
+      "shares": 35,
+      "value_krw": 4175500,
+      "weight": 1.7,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "295310",
+      "name": "에이치브이엠",
+      "shares": 100,
+      "value_krw": 4150000,
+      "weight": 1.69,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "290650",
+      "name": "엘앤씨바이오",
+      "shares": 173,
+      "value_krw": 4108750,
+      "weight": 1.67,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "356860",
+      "name": "티엘비",
+      "shares": 149,
+      "value_krw": 3948500,
+      "weight": 1.6,
+      "sector": "반도체소재"
+    },
+    {
+      "ticker": "126340",
+      "name": "비나텍",
+      "shares": 50,
+      "value_krw": 3830000,
+      "weight": 1.56,
+      "sector": "전자부품"
+    },
+    {
+      "ticker": "491000",
+      "name": "리브스메드",
+      "shares": 100,
+      "value_krw": 3795000,
+      "weight": 1.54,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "226950",
+      "name": "올릭스",
+      "shares": 50,
+      "value_krw": 3740000,
+      "weight": 1.52,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "095340",
+      "name": "ISC",
+      "shares": 30,
+      "value_krw": 3630000,
+      "weight": 1.47,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "064760",
+      "name": "티씨케이",
+      "shares": 25,
+      "value_krw": 3435000,
+      "weight": 1.4,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "319660",
+      "name": "피에스케이",
+      "shares": 44,
+      "value_krw": 3427600,
+      "weight": 1.39,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "039030",
+      "name": "이오테크닉스",
+      "shares": 11,
+      "value_krw": 3118500,
+      "weight": 1.27,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "028300",
+      "name": "HLB",
+      "shares": 88,
+      "value_krw": 2750000,
+      "weight": 1.12,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "078350",
+      "name": "한양디지텍",
+      "shares": 100,
+      "value_krw": 2705000,
+      "weight": 1.1,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "403870",
+      "name": "HPSP",
+      "shares": 81,
+      "value_krw": 2701350,
+      "weight": 1.1,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "437730",
+      "name": "삼현",
+      "shares": 70,
+      "value_krw": 2597000,
+      "weight": 1.06,
+      "sector": "산업재"
+    },
+    {
+      "ticker": "170920",
+      "name": "엘티씨",
+      "shares": 99,
+      "value_krw": 2519550,
+      "weight": 1.02,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "053800",
+      "name": "안랩",
+      "shares": 25,
+      "value_krw": 2477500,
+      "weight": 1.01,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "131970",
+      "name": "두산테스나",
+      "shares": 39,
+      "value_krw": 2371200,
+      "weight": 0.96,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "347850",
+      "name": "디앤디파마텍",
+      "shares": 62,
+      "value_krw": 2340500,
+      "weight": 0.95,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "328130",
+      "name": "루닛",
+      "shares": 149,
+      "value_krw": 2302050,
+      "weight": 0.94,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "458870",
+      "name": "씨어스",
+      "shares": 151,
+      "value_krw": 2189500,
+      "weight": 0.89,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "441270",
+      "name": "파인엠텍",
+      "shares": 302,
+      "value_krw": 2153260,
+      "weight": 0.87,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "252990",
+      "name": "샘씨엔에스",
+      "shares": 186,
+      "value_krw": 2111100,
+      "weight": 0.86,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "131290",
+      "name": "티에스이",
+      "shares": 13,
+      "value_krw": 2106000,
+      "weight": 0.86,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "141080",
+      "name": "리가켐바이오",
+      "shares": 35,
+      "value_krw": 2044000,
+      "weight": 0.83,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "290550",
+      "name": "디케이티",
+      "shares": 99,
+      "value_krw": 2044350,
+      "weight": 0.83,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "092870",
+      "name": "엑시콘",
+      "shares": 49,
+      "value_krw": 2038400,
+      "weight": 0.83,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "080220",
+      "name": "제주반도체",
+      "shares": 40,
+      "value_krw": 2004000,
+      "weight": 0.81,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "067310",
+      "name": "하나마이크론",
+      "shares": 83,
+      "value_krw": 2000300,
+      "weight": 0.81,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "240810",
+      "name": "원익IPS",
+      "shares": 29,
+      "value_krw": 1934300,
+      "weight": 0.79,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "010170",
+      "name": "대한광통신",
+      "shares": 181,
+      "value_krw": 1916790,
+      "weight": 0.78,
+      "sector": "광통신"
+    },
+    {
+      "ticker": "095610",
+      "name": "테스",
+      "shares": 24,
+      "value_krw": 1867200,
+      "weight": 0.76,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "058470",
+      "name": "리노공업",
+      "shares": 40,
+      "value_krw": 1864000,
+      "weight": 0.76,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "078600",
+      "name": "대주전자재료",
+      "shares": 25,
+      "value_krw": 1862500,
+      "weight": 0.76,
+      "sector": "2차전지"
+    },
+    {
+      "ticker": "171090",
+      "name": "선익시스템",
+      "shares": 25,
+      "value_krw": 1575000,
+      "weight": 0.64,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "084370",
+      "name": "유진테크",
+      "shares": 21,
+      "value_krw": 1545600,
+      "weight": 0.63,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "089890",
+      "name": "코세스",
+      "shares": 60,
+      "value_krw": 1500000,
+      "weight": 0.61,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "089970",
+      "name": "브이엠",
+      "shares": 49,
+      "value_krw": 1477350,
+      "weight": 0.6,
+      "sector": "반도체장비"
+    },
+    {
+      "ticker": "347700",
+      "name": "스피어",
+      "shares": 99,
+      "value_krw": 1426590,
+      "weight": 0.58,
+      "sector": "바이오"
+    },
+    {
+      "ticker": "440110",
+      "name": "파두",
+      "shares": 39,
+      "value_krw": 1294800,
+      "weight": 0.53,
+      "sector": "반도체"
+    },
+    {
+      "ticker": "354320",
+      "name": "알멕",
+      "shares": 40,
+      "value_krw": 1242000,
+      "weight": 0.5,
+      "sector": "2차전지"
+    },
+    {
+      "ticker": "161580",
+      "name": "필옵틱스",
+      "shares": 51,
+      "value_krw": 1178100,
+      "weight": 0.48,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "327260",
+      "name": "RF머트리얼즈",
+      "shares": 51,
+      "value_krw": 1139850,
+      "weight": 0.46,
+      "sector": "미분류"
+    },
+    {
+      "ticker": "100790",
+      "name": "미래에셋벤처투자",
+      "shares": 99,
+      "value_krw": 1095930,
+      "weight": 0.45,
+      "sector": "금융"
+    },
+    {
+      "ticker": "393890",
+      "name": "더블유씨피",
+      "shares": 150,
+      "value_krw": 1002000,
+      "weight": 0.41,
+      "sector": "미분류"
+    }
+  ]
+}
