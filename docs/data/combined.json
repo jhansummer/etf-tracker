@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-26",
+  "generated": "2026-11-27",
   "etf_keys": [
     "time",
     "koact",
@@ -100198,6 +100198,643 @@
           }
         ],
         "total_holdings": 45
+      },
+      {
+        "date": "2026-11-27",
+        "etf": "TIME",
+        "code": "426030",
+        "nav": 1748580882.0,
+        "aum_billion": 18787,
+        "holdings": [
+          {
+            "ticker": "AAPL",
+            "name": "Apple Inc",
+            "shares": 108,
+            "value_krw": 51363376,
+            "weight": 7.66,
+            "sector": "빅테크",
+            "prev_shares": 108,
+            "prev_weight": 7.29,
+            "weight_chg": 0.37,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "MSFT",
+            "name": "Microsoft Corp",
+            "shares": 74,
+            "value_krw": 49313734,
+            "weight": 7.35,
+            "sector": "빅테크",
+            "prev_shares": 74,
+            "prev_weight": 7.05,
+            "weight_chg": 0.3,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "AMZN",
+            "name": "Amazon.com Inc",
+            "shares": 139,
+            "value_krw": 47103753,
+            "weight": 7.02,
+            "sector": "빅테크",
+            "prev_shares": 139,
+            "prev_weight": 6.87,
+            "weight_chg": 0.15,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "GOOGL",
+            "name": "Alphabet Inc",
+            "shares": 105,
+            "value_krw": 39356095,
+            "weight": 5.87,
+            "sector": "빅테크",
+            "prev_shares": 105,
+            "prev_weight": 5.73,
+            "weight_chg": 0.14,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "AMD",
+            "name": "Advanced Micro Devices Inc",
+            "shares": 64,
+            "value_krw": 35526672,
+            "weight": 5.3,
+            "sector": "반도체",
+            "prev_shares": 64,
+            "prev_weight": 5.62,
+            "weight_chg": -0.32,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "NVDA",
+            "name": "NVIDIA Corp",
+            "shares": 130,
+            "value_krw": 27131834,
+            "weight": 4.04,
+            "sector": "반도체",
+            "prev_shares": 130,
+            "prev_weight": 4.15,
+            "weight_chg": -0.11,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "META",
+            "name": "Meta Platforms Inc",
+            "shares": 27,
+            "value_krw": 21390648,
+            "weight": 3.19,
+            "sector": "빅테크",
+            "prev_shares": 27,
+            "prev_weight": 3.12,
+            "weight_chg": 0.07,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "NQZ6",
+            "name": "NASDAQ 100 E-MINI INDEX DEC 2026",
+            "shares": 0,
+            "value_krw": 21176152,
+            "weight": 3.16,
+            "sector": "미분류",
+            "prev_shares": 0,
+            "prev_weight": 3.11,
+            "weight_chg": 0.05,
+            "signal": "price_effect",
+            "shares_chg_pct": null
+          },
+          {
+            "ticker": "TSLA",
+            "name": "Tesla Inc",
+            "shares": 37,
+            "value_krw": 19117980,
+            "weight": 2.85,
+            "sector": "빅테크",
+            "prev_shares": 37,
+            "prev_weight": 2.76,
+            "weight_chg": 0.09,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "PANW",
+            "name": "Palo Alto Networks Inc",
+            "shares": 40,
+            "value_krw": 18965446,
+            "weight": 2.83,
+            "sector": "미분류",
+            "prev_shares": 40,
+            "prev_weight": 2.74,
+            "weight_chg": 0.09,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "SPCX",
+            "name": "Space Exploration Technologies Corp",
+            "shares": 111,
+            "value_krw": 18757667,
+            "weight": 2.8,
+            "sector": "미분류",
+            "prev_shares": 111,
+            "prev_weight": 2.86,
+            "weight_chg": -0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "QCOM",
+            "name": "QUALCOMM Inc",
+            "shares": 82,
+            "value_krw": 18169090,
+            "weight": 2.71,
+            "sector": "미분류",
+            "prev_shares": 82,
+            "prev_weight": 2.62,
+            "weight_chg": 0.09,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "AVGO",
+            "name": "Broadcom Inc",
+            "shares": 44,
+            "value_krw": 17794068,
+            "weight": 2.65,
+            "sector": "반도체",
+            "prev_shares": 44,
+            "prev_weight": 2.67,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "BE",
+            "name": "Bloom Energy Corp",
+            "shares": 83,
+            "value_krw": 17437462,
+            "weight": 2.6,
+            "sector": "에너지",
+            "prev_shares": 83,
+            "prev_weight": 2.7,
+            "weight_chg": -0.1,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "PLTR",
+            "name": "Palantir Technologies Inc",
+            "shares": 73,
+            "value_krw": 15804279,
+            "weight": 2.36,
+            "sector": "소프트웨어",
+            "prev_shares": 73,
+            "prev_weight": 2.25,
+            "weight_chg": 0.11,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "TXN",
+            "name": "Texas Instruments Inc",
+            "shares": 43,
+            "value_krw": 14926874,
+            "weight": 2.23,
+            "sector": "미분류",
+            "prev_shares": 43,
+            "prev_weight": 2.42,
+            "weight_chg": -0.19,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "LLY",
+            "name": "Eli Lilly & Co",
+            "shares": 7,
+            "value_krw": 13234724,
+            "weight": 1.97,
+            "sector": "바이오",
+            "prev_shares": 7,
+            "prev_weight": 1.85,
+            "weight_chg": 0.12,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "CRWD",
+            "name": "Crowdstrike Holdings Inc",
+            "shares": 45,
+            "value_krw": 12745221,
+            "weight": 1.9,
+            "sector": "소프트웨어",
+            "prev_shares": 45,
+            "prev_weight": 1.82,
+            "weight_chg": 0.08,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "TSM",
+            "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+            "shares": 27,
+            "value_krw": 12664226,
+            "weight": 1.89,
+            "sector": "반도체",
+            "prev_shares": 27,
+            "prev_weight": 1.9,
+            "weight_chg": -0.01,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "GEV",
+            "name": "GE Vernova Inc",
+            "shares": 13,
+            "value_krw": 12583702,
+            "weight": 1.88,
+            "sector": "에너지",
+            "prev_shares": 13,
+            "prev_weight": 1.9,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "INTC",
+            "name": "Intel Corp",
+            "shares": 162,
+            "value_krw": 11924392,
+            "weight": 1.78,
+            "sector": "반도체",
+            "prev_shares": 162,
+            "prev_weight": 1.87,
+            "weight_chg": -0.09,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "SKHY",
+            "name": "SK hynix Inc",
+            "shares": 76,
+            "value_krw": 11431276,
+            "weight": 1.7,
+            "sector": "미분류",
+            "prev_shares": 76,
+            "prev_weight": 1.83,
+            "weight_chg": -0.13,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "XEL",
+            "name": "Xcel Energy Inc",
+            "shares": 102,
+            "value_krw": 11072172,
+            "weight": 1.65,
+            "sector": "미분류",
+            "prev_shares": 102,
+            "prev_weight": 1.59,
+            "weight_chg": 0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "OKTA",
+            "name": "Okta Inc",
+            "shares": 39,
+            "value_krw": 10378476,
+            "weight": 1.55,
+            "sector": "미분류",
+            "prev_shares": 39,
+            "prev_weight": 1.56,
+            "weight_chg": -0.01,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "NEE",
+            "name": "NextEra Energy Inc",
+            "shares": 84,
+            "value_krw": 9543059,
+            "weight": 1.42,
+            "sector": "미분류",
+            "prev_shares": 84,
+            "prev_weight": 1.37,
+            "weight_chg": 0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "ANET",
+            "name": "Arista Networks Inc",
+            "shares": 42,
+            "value_krw": 9509211,
+            "weight": 1.42,
+            "sector": "미분류",
+            "prev_shares": 42,
+            "prev_weight": 1.45,
+            "weight_chg": -0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "MU",
+            "name": "Micron Technology Inc",
+            "shares": 11,
+            "value_krw": 9305273,
+            "weight": 1.39,
+            "sector": "반도체",
+            "prev_shares": 11,
+            "prev_weight": 1.51,
+            "weight_chg": -0.12,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "DELL",
+            "name": "Dell Technologies Inc",
+            "shares": 20,
+            "value_krw": 7932401,
+            "weight": 1.18,
+            "sector": "미분류",
+            "prev_shares": 20,
+            "prev_weight": 1.3,
+            "weight_chg": -0.12,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "STX",
+            "name": "Seagate Technology Holdings PLC",
+            "shares": 12,
+            "value_krw": 7776805,
+            "weight": 1.16,
+            "sector": "스토리지",
+            "prev_shares": 12,
+            "prev_weight": 1.21,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "KLAC",
+            "name": "KLA Corp",
+            "shares": 39,
+            "value_krw": 7001228,
+            "weight": 1.04,
+            "sector": "반도체",
+            "prev_shares": 39,
+            "prev_weight": 1.1,
+            "weight_chg": -0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "WDC",
+            "name": "Western Digital Corp",
+            "shares": 18,
+            "value_krw": 6623453,
+            "weight": 0.99,
+            "sector": "스토리지",
+            "prev_shares": 18,
+            "prev_weight": 1.04,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "ANT",
+            "name": "Anthropic PBC",
+            "shares": 58,
+            "value_krw": 6380858,
+            "weight": 0.95,
+            "sector": "미분류",
+            "prev_shares": 58,
+            "prev_weight": 0.98,
+            "weight_chg": -0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "LIN",
+            "name": "Linde PLC",
+            "shares": 9,
+            "value_krw": 6247854,
+            "weight": 0.93,
+            "sector": "미분류",
+            "prev_shares": 9,
+            "prev_weight": 0.9,
+            "weight_chg": 0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "QNT",
+            "name": "Quantinuum Inc",
+            "shares": 137,
+            "value_krw": 5581278,
+            "weight": 0.83,
+            "sector": "미분류",
+            "prev_shares": 137,
+            "prev_weight": 0.8,
+            "weight_chg": 0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "CSCO",
+            "name": "Cisco Systems Inc",
+            "shares": 41,
+            "value_krw": 5176142,
+            "weight": 0.77,
+            "sector": "미분류",
+            "prev_shares": 41,
+            "prev_weight": 0.77,
+            "weight_chg": 0.0,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "ALAB",
+            "name": "Astera Labs Inc",
+            "shares": 20,
+            "value_krw": 5139083,
+            "weight": 0.77,
+            "sector": "미분류",
+            "prev_shares": 20,
+            "prev_weight": 0.86,
+            "weight_chg": -0.09,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "IONQ",
+            "name": "IonQ Inc",
+            "shares": 155,
+            "value_krw": 4663590,
+            "weight": 0.7,
+            "sector": "미분류",
+            "prev_shares": 155,
+            "prev_weight": 0.7,
+            "weight_chg": 0.0,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "SNDK",
+            "name": "Sandisk Corp",
+            "shares": 40,
+            "value_krw": 4188097,
+            "weight": 0.62,
+            "sector": "스토리지",
+            "prev_shares": 40,
+            "prev_weight": 0.68,
+            "weight_chg": -0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "CRWV",
+            "name": "CoreWeave Inc",
+            "shares": 71,
+            "value_krw": 4063119,
+            "weight": 0.61,
+            "sector": "AI/클라우드",
+            "prev_shares": 71,
+            "prev_weight": 0.66,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "MRVL",
+            "name": "Marvell Technology Inc",
+            "shares": 23,
+            "value_krw": 4064670,
+            "weight": 0.61,
+            "sector": "반도체",
+            "prev_shares": 23,
+            "prev_weight": 0.64,
+            "weight_chg": -0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "NBIS",
+            "name": "Nebius Group NV",
+            "shares": 34,
+            "value_krw": 3987342,
+            "weight": 0.59,
+            "sector": "소프트웨어",
+            "prev_shares": 34,
+            "prev_weight": 0.64,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "LITE",
+            "name": "Lumentum Holdings Inc",
+            "shares": 6,
+            "value_krw": 3925797,
+            "weight": 0.59,
+            "sector": "광통신",
+            "prev_shares": 6,
+            "prev_weight": 0.63,
+            "weight_chg": -0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "COIN",
+            "name": "Coinbase Global Inc",
+            "shares": 28,
+            "value_krw": 3849154,
+            "weight": 0.57,
+            "sector": "크립토",
+            "prev_shares": 28,
+            "prev_weight": 0.59,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "HOOD",
+            "name": "Robinhood Markets Inc",
+            "shares": 41,
+            "value_krw": 3615424,
+            "weight": 0.54,
+            "sector": "크립토",
+            "prev_shares": 41,
+            "prev_weight": 0.53,
+            "weight_chg": 0.01,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "BSP",
+            "name": "Bending Spoons SpA",
+            "shares": 61,
+            "value_krw": 3511742,
+            "weight": 0.52,
+            "sector": "미분류",
+            "prev_shares": 61,
+            "prev_weight": 0.56,
+            "weight_chg": -0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          }
+        ],
+        "sectors": [
+          {
+            "sector": "빅테크",
+            "weight": 33.94
+          },
+          {
+            "sector": "미분류",
+            "weight": 28.12
+          },
+          {
+            "sector": "반도체",
+            "weight": 18.7
+          },
+          {
+            "sector": "소프트웨어",
+            "weight": 4.85
+          },
+          {
+            "sector": "에너지",
+            "weight": 4.48
+          },
+          {
+            "sector": "스토리지",
+            "weight": 2.77
+          },
+          {
+            "sector": "바이오",
+            "weight": 1.97
+          },
+          {
+            "sector": "크립토",
+            "weight": 1.11
+          },
+          {
+            "sector": "AI/클라우드",
+            "weight": 0.61
+          },
+          {
+            "sector": "광통신",
+            "weight": 0.59
+          }
+        ],
+        "total_holdings": 45
       }
     ],
     "history": {
@@ -101011,6 +101648,11 @@
           "date": "2026-11-26",
           "weight": 0.68,
           "shares": 40
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.62,
+          "shares": 40
         }
       ],
       "LITE": [
@@ -101823,6 +102465,11 @@
           "date": "2026-11-26",
           "weight": 0.63,
           "shares": 6
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.59,
+          "shares": 6
         }
       ],
       "NVDA": [
@@ -102634,6 +103281,11 @@
         {
           "date": "2026-11-26",
           "weight": 4.15,
+          "shares": 130
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 4.04,
           "shares": 130
         }
       ],
@@ -103689,6 +104341,11 @@
           "date": "2026-11-26",
           "weight": 5.73,
           "shares": 105
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 5.87,
+          "shares": 105
         }
       ],
       "COIN": [
@@ -104501,6 +105158,11 @@
           "date": "2026-11-26",
           "weight": 0.59,
           "shares": 28
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.57,
+          "shares": 28
         }
       ],
       "BE": [
@@ -105312,6 +105974,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.7,
+          "shares": 83
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.6,
           "shares": 83
         }
       ],
@@ -106959,6 +107626,11 @@
           "date": "2026-11-26",
           "weight": 1.51,
           "shares": 11
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.39,
+          "shares": 11
         }
       ],
       "AXTI": [
@@ -107792,6 +108464,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.9,
+          "shares": 27
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.89,
           "shares": 27
         }
       ],
@@ -111102,6 +111779,11 @@
           "date": "2026-11-26",
           "weight": 1.9,
           "shares": 13
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.88,
+          "shares": 13
         }
       ],
       "GLW": [
@@ -112491,6 +113173,11 @@
           "date": "2026-11-26",
           "weight": 1.04,
           "shares": 18
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.99,
+          "shares": 18
         }
       ],
       "STX": [
@@ -113302,6 +113989,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.21,
+          "shares": 12
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.16,
           "shares": 12
         }
       ],
@@ -115435,6 +116127,11 @@
           "date": "2026-11-26",
           "weight": 2.76,
           "shares": 37
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.85,
+          "shares": 37
         }
       ],
       "RKLB": [
@@ -117461,6 +118158,11 @@
           "date": "2026-11-26",
           "weight": 3.12,
           "shares": 27
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 3.19,
+          "shares": 27
         }
       ],
       "INTC": [
@@ -118272,6 +118974,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.87,
+          "shares": 162
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.78,
           "shares": 162
         }
       ],
@@ -119131,6 +119838,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.67,
+          "shares": 44
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.65,
           "shares": 44
         }
       ],
@@ -120038,6 +120750,11 @@
           "date": "2026-11-26",
           "weight": 6.87,
           "shares": 139
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 7.02,
+          "shares": 139
         }
       ],
       "LLY": [
@@ -120665,6 +121382,11 @@
           "date": "2026-11-26",
           "weight": 1.85,
           "shares": 7
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.97,
+          "shares": 7
         }
       ],
       "FANG": [
@@ -120928,6 +121650,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.82,
+          "shares": 45
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.9,
           "shares": 45
         }
       ],
@@ -122263,6 +122990,11 @@
           "date": "2026-11-26",
           "weight": 7.29,
           "shares": 108
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 7.66,
+          "shares": 108
         }
       ],
       "MSFT": [
@@ -123074,6 +123806,11 @@
         {
           "date": "2026-11-26",
           "weight": 7.05,
+          "shares": 74
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 7.35,
           "shares": 74
         }
       ],
@@ -124539,6 +125276,11 @@
           "date": "2026-11-26",
           "weight": 5.62,
           "shares": 64
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 5.3,
+          "shares": 64
         }
       ],
       "TER": [
@@ -125897,6 +126639,11 @@
           "date": "2026-11-26",
           "weight": 0.64,
           "shares": 34
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.59,
+          "shares": 34
         }
       ],
       "HOOD": [
@@ -126654,6 +127401,11 @@
           "date": "2026-11-26",
           "weight": 0.53,
           "shares": 41
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.54,
+          "shares": 41
         }
       ],
       "MRVL": [
@@ -127405,6 +128157,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.64,
+          "shares": 23
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.61,
           "shares": 23
         }
       ],
@@ -128839,6 +129596,11 @@
           "date": "2026-11-26",
           "weight": 1.3,
           "shares": 20
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.18,
+          "shares": 20
         }
       ],
       "QCOM": [
@@ -129460,6 +130222,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.62,
+          "shares": 82
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.71,
           "shares": 82
         }
       ],
@@ -130447,6 +131214,11 @@
           "date": "2026-11-26",
           "weight": 2.86,
           "shares": 111
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.8,
+          "shares": 111
         }
       ],
       "CRWV": [
@@ -131009,6 +131781,11 @@
           "date": "2026-11-26",
           "weight": 0.66,
           "shares": 71
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.61,
+          "shares": 71
         }
       ],
       "ALAB": [
@@ -131570,6 +132347,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.86,
+          "shares": 20
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.77,
           "shares": 20
         }
       ],
@@ -132255,6 +133037,11 @@
           "date": "2026-11-26",
           "weight": 1.1,
           "shares": 39
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.04,
+          "shares": 39
         }
       ],
       "SKHY": [
@@ -132712,6 +133499,11 @@
           "date": "2026-11-26",
           "weight": 1.83,
           "shares": 76
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.7,
+          "shares": 76
         }
       ],
       "PANW": [
@@ -133044,6 +133836,11 @@
           "date": "2026-11-26",
           "weight": 2.74,
           "shares": 40
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.83,
+          "shares": 40
         }
       ],
       "TXN": [
@@ -133175,6 +133972,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.42,
+          "shares": 43
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.23,
           "shares": 43
         }
       ],
@@ -133761,6 +134563,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.25,
+          "shares": 73
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.36,
           "shares": 73
         }
       ],
@@ -134358,6 +135165,11 @@
           "date": "2026-11-26",
           "weight": 3.11,
           "shares": 0
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 3.16,
+          "shares": 0
         }
       ],
       "NTRA": [
@@ -134749,6 +135561,11 @@
           "date": "2026-11-26",
           "weight": 1.56,
           "shares": 39
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.55,
+          "shares": 39
         }
       ],
       "P": [
@@ -134903,6 +135720,11 @@
           "date": "2026-11-26",
           "weight": 0.77,
           "shares": 41
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.77,
+          "shares": 41
         }
       ],
       "XEL": [
@@ -134974,6 +135796,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.59,
+          "shares": 102
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.65,
           "shares": 102
         }
       ],
@@ -135047,6 +135874,11 @@
           "date": "2026-11-26",
           "weight": 1.37,
           "shares": 84
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.42,
+          "shares": 84
         }
       ],
       "LIN": [
@@ -135114,6 +135946,11 @@
           "date": "2026-11-26",
           "weight": 0.9,
           "shares": 9
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.93,
+          "shares": 9
         }
       ],
       "QNT": [
@@ -135165,6 +136002,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.8,
+          "shares": 137
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.83,
           "shares": 137
         }
       ],
@@ -135218,6 +136060,11 @@
           "date": "2026-11-26",
           "weight": 0.7,
           "shares": 155
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.7,
+          "shares": 155
         }
       ],
       "ANET": [
@@ -135265,6 +136112,11 @@
           "date": "2026-11-26",
           "weight": 1.45,
           "shares": 42
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.42,
+          "shares": 42
         }
       ],
       "BSP": [
@@ -135287,6 +136139,11 @@
           "date": "2026-11-26",
           "weight": 0.56,
           "shares": 61
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.52,
+          "shares": 61
         }
       ],
       "ANT": [
@@ -135308,6 +136165,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.98,
+          "shares": 58
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.95,
           "shares": 58
         }
       ]
@@ -634625,6 +635487,799 @@
           }
         ],
         "total_holdings": 57
+      },
+      {
+        "date": "2026-11-27",
+        "etf": "TIME 코스닥",
+        "code": "0162Y0",
+        "nav": 17727871391.0,
+        "aum_billion": 1747,
+        "holdings": [
+          {
+            "ticker": "277810",
+            "name": "레인보우로보틱스",
+            "shares": 29,
+            "value_krw": 13441500,
+            "weight": 5.35,
+            "sector": "로봇",
+            "prev_shares": 19,
+            "prev_weight": 3.37,
+            "weight_chg": 1.98,
+            "shares_chg_pct": 52.63,
+            "signal": "buy"
+          },
+          {
+            "ticker": "108490",
+            "name": "로보티즈",
+            "shares": 43,
+            "value_krw": 12405500,
+            "weight": 4.94,
+            "sector": "로봇",
+            "prev_shares": 36,
+            "prev_weight": 3.98,
+            "weight_chg": 0.96,
+            "shares_chg_pct": 19.44,
+            "signal": "buy"
+          },
+          {
+            "ticker": "222800",
+            "name": "심텍",
+            "shares": 114,
+            "value_krw": 11616600,
+            "weight": 4.62,
+            "sector": "반도체소재",
+            "prev_shares": 115,
+            "prev_weight": 4.71,
+            "weight_chg": -0.09,
+            "shares_chg_pct": -0.87,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "196170",
+            "name": "알테오젠",
+            "shares": 60,
+            "value_krw": 10176000,
+            "weight": 4.05,
+            "sector": "바이오",
+            "prev_shares": 60,
+            "prev_weight": 3.6,
+            "weight_chg": 0.45,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "086520",
+            "name": "에코프로",
+            "shares": 151,
+            "value_krw": 10011300,
+            "weight": 3.98,
+            "sector": "2차전지",
+            "prev_shares": 151,
+            "prev_weight": 3.96,
+            "weight_chg": 0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "030530",
+            "name": "원익홀딩스",
+            "shares": 317,
+            "value_krw": 8828450,
+            "weight": 3.51,
+            "sector": "반도체장비",
+            "prev_shares": 597,
+            "prev_weight": 7.03,
+            "weight_chg": -3.52,
+            "shares_chg_pct": -46.9,
+            "signal": "sell"
+          },
+          {
+            "ticker": "356860",
+            "name": "티엘비",
+            "shares": 229,
+            "value_krw": 8461550,
+            "weight": 3.37,
+            "sector": "반도체소재",
+            "prev_shares": 230,
+            "prev_weight": 3.55,
+            "weight_chg": -0.18,
+            "shares_chg_pct": -0.43,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "064290",
+            "name": "인텍플러스",
+            "shares": 239,
+            "value_krw": 8353050,
+            "weight": 3.32,
+            "sector": "미분류",
+            "prev_shares": 240,
+            "prev_weight": 3.37,
+            "weight_chg": -0.05,
+            "shares_chg_pct": -0.42,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "247540",
+            "name": "에코프로비엠",
+            "shares": 89,
+            "value_krw": 7502700,
+            "weight": 2.99,
+            "sector": "2차전지",
+            "prev_shares": 89,
+            "prev_weight": 2.96,
+            "weight_chg": 0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "058610",
+            "name": "에스피지",
+            "shares": 80,
+            "value_krw": 7264000,
+            "weight": 2.89,
+            "sector": "산업재",
+            "prev_shares": 80,
+            "prev_weight": 2.73,
+            "weight_chg": 0.16,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "437730",
+            "name": "삼현",
+            "shares": 119,
+            "value_krw": 7211400,
+            "weight": 2.87,
+            "sector": "산업재",
+            "prev_shares": 70,
+            "prev_weight": 1.66,
+            "weight_chg": 1.21,
+            "shares_chg_pct": 70.0,
+            "signal": "buy"
+          },
+          {
+            "ticker": "290550",
+            "name": "디케이티",
+            "shares": 199,
+            "value_krw": 6527200,
+            "weight": 2.6,
+            "sector": "미분류",
+            "prev_shares": 199,
+            "prev_weight": 2.48,
+            "weight_chg": 0.12,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "059090",
+            "name": "미코",
+            "shares": 399,
+            "value_krw": 6515670,
+            "weight": 2.59,
+            "sector": "미분류",
+            "prev_shares": 399,
+            "prev_weight": 2.75,
+            "weight_chg": -0.16,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "420770",
+            "name": "기가비스",
+            "shares": 89,
+            "value_krw": 6069800,
+            "weight": 2.42,
+            "sector": "미분류",
+            "prev_shares": 89,
+            "prev_weight": 2.45,
+            "weight_chg": -0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "036930",
+            "name": "주성엔지니어링",
+            "shares": 40,
+            "value_krw": 5308000,
+            "weight": 2.11,
+            "sector": "반도체장비",
+            "prev_shares": 40,
+            "prev_weight": 2.25,
+            "weight_chg": -0.14,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "218410",
+            "name": "RFHIC",
+            "shares": 99,
+            "value_krw": 5306400,
+            "weight": 2.11,
+            "sector": "반도체",
+            "prev_shares": 99,
+            "prev_weight": 2.13,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "425420",
+            "name": "티에프이",
+            "shares": 99,
+            "value_krw": 5207400,
+            "weight": 2.07,
+            "sector": "전자부품",
+            "prev_shares": 99,
+            "prev_weight": 2.24,
+            "weight_chg": -0.17,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "295310",
+            "name": "에이치브이엠",
+            "shares": 100,
+            "value_krw": 5100000,
+            "weight": 2.03,
+            "sector": "반도체장비",
+            "prev_shares": 100,
+            "prev_weight": 1.91,
+            "weight_chg": 0.12,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "166090",
+            "name": "하나머티리얼즈",
+            "shares": 119,
+            "value_krw": 4635050,
+            "weight": 1.84,
+            "sector": "반도체소재",
+            "prev_shares": 120,
+            "prev_weight": 1.92,
+            "weight_chg": -0.08,
+            "shares_chg_pct": -0.83,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "126340",
+            "name": "비나텍",
+            "shares": 50,
+            "value_krw": 4330000,
+            "weight": 1.72,
+            "sector": "전자부품",
+            "prev_shares": 50,
+            "prev_weight": 1.79,
+            "weight_chg": -0.07,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "328130",
+            "name": "루닛",
+            "shares": 259,
+            "value_krw": 4281270,
+            "weight": 1.7,
+            "sector": "미분류",
+            "prev_shares": 259,
+            "prev_weight": 1.52,
+            "weight_chg": 0.18,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "031980",
+            "name": "피에스케이홀딩스",
+            "shares": 35,
+            "value_krw": 4140500,
+            "weight": 1.65,
+            "sector": "반도체장비",
+            "prev_shares": 35,
+            "prev_weight": 1.7,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "226950",
+            "name": "올릭스",
+            "shares": 50,
+            "value_krw": 4035000,
+            "weight": 1.61,
+            "sector": "바이오",
+            "prev_shares": 50,
+            "prev_weight": 1.48,
+            "weight_chg": 0.13,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "039030",
+            "name": "이오테크닉스",
+            "shares": 14,
+            "value_krw": 3948000,
+            "weight": 1.57,
+            "sector": "반도체장비",
+            "prev_shares": 14,
+            "prev_weight": 1.63,
+            "weight_chg": -0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "078600",
+            "name": "대주전자재료",
+            "shares": 49,
+            "value_krw": 3851400,
+            "weight": 1.53,
+            "sector": "2차전지",
+            "prev_shares": 49,
+            "prev_weight": 1.52,
+            "weight_chg": 0.01,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "064760",
+            "name": "티씨케이",
+            "shares": 24,
+            "value_krw": 3799200,
+            "weight": 1.51,
+            "sector": "미분류",
+            "prev_shares": 24,
+            "prev_weight": 1.55,
+            "weight_chg": -0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "053800",
+            "name": "안랩",
+            "shares": 24,
+            "value_krw": 3789600,
+            "weight": 1.51,
+            "sector": "미분류",
+            "prev_shares": 24,
+            "prev_weight": 1.1,
+            "weight_chg": 0.41,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "0158S0",
+            "name": "엘리스",
+            "shares": 79,
+            "value_krw": 3452300,
+            "weight": 1.37,
+            "sector": "미분류",
+            "prev_shares": 113,
+            "prev_weight": 2.0,
+            "weight_chg": -0.63,
+            "shares_chg_pct": -30.09,
+            "signal": "sell"
+          },
+          {
+            "ticker": "240810",
+            "name": "원익IPS",
+            "shares": 54,
+            "value_krw": 3445200,
+            "weight": 1.37,
+            "sector": "반도체장비",
+            "prev_shares": 54,
+            "prev_weight": 1.45,
+            "weight_chg": -0.08,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "319660",
+            "name": "피에스케이",
+            "shares": 44,
+            "value_krw": 3361600,
+            "weight": 1.34,
+            "sector": "반도체장비",
+            "prev_shares": 44,
+            "prev_weight": 1.39,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "095340",
+            "name": "ISC",
+            "shares": 29,
+            "value_krw": 3346600,
+            "weight": 1.33,
+            "sector": "반도체장비",
+            "prev_shares": 29,
+            "prev_weight": 1.42,
+            "weight_chg": -0.09,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "119850",
+            "name": "지엔씨에너지",
+            "shares": 120,
+            "value_krw": 3156000,
+            "weight": 1.26,
+            "sector": "미분류",
+            "prev_shares": 120,
+            "prev_weight": 1.29,
+            "weight_chg": -0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "403870",
+            "name": "HPSP",
+            "shares": 81,
+            "value_krw": 3142800,
+            "weight": 1.25,
+            "sector": "반도체장비",
+            "prev_shares": 81,
+            "prev_weight": 1.25,
+            "weight_chg": 0.0,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "252990",
+            "name": "샘씨엔에스",
+            "shares": 249,
+            "value_krw": 3100050,
+            "weight": 1.23,
+            "sector": "미분류",
+            "prev_shares": 249,
+            "prev_weight": 1.36,
+            "weight_chg": -0.13,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "327260",
+            "name": "RF머트리얼즈",
+            "shares": 99,
+            "value_krw": 2593800,
+            "weight": 1.03,
+            "sector": "미분류",
+            "prev_shares": 100,
+            "prev_weight": 1.09,
+            "weight_chg": -0.06,
+            "shares_chg_pct": -1.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "028300",
+            "name": "HLB",
+            "shares": 88,
+            "value_krw": 2486000,
+            "weight": 0.99,
+            "sector": "바이오",
+            "prev_shares": 88,
+            "prev_weight": 0.92,
+            "weight_chg": 0.07,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "010170",
+            "name": "대한광통신",
+            "shares": 181,
+            "value_krw": 2423590,
+            "weight": 0.96,
+            "sector": "광통신",
+            "prev_shares": 181,
+            "prev_weight": 1.01,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "170920",
+            "name": "엘티씨",
+            "shares": 99,
+            "value_krw": 2420550,
+            "weight": 0.96,
+            "sector": "미분류",
+            "prev_shares": 99,
+            "prev_weight": 1.01,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "131970",
+            "name": "두산테스나",
+            "shares": 39,
+            "value_krw": 2230800,
+            "weight": 0.89,
+            "sector": "반도체장비",
+            "prev_shares": 39,
+            "prev_weight": 0.95,
+            "weight_chg": -0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "491000",
+            "name": "리브스메드",
+            "shares": 50,
+            "value_krw": 2130000,
+            "weight": 0.85,
+            "sector": "바이오",
+            "prev_shares": 50,
+            "prev_weight": 0.87,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "347850",
+            "name": "디앤디파마텍",
+            "shares": 62,
+            "value_krw": 2098700,
+            "weight": 0.84,
+            "sector": "바이오",
+            "prev_shares": 62,
+            "prev_weight": 0.77,
+            "weight_chg": 0.07,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "131290",
+            "name": "티에스이",
+            "shares": 13,
+            "value_krw": 1979900,
+            "weight": 0.79,
+            "sector": "미분류",
+            "prev_shares": 13,
+            "prev_weight": 0.81,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "089890",
+            "name": "코세스",
+            "shares": 60,
+            "value_krw": 1968000,
+            "weight": 0.78,
+            "sector": "반도체장비",
+            "prev_shares": 60,
+            "prev_weight": 0.83,
+            "weight_chg": -0.05,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "347700",
+            "name": "스피어",
+            "shares": 99,
+            "value_krw": 1897830,
+            "weight": 0.76,
+            "sector": "바이오",
+            "prev_shares": 99,
+            "prev_weight": 0.72,
+            "weight_chg": 0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "080220",
+            "name": "제주반도체",
+            "shares": 40,
+            "value_krw": 1880000,
+            "weight": 0.75,
+            "sector": "미분류",
+            "prev_shares": 40,
+            "prev_weight": 0.79,
+            "weight_chg": -0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "141080",
+            "name": "리가켐바이오",
+            "shares": 35,
+            "value_krw": 1879500,
+            "weight": 0.75,
+            "sector": "바이오",
+            "prev_shares": 35,
+            "prev_weight": 0.69,
+            "weight_chg": 0.06,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "095610",
+            "name": "테스",
+            "shares": 24,
+            "value_krw": 1843200,
+            "weight": 0.73,
+            "sector": "반도체장비",
+            "prev_shares": 24,
+            "prev_weight": 0.76,
+            "weight_chg": -0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "058470",
+            "name": "리노공업",
+            "shares": 40,
+            "value_krw": 1830000,
+            "weight": 0.73,
+            "sector": "반도체장비",
+            "prev_shares": 40,
+            "prev_weight": 0.73,
+            "weight_chg": 0.0,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "067310",
+            "name": "하나마이크론",
+            "shares": 83,
+            "value_krw": 1713950,
+            "weight": 0.68,
+            "sector": "미분류",
+            "prev_shares": 83,
+            "prev_weight": 0.72,
+            "weight_chg": -0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "089970",
+            "name": "브이엠",
+            "shares": 49,
+            "value_krw": 1666000,
+            "weight": 0.66,
+            "sector": "반도체장비",
+            "prev_shares": 49,
+            "prev_weight": 0.7,
+            "weight_chg": -0.04,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "171090",
+            "name": "선익시스템",
+            "shares": 25,
+            "value_krw": 1607500,
+            "weight": 0.64,
+            "sector": "반도체장비",
+            "prev_shares": 25,
+            "prev_weight": 0.61,
+            "weight_chg": 0.03,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "084370",
+            "name": "유진테크",
+            "shares": 21,
+            "value_krw": 1467900,
+            "weight": 0.58,
+            "sector": "반도체장비",
+            "prev_shares": 21,
+            "prev_weight": 0.6,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "290650",
+            "name": "엘앤씨바이오",
+            "shares": 60,
+            "value_krw": 1380000,
+            "weight": 0.55,
+            "sector": "미분류",
+            "prev_shares": 60,
+            "prev_weight": 0.47,
+            "weight_chg": 0.08,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "092870",
+            "name": "엑시콘",
+            "shares": 24,
+            "value_krw": 1171200,
+            "weight": 0.47,
+            "sector": "미분류",
+            "prev_shares": 24,
+            "prev_weight": 0.49,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "161580",
+            "name": "필옵틱스",
+            "shares": 51,
+            "value_krw": 1142400,
+            "weight": 0.46,
+            "sector": "미분류",
+            "prev_shares": 51,
+            "prev_weight": 0.46,
+            "weight_chg": 0.0,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "393890",
+            "name": "더블유씨피",
+            "shares": 150,
+            "value_krw": 856500,
+            "weight": 0.34,
+            "sector": "미분류",
+            "prev_shares": 150,
+            "prev_weight": 0.36,
+            "weight_chg": -0.02,
+            "shares_chg_pct": 0.0,
+            "signal": "price_effect"
+          },
+          {
+            "ticker": "440110",
+            "name": "파두",
+            "shares": 0,
+            "value_krw": 0,
+            "weight": 0,
+            "sector": "반도체",
+            "signal": "removed",
+            "prev_weight": 0.42,
+            "weight_chg": -0.42,
+            "shares_chg_pct": null,
+            "prev_shares": 39
+          }
+        ],
+        "sectors": [
+          {
+            "sector": "미분류",
+            "weight": 25.54
+          },
+          {
+            "sector": "반도체장비",
+            "weight": 21.17
+          },
+          {
+            "sector": "로봇",
+            "weight": 10.29
+          },
+          {
+            "sector": "바이오",
+            "weight": 9.85
+          },
+          {
+            "sector": "반도체소재",
+            "weight": 9.83
+          },
+          {
+            "sector": "2차전지",
+            "weight": 8.5
+          },
+          {
+            "sector": "산업재",
+            "weight": 5.76
+          },
+          {
+            "sector": "전자부품",
+            "weight": 3.79
+          },
+          {
+            "sector": "반도체",
+            "weight": 2.11
+          },
+          {
+            "sector": "광통신",
+            "weight": 0.96
+          }
+        ],
+        "total_holdings": 56
       }
     ],
     "history": {
@@ -636010,6 +637665,11 @@
           "date": "2026-11-26",
           "weight": 3.96,
           "shares": 151
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 3.98,
+          "shares": 151
         }
       ],
       "196170": [
@@ -636777,6 +638437,11 @@
           "date": "2026-11-26",
           "weight": 3.6,
           "shares": 60
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 4.05,
+          "shares": 60
         }
       ],
       "247540": [
@@ -637543,6 +639208,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.96,
+          "shares": 89
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.99,
           "shares": 89
         }
       ],
@@ -638928,6 +640598,11 @@
           "date": "2026-11-26",
           "weight": 0.76,
           "shares": 24
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.73,
+          "shares": 24
         }
       ],
       "490470": [
@@ -639886,6 +641561,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.01,
+          "shares": 181
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.96,
           "shares": 181
         }
       ],
@@ -642058,6 +643738,11 @@
           "date": "2026-11-26",
           "weight": 0.72,
           "shares": 99
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.76,
+          "shares": 99
         }
       ],
       "058470": [
@@ -642823,6 +644508,11 @@
         },
         {
           "date": "2026-11-26",
+          "weight": 0.73,
+          "shares": 40
+        },
+        {
+          "date": "2026-11-27",
           "weight": 0.73,
           "shares": 40
         }
@@ -643592,6 +645282,11 @@
           "date": "2026-11-26",
           "weight": 0.87,
           "shares": 50
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.85,
+          "shares": 50
         }
       ],
       "126340": [
@@ -643903,6 +645598,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.79,
+          "shares": 50
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.72,
           "shares": 50
         }
       ],
@@ -645645,6 +647345,11 @@
           "date": "2026-11-26",
           "weight": 1.42,
           "shares": 29
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.33,
+          "shares": 29
         }
       ],
       "226950": [
@@ -646411,6 +648116,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.48,
+          "shares": 50
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.61,
           "shares": 50
         }
       ],
@@ -647179,6 +648889,11 @@
           "date": "2026-11-26",
           "weight": 0.92,
           "shares": 88
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.99,
+          "shares": 88
         }
       ],
       "218410": [
@@ -647715,6 +649430,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.13,
+          "shares": 99
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.11,
           "shares": 99
         }
       ],
@@ -649110,6 +650830,11 @@
           "date": "2026-11-26",
           "weight": 1.91,
           "shares": 100
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.03,
+          "shares": 100
         }
       ],
       "039030": [
@@ -649486,6 +651211,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.63,
+          "shares": 14
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.57,
           "shares": 14
         }
       ],
@@ -650254,6 +651984,11 @@
           "date": "2026-11-26",
           "weight": 0.69,
           "shares": 35
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.75,
+          "shares": 35
         }
       ],
       "263750": [
@@ -651003,6 +652738,11 @@
           "date": "2026-11-26",
           "weight": 3.98,
           "shares": 36
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 4.94,
+          "shares": 43
         }
       ],
       "330860": [
@@ -651787,6 +653527,11 @@
           "date": "2026-11-26",
           "weight": 1.25,
           "shares": 81
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.25,
+          "shares": 81
         }
       ],
       "084370": [
@@ -652368,6 +654113,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.6,
+          "shares": 21
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.58,
           "shares": 21
         }
       ],
@@ -653050,6 +654800,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.77,
+          "shares": 62
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.84,
           "shares": 62
         }
       ],
@@ -653817,6 +655572,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.45,
+          "shares": 54
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.37,
           "shares": 54
         }
       ],
@@ -654657,6 +656417,11 @@
           "date": "2026-11-26",
           "weight": 3.37,
           "shares": 19
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 5.35,
+          "shares": 29
         }
       ],
       "078600": [
@@ -655423,6 +657188,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.52,
+          "shares": 49
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.53,
           "shares": 49
         }
       ],
@@ -656352,6 +658122,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.95,
+          "shares": 39
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.89,
           "shares": 39
         }
       ],
@@ -659169,6 +660944,11 @@
           "date": "2026-11-26",
           "weight": 2.25,
           "shares": 40
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.11,
+          "shares": 40
         }
       ],
       "319660": [
@@ -659881,6 +661661,11 @@
           "date": "2026-11-26",
           "weight": 1.39,
           "shares": 44
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.34,
+          "shares": 44
         }
       ],
       "032820": [
@@ -660075,6 +661860,11 @@
           "date": "2026-11-26",
           "weight": 7.03,
           "shares": 597
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 3.51,
+          "shares": 317
         }
       ],
       "0009K0": [
@@ -660778,6 +662568,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.73,
+          "shares": 80
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.89,
           "shares": 80
         }
       ],
@@ -661531,6 +663326,11 @@
           "date": "2026-11-26",
           "weight": 4.71,
           "shares": 115
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 4.62,
+          "shares": 114
         }
       ],
       "000250": [
@@ -662300,6 +664100,11 @@
           "date": "2026-11-26",
           "weight": 3.55,
           "shares": 230
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 3.37,
+          "shares": 229
         }
       ],
       "031980": [
@@ -663061,6 +664866,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.7,
+          "shares": 35
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.65,
           "shares": 35
         }
       ],
@@ -665068,6 +666878,11 @@
         {
           "date": "2026-11-26",
           "weight": 2.75,
+          "shares": 399
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.59,
           "shares": 399
         }
       ],
@@ -667787,6 +669602,11 @@
           "date": "2026-11-26",
           "weight": 0.36,
           "shares": 150
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.34,
+          "shares": 150
         }
       ],
       "228670": [
@@ -668591,6 +670411,11 @@
           "date": "2026-11-26",
           "weight": 2.45,
           "shares": 89
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.42,
+          "shares": 89
         }
       ],
       "161580": [
@@ -669343,6 +671168,11 @@
           "date": "2026-11-26",
           "weight": 0.46,
           "shares": 51
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.46,
+          "shares": 51
         }
       ],
       "327260": [
@@ -670070,6 +671900,11 @@
           "date": "2026-11-26",
           "weight": 1.09,
           "shares": 100
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.03,
+          "shares": 99
         }
       ],
       "368770": [
@@ -670988,6 +672823,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.61,
+          "shares": 25
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.64,
           "shares": 25
         }
       ],
@@ -673609,6 +675449,11 @@
           "date": "2026-11-26",
           "weight": 3.37,
           "shares": 240
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 3.32,
+          "shares": 239
         }
       ],
       "241520": [
@@ -676832,6 +678677,11 @@
           "date": "2026-11-26",
           "weight": 0.79,
           "shares": 40
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.75,
+          "shares": 40
         }
       ],
       "067310": [
@@ -677409,6 +679259,11 @@
           "date": "2026-11-26",
           "weight": 0.72,
           "shares": 83
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.68,
+          "shares": 83
         }
       ],
       "089970": [
@@ -677980,6 +679835,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.7,
+          "shares": 49
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.66,
           "shares": 49
         }
       ],
@@ -678820,6 +680680,11 @@
           "date": "2026-11-26",
           "weight": 0.47,
           "shares": 60
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.55,
+          "shares": 60
         }
       ],
       "119850": [
@@ -679257,6 +681122,11 @@
           "date": "2026-11-26",
           "weight": 1.29,
           "shares": 120
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.26,
+          "shares": 120
         }
       ],
       "131290": [
@@ -679603,6 +681473,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.81,
+          "shares": 13
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.79,
           "shares": 13
         }
       ],
@@ -680276,6 +682151,11 @@
           "date": "2026-11-26",
           "weight": 2.0,
           "shares": 113
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.37,
+          "shares": 79
         }
       ],
       "170920": [
@@ -680403,6 +682283,11 @@
           "date": "2026-11-26",
           "weight": 1.01,
           "shares": 99
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.96,
+          "shares": 99
         }
       ],
       "089890": [
@@ -680524,6 +682409,11 @@
         {
           "date": "2026-11-26",
           "weight": 0.83,
+          "shares": 60
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.78,
           "shares": 60
         }
       ],
@@ -680731,6 +682621,11 @@
           "date": "2026-11-26",
           "weight": 2.48,
           "shares": 199
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.6,
+          "shares": 199
         }
       ],
       "437730": [
@@ -680843,6 +682738,11 @@
           "date": "2026-11-26",
           "weight": 1.66,
           "shares": 70
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.87,
+          "shares": 119
         }
       ],
       "425420": [
@@ -680945,6 +682845,11 @@
           "date": "2026-11-26",
           "weight": 2.24,
           "shares": 99
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 2.07,
+          "shares": 99
         }
       ],
       "252990": [
@@ -681041,6 +682946,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.36,
+          "shares": 249
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.23,
           "shares": 249
         }
       ],
@@ -681139,6 +683049,11 @@
           "date": "2026-11-26",
           "weight": 0.49,
           "shares": 24
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 0.47,
+          "shares": 24
         }
       ],
       "053800": [
@@ -681220,6 +683135,11 @@
         {
           "date": "2026-11-26",
           "weight": 1.1,
+          "shares": 24
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.51,
           "shares": 24
         }
       ],
@@ -681303,6 +683223,11 @@
           "date": "2026-11-26",
           "weight": 1.52,
           "shares": 259
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.7,
+          "shares": 259
         }
       ],
       "064760": [
@@ -681375,6 +683300,11 @@
           "date": "2026-11-26",
           "weight": 1.55,
           "shares": 24
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.51,
+          "shares": 24
         }
       ],
       "166090": [
@@ -681427,6 +683357,11 @@
           "date": "2026-11-26",
           "weight": 1.92,
           "shares": 120
+        },
+        {
+          "date": "2026-11-27",
+          "weight": 1.84,
+          "shares": 119
         }
       ],
       "309710": [
@@ -1115882,7 +1117817,7 @@
       "ticker": "AMZN",
       "name": "Amazon.com Inc",
       "sector": "빅테크",
-      "time_weight": 6.87,
+      "time_weight": 7.02,
       "koact_weight": 8.25,
       "both": true
     },
@@ -1115890,7 +1117825,7 @@
       "ticker": "AMD",
       "name": "Advanced Micro Devices Inc",
       "sector": "반도체",
-      "time_weight": 5.62,
+      "time_weight": 5.3,
       "koact_weight": 8.63,
       "both": true
     },
@@ -1115898,7 +1117833,7 @@
       "ticker": "MSFT",
       "name": "Microsoft Corp",
       "sector": "빅테크",
-      "time_weight": 7.05,
+      "time_weight": 7.35,
       "koact_weight": 5.13,
       "both": true
     },
@@ -1115906,31 +1117841,31 @@
       "ticker": "AVGO",
       "name": "Broadcom Inc",
       "sector": "반도체",
-      "time_weight": 2.67,
+      "time_weight": 2.65,
       "koact_weight": 8.47,
-      "both": true
-    },
-    {
-      "ticker": "BE",
-      "name": "Bloom Energy Corp",
-      "sector": "에너지",
-      "time_weight": 2.7,
-      "koact_weight": 8.17,
       "both": true
     },
     {
       "ticker": "GOOGL",
       "name": "Alphabet Inc",
       "sector": "빅테크",
-      "time_weight": 5.73,
+      "time_weight": 5.87,
       "koact_weight": 5.05,
+      "both": true
+    },
+    {
+      "ticker": "BE",
+      "name": "Bloom Energy Corp",
+      "sector": "에너지",
+      "time_weight": 2.6,
+      "koact_weight": 8.17,
       "both": true
     },
     {
       "ticker": "MU",
       "name": "Micron Technology Inc",
       "sector": "반도체",
-      "time_weight": 1.51,
+      "time_weight": 1.39,
       "koact_weight": 8.6,
       "both": true
     },
@@ -1115938,7 +1117873,7 @@
       "ticker": "AAPL",
       "name": "Apple Inc",
       "sector": "빅테크",
-      "time_weight": 7.29,
+      "time_weight": 7.66,
       "koact_weight": null,
       "both": false
     },
@@ -1115946,7 +1117881,7 @@
       "ticker": "PLTR",
       "name": "Palantir Technologies Inc",
       "sector": "소프트웨어",
-      "time_weight": 2.25,
+      "time_weight": 2.36,
       "koact_weight": 3.92,
       "both": true
     },
@@ -1115954,7 +1117889,7 @@
       "ticker": "ANET",
       "name": "Arista Networks Inc",
       "sector": "미분류",
-      "time_weight": 1.45,
+      "time_weight": 1.42,
       "koact_weight": 4.39,
       "both": true
     },
@@ -1115962,7 +1117897,7 @@
       "ticker": "LLY",
       "name": "Eli Lilly & Co",
       "sector": "바이오",
-      "time_weight": 1.85,
+      "time_weight": 1.97,
       "koact_weight": 3.23,
       "both": true
     },
@@ -1115970,7 +1117905,7 @@
       "ticker": "TSLA",
       "name": "Tesla Inc",
       "sector": "빅테크",
-      "time_weight": 2.76,
+      "time_weight": 2.85,
       "koact_weight": 2.28,
       "both": true
     },
@@ -1115978,7 +1117913,7 @@
       "ticker": "SPCX",
       "name": "Space Exploration Technologies Corp",
       "sector": "미분류",
-      "time_weight": 2.86,
+      "time_weight": 2.8,
       "koact_weight": 2.14,
       "both": true
     },
@@ -1115986,7 +1117921,7 @@
       "ticker": "META",
       "name": "Meta Platforms Inc",
       "sector": "빅테크",
-      "time_weight": 3.12,
+      "time_weight": 3.19,
       "koact_weight": 1.61,
       "both": true
     },
@@ -1116002,7 +1117937,7 @@
       "ticker": "NVDA",
       "name": "NVIDIA Corp",
       "sector": "반도체",
-      "time_weight": 4.15,
+      "time_weight": 4.04,
       "koact_weight": 0.14,
       "both": true
     },
@@ -1116010,7 +1117945,7 @@
       "ticker": "TXN",
       "name": "Texas Instruments Inc",
       "sector": "미분류",
-      "time_weight": 2.42,
+      "time_weight": 2.23,
       "koact_weight": 1.47,
       "both": true
     },
@@ -1116026,9 +1117961,25 @@
       "ticker": "LITE",
       "name": "Lumentum Holdings Inc",
       "sector": "광통신",
-      "time_weight": 0.63,
+      "time_weight": 0.59,
       "koact_weight": 2.74,
       "both": true
+    },
+    {
+      "ticker": "PANW",
+      "name": "Palo Alto Networks Inc",
+      "sector": "미분류",
+      "time_weight": 2.83,
+      "koact_weight": 0.37,
+      "both": true
+    },
+    {
+      "ticker": "NQZ6",
+      "name": "NASDAQ 100 E-MINI INDEX DEC 2026",
+      "sector": "미분류",
+      "time_weight": 3.16,
+      "koact_weight": null,
+      "both": false
     },
     {
       "ticker": "UNH",
@@ -1116039,18 +1117990,10 @@
       "both": false
     },
     {
-      "ticker": "PANW",
-      "name": "Palo Alto Networks Inc",
+      "ticker": "QCOM",
+      "name": "QUALCOMM Inc",
       "sector": "미분류",
-      "time_weight": 2.74,
-      "koact_weight": 0.37,
-      "both": true
-    },
-    {
-      "ticker": "NQZ6",
-      "name": "NASDAQ 100 E-MINI INDEX DEC 2026",
-      "sector": "미분류",
-      "time_weight": 3.11,
+      "time_weight": 2.71,
       "koact_weight": null,
       "both": false
     },
@@ -1116058,23 +1118001,15 @@
       "ticker": "OKTA",
       "name": "Okta Inc",
       "sector": "미분류",
-      "time_weight": 1.56,
+      "time_weight": 1.55,
       "koact_weight": 1.15,
       "both": true
-    },
-    {
-      "ticker": "QCOM",
-      "name": "QUALCOMM Inc",
-      "sector": "미분류",
-      "time_weight": 2.62,
-      "koact_weight": null,
-      "both": false
     },
     {
       "ticker": "CRWD",
       "name": "Crowdstrike Holdings Inc",
       "sector": "소프트웨어",
-      "time_weight": 1.82,
+      "time_weight": 1.9,
       "koact_weight": 0.57,
       "both": true
     },
@@ -1116082,7 +1118017,7 @@
       "ticker": "SKHY",
       "name": "SK hynix Inc",
       "sector": "미분류",
-      "time_weight": 1.83,
+      "time_weight": 1.7,
       "koact_weight": 0.43,
       "both": true
     },
@@ -1116090,23 +1118025,23 @@
       "ticker": "INTC",
       "name": "Intel Corp",
       "sector": "반도체",
-      "time_weight": 1.87,
+      "time_weight": 1.78,
       "koact_weight": 0.32,
       "both": true
-    },
-    {
-      "ticker": "GEV",
-      "name": "GE Vernova Inc",
-      "sector": "에너지",
-      "time_weight": 1.9,
-      "koact_weight": null,
-      "both": false
     },
     {
       "ticker": "TSM",
       "name": "Taiwan Semiconductor Manufacturing Co Ltd",
       "sector": "반도체",
-      "time_weight": 1.9,
+      "time_weight": 1.89,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "GEV",
+      "name": "GE Vernova Inc",
+      "sector": "에너지",
+      "time_weight": 1.88,
       "koact_weight": null,
       "both": false
     },
@@ -1116114,7 +1118049,7 @@
       "ticker": "STX",
       "name": "Seagate Technology Holdings PLC",
       "sector": "스토리지",
-      "time_weight": 1.21,
+      "time_weight": 1.16,
       "koact_weight": 0.58,
       "both": true
     },
@@ -1116122,7 +1118057,7 @@
       "ticker": "XEL",
       "name": "Xcel Energy Inc",
       "sector": "미분류",
-      "time_weight": 1.59,
+      "time_weight": 1.65,
       "koact_weight": null,
       "both": false
     },
@@ -1116143,10 +1118078,18 @@
       "both": false
     },
     {
+      "ticker": "NEE",
+      "name": "NextEra Energy Inc",
+      "sector": "미분류",
+      "time_weight": 1.42,
+      "koact_weight": null,
+      "both": false
+    },
+    {
       "ticker": "WDC",
       "name": "Western Digital Corp",
       "sector": "스토리지",
-      "time_weight": 1.04,
+      "time_weight": 0.99,
       "koact_weight": 0.41,
       "both": true
     },
@@ -1116154,17 +1118097,9 @@
       "ticker": "DELL",
       "name": "Dell Technologies Inc",
       "sector": "미분류",
-      "time_weight": 1.3,
+      "time_weight": 1.18,
       "koact_weight": 0.12,
       "both": true
-    },
-    {
-      "ticker": "NEE",
-      "name": "NextEra Energy Inc",
-      "sector": "미분류",
-      "time_weight": 1.37,
-      "koact_weight": null,
-      "both": false
     },
     {
       "ticker": "NTAP",
@@ -1116178,7 +1118113,7 @@
       "ticker": "KLAC",
       "name": "KLA Corp",
       "sector": "반도체",
-      "time_weight": 1.1,
+      "time_weight": 1.04,
       "koact_weight": null,
       "both": false
     },
@@ -1116186,17 +1118121,17 @@
       "ticker": "ANT",
       "name": "Anthropic PBC",
       "sector": "미분류",
-      "time_weight": 0.98,
+      "time_weight": 0.95,
       "koact_weight": null,
       "both": false
     },
     {
-      "ticker": "SNDK",
-      "name": "Sandisk Corp",
-      "sector": "스토리지",
-      "time_weight": 0.68,
-      "koact_weight": 0.28,
-      "both": true
+      "ticker": "LIN",
+      "name": "Linde PLC",
+      "sector": "미분류",
+      "time_weight": 0.93,
+      "koact_weight": null,
+      "both": false
     },
     {
       "ticker": "CRCL",
@@ -1116207,18 +1118142,18 @@
       "both": false
     },
     {
-      "ticker": "LIN",
-      "name": "Linde PLC",
-      "sector": "미분류",
-      "time_weight": 0.9,
-      "koact_weight": null,
-      "both": false
+      "ticker": "SNDK",
+      "name": "Sandisk Corp",
+      "sector": "스토리지",
+      "time_weight": 0.62,
+      "koact_weight": 0.28,
+      "both": true
     },
     {
-      "ticker": "ALAB",
-      "name": "Astera Labs Inc",
+      "ticker": "QNT",
+      "name": "Quantinuum Inc",
       "sector": "미분류",
-      "time_weight": 0.86,
+      "time_weight": 0.83,
       "koact_weight": null,
       "both": false
     },
@@ -1116231,10 +1118166,10 @@
       "both": false
     },
     {
-      "ticker": "QNT",
-      "name": "Quantinuum Inc",
+      "ticker": "ALAB",
+      "name": "Astera Labs Inc",
       "sector": "미분류",
-      "time_weight": 0.8,
+      "time_weight": 0.77,
       "koact_weight": null,
       "both": false
     },
@@ -1116266,7 +1118201,7 @@
       "ticker": "CRWV",
       "name": "CoreWeave Inc",
       "sector": "AI/클라우드",
-      "time_weight": 0.66,
+      "time_weight": 0.61,
       "koact_weight": null,
       "both": false
     },
@@ -1116274,7 +1118209,7 @@
       "ticker": "MRVL",
       "name": "Marvell Technology Inc",
       "sector": "반도체",
-      "time_weight": 0.64,
+      "time_weight": 0.61,
       "koact_weight": null,
       "both": false
     },
@@ -1116282,7 +1118217,7 @@
       "ticker": "NBIS",
       "name": "Nebius Group NV",
       "sector": "소프트웨어",
-      "time_weight": 0.64,
+      "time_weight": 0.59,
       "koact_weight": null,
       "both": false
     },
@@ -1116290,15 +1118225,7 @@
       "ticker": "COIN",
       "name": "Coinbase Global Inc",
       "sector": "크립토",
-      "time_weight": 0.59,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "BSP",
-      "name": "Bending Spoons SpA",
-      "sector": "미분류",
-      "time_weight": 0.56,
+      "time_weight": 0.57,
       "koact_weight": null,
       "both": false
     },
@@ -1116306,7 +1118233,7 @@
       "ticker": "HOOD",
       "name": "Robinhood Markets Inc",
       "sector": "크립토",
-      "time_weight": 0.53,
+      "time_weight": 0.54,
       "koact_weight": null,
       "both": false
     },
@@ -1116316,6 +1118243,14 @@
       "sector": "소프트웨어",
       "time_weight": null,
       "koact_weight": 0.52,
+      "both": false
+    },
+    {
+      "ticker": "BSP",
+      "name": "Bending Spoons SpA",
+      "sector": "미분류",
+      "time_weight": 0.52,
+      "koact_weight": null,
       "both": false
     },
     {
@@ -1116428,7 +1118363,7 @@
       "ticker": "356860",
       "name": "티엘비",
       "sector": "반도체소재",
-      "time_weight": 3.55,
+      "time_weight": 3.37,
       "koact_weight": 6.23,
       "both": true
     },
@@ -1116436,7 +1118371,7 @@
       "ticker": "222800",
       "name": "심텍",
       "sector": "반도체소재",
-      "time_weight": 4.71,
+      "time_weight": 4.62,
       "koact_weight": 4.84,
       "both": true
     },
@@ -1116444,7 +1118379,7 @@
       "ticker": "031980",
       "name": "피에스케이홀딩스",
       "sector": "반도체장비",
-      "time_weight": 1.7,
+      "time_weight": 1.65,
       "koact_weight": 6.82,
       "both": true
     },
@@ -1116452,7 +1118387,7 @@
       "ticker": "039030",
       "name": "이오테크닉스",
       "sector": "반도체장비",
-      "time_weight": 1.63,
+      "time_weight": 1.57,
       "koact_weight": 5.75,
       "both": true
     },
@@ -1116460,31 +1118395,39 @@
       "ticker": "425420",
       "name": "티에프이",
       "sector": "전자부품",
-      "time_weight": 2.24,
+      "time_weight": 2.07,
       "koact_weight": 5.09,
       "both": true
-    },
-    {
-      "ticker": "030530",
-      "name": "원익홀딩스",
-      "sector": "반도체장비",
-      "time_weight": 7.03,
-      "koact_weight": null,
-      "both": false
     },
     {
       "ticker": "108490",
       "name": "로보티즈",
       "sector": "로봇",
-      "time_weight": 3.98,
+      "time_weight": 4.94,
       "koact_weight": 1.24,
+      "both": true
+    },
+    {
+      "ticker": "277810",
+      "name": "레인보우로보틱스",
+      "sector": "로봇",
+      "time_weight": 5.35,
+      "koact_weight": 0.19,
+      "both": true
+    },
+    {
+      "ticker": "196170",
+      "name": "알테오젠",
+      "sector": "바이오",
+      "time_weight": 4.05,
+      "koact_weight": 0.48,
       "both": true
     },
     {
       "ticker": "095610",
       "name": "테스",
       "sector": "반도체장비",
-      "time_weight": 0.76,
+      "time_weight": 0.73,
       "koact_weight": 3.72,
       "both": true
     },
@@ -1116492,7 +1118435,7 @@
       "ticker": "218410",
       "name": "RFHIC",
       "sector": "반도체",
-      "time_weight": 2.13,
+      "time_weight": 2.11,
       "koact_weight": 2.17,
       "both": true
     },
@@ -1116500,23 +1118443,31 @@
       "ticker": "086520",
       "name": "에코프로",
       "sector": "2차전지",
-      "time_weight": 3.96,
+      "time_weight": 3.98,
       "koact_weight": 0.26,
       "both": true
     },
     {
-      "ticker": "196170",
-      "name": "알테오젠",
-      "sector": "바이오",
-      "time_weight": 3.6,
-      "koact_weight": 0.48,
+      "ticker": "437730",
+      "name": "삼현",
+      "sector": "산업재",
+      "time_weight": 2.87,
+      "koact_weight": 1.07,
+      "both": true
+    },
+    {
+      "ticker": "290550",
+      "name": "디케이티",
+      "sector": "미분류",
+      "time_weight": 2.6,
+      "koact_weight": 1.2,
       "both": true
     },
     {
       "ticker": "166090",
       "name": "하나머티리얼즈",
       "sector": "반도체소재",
-      "time_weight": 1.92,
+      "time_weight": 1.84,
       "koact_weight": 1.92,
       "both": true
     },
@@ -1116524,47 +1118475,47 @@
       "ticker": "036930",
       "name": "주성엔지니어링",
       "sector": "반도체장비",
-      "time_weight": 2.25,
+      "time_weight": 2.11,
       "koact_weight": 1.49,
-      "both": true
-    },
-    {
-      "ticker": "290550",
-      "name": "디케이티",
-      "sector": "미분류",
-      "time_weight": 2.48,
-      "koact_weight": 1.2,
-      "both": true
-    },
-    {
-      "ticker": "277810",
-      "name": "레인보우로보틱스",
-      "sector": "로봇",
-      "time_weight": 3.37,
-      "koact_weight": 0.19,
-      "both": true
-    },
-    {
-      "ticker": "420770",
-      "name": "기가비스",
-      "sector": "미분류",
-      "time_weight": 2.45,
-      "koact_weight": 0.94,
       "both": true
     },
     {
       "ticker": "058610",
       "name": "에스피지",
       "sector": "산업재",
-      "time_weight": 2.73,
+      "time_weight": 2.89,
       "koact_weight": 0.64,
+      "both": true
+    },
+    {
+      "ticker": "030530",
+      "name": "원익홀딩스",
+      "sector": "반도체장비",
+      "time_weight": 3.51,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "420770",
+      "name": "기가비스",
+      "sector": "미분류",
+      "time_weight": 2.42,
+      "koact_weight": 0.94,
+      "both": true
+    },
+    {
+      "ticker": "226950",
+      "name": "올릭스",
+      "sector": "바이오",
+      "time_weight": 1.61,
+      "koact_weight": 1.71,
       "both": true
     },
     {
       "ticker": "064290",
       "name": "인텍플러스",
       "sector": "미분류",
-      "time_weight": 3.37,
+      "time_weight": 3.32,
       "koact_weight": null,
       "both": false
     },
@@ -1116572,23 +1118523,15 @@
       "ticker": "319660",
       "name": "피에스케이",
       "sector": "반도체장비",
-      "time_weight": 1.39,
+      "time_weight": 1.34,
       "koact_weight": 1.93,
-      "both": true
-    },
-    {
-      "ticker": "226950",
-      "name": "올릭스",
-      "sector": "바이오",
-      "time_weight": 1.48,
-      "koact_weight": 1.71,
       "both": true
     },
     {
       "ticker": "171090",
       "name": "선익시스템",
       "sector": "반도체장비",
-      "time_weight": 0.61,
+      "time_weight": 0.64,
       "koact_weight": 2.39,
       "both": true
     },
@@ -1116596,7 +1118539,7 @@
       "ticker": "247540",
       "name": "에코프로비엠",
       "sector": "2차전지",
-      "time_weight": 2.96,
+      "time_weight": 2.99,
       "koact_weight": null,
       "both": false
     },
@@ -1116604,25 +1118547,9 @@
       "ticker": "059090",
       "name": "미코",
       "sector": "미분류",
-      "time_weight": 2.75,
+      "time_weight": 2.59,
       "koact_weight": null,
       "both": false
-    },
-    {
-      "ticker": "437730",
-      "name": "삼현",
-      "sector": "산업재",
-      "time_weight": 1.66,
-      "koact_weight": 1.07,
-      "both": true
-    },
-    {
-      "ticker": "126340",
-      "name": "비나텍",
-      "sector": "전자부품",
-      "time_weight": 1.79,
-      "koact_weight": 0.81,
-      "both": true
     },
     {
       "ticker": "403870",
@@ -1116633,10 +1118560,18 @@
       "both": true
     },
     {
+      "ticker": "126340",
+      "name": "비나텍",
+      "sector": "전자부품",
+      "time_weight": 1.72,
+      "koact_weight": 0.81,
+      "both": true
+    },
+    {
       "ticker": "119850",
       "name": "지엔씨에너지",
       "sector": "미분류",
-      "time_weight": 1.29,
+      "time_weight": 1.26,
       "koact_weight": 1.16,
       "both": true
     },
@@ -1116644,40 +1118579,24 @@
       "ticker": "078600",
       "name": "대주전자재료",
       "sector": "2차전지",
-      "time_weight": 1.52,
+      "time_weight": 1.53,
       "koact_weight": 0.77,
-      "both": true
-    },
-    {
-      "ticker": "095340",
-      "name": "ISC",
-      "sector": "반도체장비",
-      "time_weight": 1.42,
-      "koact_weight": 0.78,
       "both": true
     },
     {
       "ticker": "295310",
       "name": "에이치브이엠",
       "sector": "반도체장비",
-      "time_weight": 1.91,
+      "time_weight": 2.03,
       "koact_weight": 0.2,
       "both": true
     },
     {
-      "ticker": "0158S0",
-      "name": "엘리스",
-      "sector": "미분류",
-      "time_weight": 2.0,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "252990",
-      "name": "샘씨엔에스",
-      "sector": "미분류",
-      "time_weight": 1.36,
-      "koact_weight": 0.64,
+      "ticker": "095340",
+      "name": "ISC",
+      "sector": "반도체장비",
+      "time_weight": 1.33,
+      "koact_weight": 0.78,
       "both": true
     },
     {
@@ -1116692,7 +1118611,7 @@
       "ticker": "131290",
       "name": "티에스이",
       "sector": "미분류",
-      "time_weight": 0.81,
+      "time_weight": 0.79,
       "koact_weight": 1.14,
       "both": true
     },
@@ -1116711,6 +1118630,14 @@
       "time_weight": null,
       "koact_weight": 1.89,
       "both": false
+    },
+    {
+      "ticker": "252990",
+      "name": "샘씨엔에스",
+      "sector": "미분류",
+      "time_weight": 1.23,
+      "koact_weight": 0.64,
+      "both": true
     },
     {
       "ticker": "005290",
@@ -1116745,6 +1118672,14 @@
       "both": false
     },
     {
+      "ticker": "328130",
+      "name": "루닛",
+      "sector": "미분류",
+      "time_weight": 1.7,
+      "koact_weight": null,
+      "both": false
+    },
+    {
       "ticker": "214450",
       "name": "파마리서치",
       "sector": "미분류",
@@ -1116769,26 +1118704,18 @@
       "both": false
     },
     {
+      "ticker": "053800",
+      "name": "안랩",
+      "sector": "미분류",
+      "time_weight": 1.51,
+      "koact_weight": null,
+      "both": false
+    },
+    {
       "ticker": "064760",
       "name": "티씨케이",
       "sector": "미분류",
-      "time_weight": 1.55,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "328130",
-      "name": "루닛",
-      "sector": "미분류",
-      "time_weight": 1.52,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "240810",
-      "name": "원익IPS",
-      "sector": "반도체장비",
-      "time_weight": 1.45,
+      "time_weight": 1.51,
       "koact_weight": null,
       "both": false
     },
@@ -1116814,6 +1118741,22 @@
       "sector": "반도체",
       "time_weight": null,
       "koact_weight": 1.4,
+      "both": false
+    },
+    {
+      "ticker": "0158S0",
+      "name": "엘리스",
+      "sector": "미분류",
+      "time_weight": 1.37,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "240810",
+      "name": "원익IPS",
+      "sector": "반도체장비",
+      "time_weight": 1.37,
+      "koact_weight": null,
       "both": false
     },
     {
@@ -1116857,22 +1118800,6 @@
       "both": true
     },
     {
-      "ticker": "053800",
-      "name": "안랩",
-      "sector": "미분류",
-      "time_weight": 1.1,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "327260",
-      "name": "RF머트리얼즈",
-      "sector": "미분류",
-      "time_weight": 1.09,
-      "koact_weight": null,
-      "both": false
-    },
-    {
       "ticker": "003380",
       "name": "하림지주",
       "sector": "미분류",
@@ -1116881,18 +1118808,18 @@
       "both": false
     },
     {
-      "ticker": "010170",
-      "name": "대한광통신",
-      "sector": "광통신",
-      "time_weight": 1.01,
+      "ticker": "327260",
+      "name": "RF머트리얼즈",
+      "sector": "미분류",
+      "time_weight": 1.03,
       "koact_weight": null,
       "both": false
     },
     {
-      "ticker": "170920",
-      "name": "엘티씨",
-      "sector": "미분류",
-      "time_weight": 1.01,
+      "ticker": "028300",
+      "name": "HLB",
+      "sector": "바이오",
+      "time_weight": 0.99,
       "koact_weight": null,
       "both": false
     },
@@ -1116913,27 +1118840,27 @@
       "both": false
     },
     {
+      "ticker": "010170",
+      "name": "대한광통신",
+      "sector": "광통신",
+      "time_weight": 0.96,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "170920",
+      "name": "엘티씨",
+      "sector": "미분류",
+      "time_weight": 0.96,
+      "koact_weight": null,
+      "both": false
+    },
+    {
       "ticker": "033640",
       "name": "네패스",
       "sector": "미분류",
       "time_weight": null,
       "koact_weight": 0.95,
-      "both": false
-    },
-    {
-      "ticker": "131970",
-      "name": "두산테스나",
-      "sector": "반도체장비",
-      "time_weight": 0.95,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "028300",
-      "name": "HLB",
-      "sector": "바이오",
-      "time_weight": 0.92,
-      "koact_weight": null,
       "both": false
     },
     {
@@ -1116953,6 +1118880,22 @@
       "both": false
     },
     {
+      "ticker": "131970",
+      "name": "두산테스나",
+      "sector": "반도체장비",
+      "time_weight": 0.89,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "141080",
+      "name": "리가켐바이오",
+      "sector": "바이오",
+      "time_weight": 0.75,
+      "koact_weight": 0.14,
+      "both": true
+    },
+    {
       "ticker": "298380",
       "name": "에이비엘바이오",
       "sector": "바이오",
@@ -1116964,31 +1118907,15 @@
       "ticker": "491000",
       "name": "리브스메드",
       "sector": "바이오",
-      "time_weight": 0.87,
+      "time_weight": 0.85,
       "koact_weight": null,
       "both": false
     },
     {
-      "ticker": "089890",
-      "name": "코세스",
-      "sector": "반도체장비",
-      "time_weight": 0.83,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "141080",
-      "name": "리가켐바이오",
+      "ticker": "347850",
+      "name": "디앤디파마텍",
       "sector": "바이오",
-      "time_weight": 0.69,
-      "koact_weight": 0.14,
-      "both": true
-    },
-    {
-      "ticker": "080220",
-      "name": "제주반도체",
-      "sector": "미분류",
-      "time_weight": 0.79,
+      "time_weight": 0.84,
       "koact_weight": null,
       "both": false
     },
@@ -1116998,6 +1118925,14 @@
       "sector": "광통신",
       "time_weight": null,
       "koact_weight": 0.79,
+      "both": false
+    },
+    {
+      "ticker": "089890",
+      "name": "코세스",
+      "sector": "반도체장비",
+      "time_weight": 0.78,
+      "koact_weight": null,
       "both": false
     },
     {
@@ -1117017,10 +1118952,18 @@
       "both": false
     },
     {
-      "ticker": "347850",
-      "name": "디앤디파마텍",
+      "ticker": "347700",
+      "name": "스피어",
       "sector": "바이오",
-      "time_weight": 0.77,
+      "time_weight": 0.76,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "080220",
+      "name": "제주반도체",
+      "sector": "미분류",
+      "time_weight": 0.75,
       "koact_weight": null,
       "both": false
     },
@@ -1117028,15 +1118971,7 @@
       "ticker": "067310",
       "name": "하나마이크론",
       "sector": "미분류",
-      "time_weight": 0.72,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "347700",
-      "name": "스피어",
-      "sector": "바이오",
-      "time_weight": 0.72,
+      "time_weight": 0.68,
       "koact_weight": null,
       "both": false
     },
@@ -1117044,7 +1118979,7 @@
       "ticker": "089970",
       "name": "브이엠",
       "sector": "반도체장비",
-      "time_weight": 0.7,
+      "time_weight": 0.66,
       "koact_weight": null,
       "both": false
     },
@@ -1117060,7 +1118995,15 @@
       "ticker": "084370",
       "name": "유진테크",
       "sector": "반도체장비",
-      "time_weight": 0.6,
+      "time_weight": 0.58,
+      "koact_weight": null,
+      "both": false
+    },
+    {
+      "ticker": "290650",
+      "name": "엘앤씨바이오",
+      "sector": "미분류",
+      "time_weight": 0.55,
       "koact_weight": null,
       "both": false
     },
@@ -1117097,14 +1119040,6 @@
       "both": false
     },
     {
-      "ticker": "092870",
-      "name": "엑시콘",
-      "sector": "미분류",
-      "time_weight": 0.49,
-      "koact_weight": null,
-      "both": false
-    },
-    {
       "ticker": "098460",
       "name": "고영",
       "sector": "미분류",
@@ -1117121,8 +1119056,8 @@
       "both": false
     },
     {
-      "ticker": "290650",
-      "name": "엘앤씨바이오",
+      "ticker": "092870",
+      "name": "엑시콘",
       "sector": "미분류",
       "time_weight": 0.47,
       "koact_weight": null,
@@ -1117133,14 +1119068,6 @@
       "name": "필옵틱스",
       "sector": "미분류",
       "time_weight": 0.46,
-      "koact_weight": null,
-      "both": false
-    },
-    {
-      "ticker": "440110",
-      "name": "파두",
-      "sector": "반도체",
-      "time_weight": 0.42,
       "koact_weight": null,
       "both": false
     },
@@ -1117156,7 +1119083,7 @@
       "ticker": "393890",
       "name": "더블유씨피",
       "sector": "미분류",
-      "time_weight": 0.36,
+      "time_weight": 0.34,
       "koact_weight": null,
       "both": false
     },
